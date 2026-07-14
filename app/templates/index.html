@@ -3,25 +3,32 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Smart Subscription Manager</title>
-    
+
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
-    <h1>Welcome to Smart Subscription Manager</h1>
+    <!-- Top navigation bar -->
+    <header class="navbar">
+        <div class="navbar__container">
+            <a href="#" class="navbar__brand">Smart Subscription Manager</a>
+        </div>
+    </header>
 
-    <p>
-        This is my Final Year Project.
-
-    </p>
-
-    <p>
-
-        Built by Valentina Raynold Patel.
-
-    </p>
+    <!-- Main hero section -->
+    <main class="hero">
+        <div class="hero__content">
+            <h1 class="hero__heading">Manage Your Subscriptions Smarter</h1>
+            <p class="hero__description">
+                Track all your subscriptions in one place, monitor spending, and never miss a renewal again.
+                Take control of your monthly expenses with ease.
+            </p>
+            <a href="#" class="hero__button">Get Started</a>
+        </div>
+    </main>
 
 </body>
 

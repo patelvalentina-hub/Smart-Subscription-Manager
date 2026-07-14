@@ -1,15 +1,155 @@
-body {
-    background-color: #f5f7fa;
-    font-family: Arial, Helvetica, sans-serif;
+/* ============================================
+   Smart Subscription Manager — Homepage Styles
+   Color palette: modern blue & white
+   Layout: Flexbox, responsive
+   ============================================ */
+
+/* --- CSS Variables --- */
+:root {
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-primary-light: #dbeafe;
+    --color-white: #ffffff;
+    --color-bg: #f8fafc;
+    --color-text: #1e293b;
+    --color-text-muted: #64748b;
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 12px rgba(37, 99, 235, 0.15);
+    --radius: 8px;
+    --transition: 0.2s ease;
+}
+
+/* --- Reset & Base --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
     margin: 0;
-    padding: 40px;
+    padding: 0;
 }
 
-h1 {
-    color: #2c3e50;
+body {
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.6;
+    min-height: 100vh;
+
+    /* Stack navbar and hero vertically */
+    display: flex;
+    flex-direction: column;
 }
 
-p{
-    color: #555;
-    font-size: 18px;
+/* --- Navigation Bar --- */
+.navbar {
+    background-color: var(--color-white);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+
+    /* Center brand within the bar */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar__brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+}
+
+/* --- Hero Section --- */
+.hero {
+    flex: 1;
+
+    /* Center hero content vertically and horizontally */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+}
+
+.hero__content {
+    max-width: 640px;
+    text-align: center;
+
+    /* Stack heading, description, and button */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.hero__heading {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: var(--color-text);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+}
+
+.hero__description {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    color: var(--color-text-muted);
+    max-width: 520px;
+}
+
+/* --- Call-to-Action Button --- */
+.hero__button {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    transition: background-color var(--transition), transform var(--transition);
+}
+
+.hero__button:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+}
+
+.hero__button:active {
+    transform: translateY(0);
+}
+
+/* --- Responsive Adjustments --- */
+@media (min-width: 768px) {
+    .navbar__container {
+        justify-content: flex-start;
+    }
+
+    .hero {
+        padding: 5rem 2rem;
+    }
+
+    .hero__content {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar__brand {
+        font-size: 1.05rem;
+    }
+
+    .hero__button {
+        width: 100%;
+        max-width: 280px;
+        text-align: center;
+    }
 }
