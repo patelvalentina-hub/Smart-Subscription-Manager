@@ -18,15 +18,59 @@
         </div>
     </header>
 
-    <!-- Main hero section -->
-    <main class="hero">
-        <div class="hero__content">
-            <h1 class="hero__heading">Manage Your Subscriptions Smarter</h1>
-            <p class="hero__description">
-                Track all your subscriptions in one place, monitor spending, and never miss a renewal again.
-                Take control of your monthly expenses with ease.
-            </p>
-            <a href="#" class="hero__button">Get Started</a>
+    <!-- Dashboard main content -->
+    <main class="dashboard">
+        <div class="dashboard__container">
+
+            <!-- Welcome heading -->
+            <h1 class="dashboard__welcome">Welcome back, Valentina!</h1>
+
+            <!-- Statistic cards -->
+            <section class="stats" aria-label="Subscription statistics">
+                <article class="stats__card">
+                    <p class="stats__label">Monthly Spending</p>
+                    <p class="stats__value">฿0</p>
+                </article>
+                <article class="stats__card">
+                    <p class="stats__label">Active Subscriptions</p>
+                    <p class="stats__value">0</p>
+                </article>
+                <article class="stats__card">
+                    <p class="stats__label">Renewing Soon</p>
+                    <p class="stats__value">0</p>
+                </article>
+            </section>
+
+            <!-- Subscriptions list -->
+            <section class="subscriptions">
+                <h2 class="subscriptions__title">Subscriptions</h2>
+
+                <div class="subscriptions__list">
+
+                    <article class="subscription-card">
+                        <h3 class="subscription-card__name">Netflix</h3>
+                        <p class="subscription-card__detail">Monthly Cost: <span>฿419</span></p>
+                        <p class="subscription-card__detail">Renewal: <span>25 Jul</span></p>
+                    </article>
+
+                    <article class="subscription-card">
+                        <h3 class="subscription-card__name">Spotify</h3>
+                        <p class="subscription-card__detail">Monthly Cost: <span>฿139</span></p>
+                        <p class="subscription-card__detail">Renewal: <span>18 Jul</span></p>
+                    </article>
+
+                    <article class="subscription-card">
+                        <h3 class="subscription-card__name">Disney+</h3>
+                        <p class="subscription-card__detail">Monthly Cost: <span>฿299</span></p>
+                        <p class="subscription-card__detail">Renewal: <span>30 Jul</span></p>
+                    </article>
+
+                </div>
+            </section>
+
+            <!-- Add subscription button -->
+            <a href="#" class="dashboard__add-btn">+ Add Subscription</a>
+
         </div>
     </main>
 
