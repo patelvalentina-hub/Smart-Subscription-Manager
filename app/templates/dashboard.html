@@ -11,7 +11,7 @@
             <!-- Statistic cards -->
             <section class="stats" aria-label="Subscription statistics">
                 <article class="stats__card">
-                    <p class="stats__label">Estimated Monthly Spending</p>
+                    <p class="stats__label">Estimated Monthly Cost</p>
                     <p class="stats__value">
                         ฿{{ "%.2f"|format(estimated_monthly_cost) }}
                     </p>
@@ -32,39 +32,67 @@
 
                 <div class="subscriptions__list">
                     {% for subscription in subscriptions %}
-                        <article class="subscription-card">
+                    <article class="subscription-card">
+                
+                        <div class="subscription-card__header">
                             <h3 class="subscription-card__name">
                                 {{ subscription.name }}
                             </h3>
                 
-                            <p class="subscription-card__detail">
-                                Category:
-                                <span>{{ subscription.category }}</span>
-                            </p>
+                            <a
+                                href="{{ url_for('edit_subscription', subscription_id=subscription.id) }}"
+                                class="subscription-card__edit"
+                                aria-label="Edit {{ subscription.name }}"
+                            >
+                                ✏️
+                            </a>
+
+                            <form
+                                method="post"
+                                action="{{ url_for('delete_subscription', subscription_id=subscription.id) }}"
+                                onsubmit="return confirm('Delete {{ subscription.name }}? This action cannot be undone.');"
+                            >
+                                <button
+                                    type="submit"
+                                    class="subscription-card__delete"
+                                    aria-label="Delete {{ subscription.name }}"
+                                >
+                                    🗑️
+                                </button>
+                            </form>
+
+                            
+                        </div>
                 
-                            <p class="subscription-card__detail">
-                                Amount:
-                                <span>฿{{ "%.2f"|format(subscription.amount) }}</span>
-                            </p>
+                        <p class="subscription-card__detail">
+                            Category:
+                            <span>{{ subscription.category }}</span>
+                        </p>
                 
-                            <p class="subscription-card__detail">
-                                Billing:
-                                <span>{{ subscription.billing_frequency }}</span>
-                            </p>
+                        <p class="subscription-card__detail">
+                            Amount:
+                            <span>฿{{ "%.2f"|format(subscription.amount) }}</span>
+                        </p>
                 
-                            <p class="subscription-card__detail">
-                                Next Renewal:
-                                <span>
-                                    {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
-                                </span>
-                            </p>
+                        <p class="subscription-card__detail">
+                            Billing:
+                            <span>{{ subscription.billing_frequency }}</span>
+                        </p>
                 
-                            <p class="subscription-card__detail">
-                                Status:
-                                <span>{{ subscription.status }}</span>
-                            </p>
-                        </article>
-                    {% else %}
+                        <p class="subscription-card__detail">
+                            Next Renewal:
+                            <span>
+                                {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                            </span>
+                        </p>
+                
+                        <p class="subscription-card__detail">
+                            Status:
+                            <span>{{ subscription.status }}</span>
+                        </p>
+                
+                    </article>
+                    {% else %}   
                         <p>No subscriptions added yet.</p>
                     {% endfor %}
                 </div>

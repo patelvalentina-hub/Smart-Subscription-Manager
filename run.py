@@ -1,14 +1,23 @@
 from datetime import datetime
 from decimal import Decimal
 
-from flask import Flask, redirect, render_template, request, url_for
+from flask import (
+    Flask, 
+    flash,
+    redirect, 
+    render_template, 
+    request, 
+    url_for
+)
+
 
 from app.models import Subscription, db
 
 from app.utils import (
-    count_active_subscriptions, 
     calculate_estimated_monthly_cost,
-    count_renewing_soon)
+    count_active_subscriptions,
+    count_renewing_soon,
+)
 
 app = Flask(
     __name__, 
@@ -16,10 +25,14 @@ app = Flask(
     static_folder="app/static"
     )
 
+app.secret_key = "smart_subscription_manager_secret"
+
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///subscriptions.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
+
 
 @app.route("/")
 def home():
@@ -68,6 +81,49 @@ def add_subscription():
         return redirect(url_for("dashboard"))
 
     return render_template("add_subscription.html")
+
+
+
+@app.route("/edit_subscription/<int:subscription_id>", methods=["GET", "POST"])
+def edit_subscription(subscription_id):
+    subscription = Subscription.query.get_or_404(subscription_id)
+
+    if request.method == "POST":
+        subscription.name = request.form["subscription_name"]
+        subscription.category = request.form["category"]
+        subscription.amount = Decimal(request.form["amount"])
+        subscription.billing_frequency = request.form["billing_frequency"]
+        subscription.start_date = datetime.strptime(
+            request.form["start_date"], "%Y-%m-%d"
+        ).date()
+        subscription.next_renewal_date = datetime.strptime(
+            request.form["next_renewal_date"], "%Y-%m-%d"
+        ).date()
+        subscription.status = request.form["status"]
+
+        db.session.commit()
+
+        return redirect(url_for("dashboard"))
+
+    return render_template(
+        "add_subscription.html",
+        subscription=subscription,
+        is_editing=True,
+    )
+
+
+
+@app.route("/delete_subscription/<int:subscription_id>", methods=["POST"])
+def delete_subscription(subscription_id):
+    subscription = Subscription.query.get_or_404(subscription_id)
+
+    db.session.delete(subscription)
+    db.session.commit()
+
+    flash("Subscription deleted successfully.", "success")
+
+    return redirect(url_for("dashboard"))
+
 
 
 with app.app_context():
