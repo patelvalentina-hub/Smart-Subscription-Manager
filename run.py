@@ -1,5 +1,10 @@
-from flask import Flask, render_template
-from app.models import db
+from datetime import datetime
+from decimal import Decimal
+
+from flask import Flask, redirect, render_template, request, url_for
+
+from app.models import Subscription, db
+
 
 app = Flask(
     __name__, 
@@ -20,12 +25,36 @@ def home():
 
 @app.route("/dashboard")
 def dashboard():
-    return render_template("dashboard.html")
+    subscriptions = Subscription.query.all()
+    return render_template(
+        "dashboard.html",
+        subscriptions=subscriptions,
+    )
 
 
 
-@app.route("/add_subscription")
+@app.route("/add_subscription", methods=["GET", "POST"])
 def add_subscription():
+    if request.method == "POST":
+        subscription = Subscription(
+            name=request.form["subscription_name"],
+            category=request.form["category"],
+            amount=Decimal(request.form["amount"]),
+            billing_frequency=request.form["billing_frequency"],
+            start_date=datetime.strptime(
+                request.form["start_date"], "%Y-%m-%d"
+            ).date(),
+            next_renewal_date=datetime.strptime(
+                request.form["next_renewal_date"], "%Y-%m-%d"
+            ).date(),
+            status=request.form["status"],
+        )
+
+        db.session.add(subscription)
+        db.session.commit()
+
+        return redirect(url_for("dashboard"))
+
     return render_template("add_subscription.html")
 
 

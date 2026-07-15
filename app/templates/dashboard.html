@@ -29,25 +29,42 @@
                 <h2 class="subscriptions__title">Subscriptions</h2>
 
                 <div class="subscriptions__list">
-
-                    <article class="subscription-card">
-                        <h3 class="subscription-card__name">Netflix</h3>
-                        <p class="subscription-card__detail">Monthly Cost: <span>฿419</span></p>
-                        <p class="subscription-card__detail">Renewal: <span>25 Jul</span></p>
-                    </article>
-
-                    <article class="subscription-card">
-                        <h3 class="subscription-card__name">Spotify</h3>
-                        <p class="subscription-card__detail">Monthly Cost: <span>฿139</span></p>
-                        <p class="subscription-card__detail">Renewal: <span>18 Jul</span></p>
-                    </article>
-
-                    <article class="subscription-card">
-                        <h3 class="subscription-card__name">Disney+</h3>
-                        <p class="subscription-card__detail">Monthly Cost: <span>฿299</span></p>
-                        <p class="subscription-card__detail">Renewal: <span>30 Jul</span></p>
-                    </article>
-
+                    {% for subscription in subscriptions %}
+                        <article class="subscription-card">
+                            <h3 class="subscription-card__name">
+                                {{ subscription.name }}
+                            </h3>
+                
+                            <p class="subscription-card__detail">
+                                Category:
+                                <span>{{ subscription.category }}</span>
+                            </p>
+                
+                            <p class="subscription-card__detail">
+                                Amount:
+                                <span>฿{{ "%.2f"|format(subscription.amount) }}</span>
+                            </p>
+                
+                            <p class="subscription-card__detail">
+                                Billing:
+                                <span>{{ subscription.billing_frequency }}</span>
+                            </p>
+                
+                            <p class="subscription-card__detail">
+                                Next Renewal:
+                                <span>
+                                    {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                                </span>
+                            </p>
+                
+                            <p class="subscription-card__detail">
+                                Status:
+                                <span>{{ subscription.status }}</span>
+                            </p>
+                        </article>
+                    {% else %}
+                        <p>No subscriptions added yet.</p>
+                    {% endfor %}
                 </div>
             </section>
 
