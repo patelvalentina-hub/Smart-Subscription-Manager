@@ -11,18 +11,18 @@
             <!-- Statistic cards -->
             <section class="stats" aria-label="Subscription statistics">
                 <article class="stats__card">
-                    <p class="stats__label">Monthly Spending</p>
+                    <p class="stats__label">Estimated Monthly Spending</p>
                     <p class="stats__value">
                         ฿{{ "%.2f"|format(estimated_monthly_cost) }}
                     </p>
                 </article>
                 <article class="stats__card">
                     <p class="stats__label">Active Subscriptions</p>
-                    <p class="stats__value">{{ active_count }}</p>
+                    <p class="stats__value">{{ active_subscriptions }}</p>
                 </article>
                 <article class="stats__card">
                     <p class="stats__label">Renewing Soon</p>
-                    <p class="stats__value">0</p>
+                    <p class="stats__value">{{ renewing_soon }}</p>
                 </article>
             </section>
 

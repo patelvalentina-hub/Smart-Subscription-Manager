@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from app.models import Subscription
 
 
@@ -27,3 +29,14 @@ def calculate_estimated_monthly_cost():
             total += subscription.amount / 12
 
     return round(total, 2)
+
+
+def count_renewing_soon():
+    today = date.today()
+    seven_days_from_now = today + timedelta(days=7)
+
+    return Subscription.query.filter(
+        Subscription.status == "Active",
+        Subscription.next_renewal_date >= today,
+        Subscription.next_renewal_date <= seven_days_from_now,
+    ).count()

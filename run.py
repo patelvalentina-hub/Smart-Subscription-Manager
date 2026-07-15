@@ -5,7 +5,10 @@ from flask import Flask, redirect, render_template, request, url_for
 
 from app.models import Subscription, db
 
-from app.utils import (count_active_subscriptions, calculate_estimated_monthly_cost)
+from app.utils import (
+    count_active_subscriptions, 
+    calculate_estimated_monthly_cost,
+    count_renewing_soon)
 
 app = Flask(
     __name__, 
@@ -30,12 +33,14 @@ def dashboard():
 
     active_subscriptions = count_active_subscriptions()
     estimated_monthly_cost = calculate_estimated_monthly_cost()
+    renewing_soon = count_renewing_soon()
 
     return render_template(
         "dashboard.html",
         subscriptions=subscriptions,
         active_subscriptions=active_subscriptions,
         estimated_monthly_cost=estimated_monthly_cost,
+        renewing_soon=renewing_soon,
     )
 
 
