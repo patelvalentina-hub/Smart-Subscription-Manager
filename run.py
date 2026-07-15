@@ -5,7 +5,7 @@ from flask import Flask, redirect, render_template, request, url_for
 
 from app.models import Subscription, db
 
-from app.utils import count_active_subscriptions
+from app.utils import (count_active_subscriptions, calculate_estimated_monthly_cost)
 
 app = Flask(
     __name__, 
@@ -29,11 +29,13 @@ def dashboard():
     subscriptions = Subscription.query.all()
 
     active_subscriptions = count_active_subscriptions()
+    estimated_monthly_cost = calculate_estimated_monthly_cost()
 
     return render_template(
         "dashboard.html",
         subscriptions=subscriptions,
-        active_count=active_subscriptions,
+        active_subscriptions=active_subscriptions,
+        estimated_monthly_cost=estimated_monthly_cost,
     )
 
 
