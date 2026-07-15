@@ -5,6 +5,7 @@ from flask import Flask, redirect, render_template, request, url_for
 
 from app.models import Subscription, db
 
+from app.utils import count_active_subscriptions
 
 app = Flask(
     __name__, 
@@ -26,9 +27,13 @@ def home():
 @app.route("/dashboard")
 def dashboard():
     subscriptions = Subscription.query.all()
+
+    active_subscriptions = count_active_subscriptions()
+
     return render_template(
         "dashboard.html",
         subscriptions=subscriptions,
+        active_count=active_subscriptions,
     )
 
 
