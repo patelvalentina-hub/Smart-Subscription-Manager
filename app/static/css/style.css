@@ -92,6 +92,42 @@ body {
     letter-spacing: -0.02em;
 }
 
+/* --- Landing Page (index.html only — no .stats section) --- */
+.landing-page {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.landing-page__container {
+    max-width: 640px;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.landing-page__container .dashboard__welcome {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+}
+
+.landing-page__container p {
+    font-size: clamp(1rem, 2.5vw, 1.125rem);
+    color: var(--color-text-muted);
+    max-width: 520px;
+}
+
+.landing-page__container .dashboard__add-btn {
+    align-self: center;
+}
+
 /* --- Statistic Cards --- */
 .stats {
     display: flex;
