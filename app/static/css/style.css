@@ -246,6 +246,79 @@ body {
     transform: translateY(0);
 }
 
+/* --- Add Subscription Form --- */
+.form-page {
+    flex: 1;
+    padding: 2rem 1.5rem 3rem;
+}
+
+.form-page__container {
+    max-width: 560px;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.form-page__container .dashboard__welcome {
+    text-align: center;
+}
+
+.form-page__container form {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-page__container form p {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-page__container form p br {
+    display: none;
+}
+
+.form-page__container form label {
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--color-text);
+}
+
+.form-page__container form input,
+.form-page__container form select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--color-text);
+    background-color: var(--color-white);
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.form-page__container form input:focus,
+.form-page__container form select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.form-page__container form button.dashboard__add-btn {
+    align-self: center;
+    margin-top: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
 /* --- Responsive Adjustments --- */
 @media (min-width: 768px) {
     .navbar__container {
@@ -277,5 +350,13 @@ body {
     .dashboard__add-btn {
         width: 100%;
         text-align: center;
+    }
+
+    .form-page__container form {
+        padding: 1.5rem;
+    }
+    
+    .form-page__container form button.dashboard__add-btn {
+        width: 100%;
     }
 }
