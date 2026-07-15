@@ -78,6 +78,8 @@ def add_subscription():
         db.session.add(subscription)
         db.session.commit()
 
+        flash("Subscription added successfully.", "success")
+
         return redirect(url_for("dashboard"))
 
     return render_template("add_subscription.html")
@@ -102,6 +104,8 @@ def edit_subscription(subscription_id):
         subscription.status = request.form["status"]
 
         db.session.commit()
+
+        flash("Subscription updated successfully.", "success")
 
         return redirect(url_for("dashboard"))
 
