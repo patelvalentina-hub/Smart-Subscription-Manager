@@ -10,15 +10,26 @@
 
             <!-- Statistic cards -->
             <section class="stats" aria-label="Subscription statistics">
-                
+
                 <article class="stats__card">
                     <p class="stats__label">
                         <i class="bi bi-wallet2"></i>
                         Estimated Monthly Cost
                     </p>
-                
+
                     <p class="stats__value">
                         ฿{{ "%.2f"|format(estimated_monthly_cost) }}
+                    </p>
+                </article>
+
+                <article class="stats__card">
+                    <p class="stats__label">
+                        <i class="bi bi-calendar2-check"></i>
+                        Estimated Yearly Cost
+                    </p>
+
+                    <p class="stats__value">
+                        ฿{{ "%.2f"|format(yearly_cost) }}
                     </p>
                 </article>
 
@@ -27,7 +38,7 @@
                         <i class="bi bi-collection"></i>
                         Active Subscriptions
                     </p>
-                
+
                     <p class="stats__value">
                         {{ active_subscriptions }}
                     </p>
@@ -38,11 +49,118 @@
                         <i class="bi bi-calendar-event"></i>
                         Renewing Soon
                     </p>
-                
+
                     <p class="stats__value">
                         {{ renewing_soon }}
                     </p>
                 </article>
+
+                <article class="stats__card">
+                    <p class="stats__label">
+                        <i class="bi bi-gem"></i>
+                        Most Expensive
+                    </p>
+
+                    {% if most_expensive %}
+                        <p class="stats__value stats__value--text">
+                            {{ most_expensive.name }}
+                        </p>
+
+                        <p class="stats__supporting">
+                            ฿{{ "%.2f"|format(most_expensive.amount) }}
+                            · {{ most_expensive.billing_frequency }} 
+                        </p>
+
+                    {% else %}
+                        <p class="stats__value stats__value--text">
+                            None
+                        </p>
+
+                    {% endif %}
+                </article>
+
+                <article class="stats__card">
+                    <p class="stats__label">
+                        <i class="bi bi-tags"></i>
+                        Cheapest Subscription
+                    </p>
+
+                    {% if cheapest %}
+                        <p class="stats__value stats__value--text">
+                            {{ cheapest.name }}
+                        </p>
+
+                        <p class="stats__supporting">
+                            ฿{{ "%.2f"|format(cheapest.amount) }}
+                            · {{ cheapest.billing_frequency }}
+                        </p>
+
+                    {% else %}
+                        <p class="stats__value stats__value--text">
+                            None
+                        </p>
+
+                    {% endif %}
+                </article>
+
+                <article class="stats__card stats__card--wide">
+                    <p class="stats__label">
+                        <i class="bi bi-pie-chart"></i>
+                        Spending by Category
+                    </p>
+
+                    {% if category_totals %}
+
+                        <div class="stats__category-list">
+                        
+                            {% for category, total in category_totals.items() %}
+
+                                <div class="stats__category-item">
+                                    <span>{{ category }}</span>
+                                    <strong>฿{{ "%.2f"|format(total) }}</strong>
+                                </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+                        <p class="stats__value stats__value--text">
+                            No active subscriptions
+                        </p>
+
+                    {% endif %}
+                </article>
+
+                <article class="stats__card stats__card--wide">
+                    <p class="stats__label">
+                        <i class="bi bi-calendar-week"></i>
+                        Upcoming Renewals
+                    </p>
+                
+                    {% if upcoming_renewals %}
+                        <div class="stats__renewal-list">
+                
+                            {% for subscription in upcoming_renewals %}
+                                <div class="stats__renewal-item">
+                                    <div>
+                                        <strong>{{ subscription.name }}</strong>
+                                        <span>{{ subscription.category }}</span>
+                                    </div>
+                
+                                    <time datetime="{{ subscription.next_renewal_date }}">
+                                        {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                                    </time>
+                                </div>
+                            {% endfor %}
+                
+                        </div>
+                    {% else %}
+                        <p class="stats__value stats__value--text">
+                            No renewals in the next 7 days
+                        </p>
+                    {% endif %}
+                </article> 
 
             </section>
 

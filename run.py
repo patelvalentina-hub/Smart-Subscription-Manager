@@ -15,8 +15,14 @@ from app.models import Subscription, db
 
 from app.utils import (
     calculate_estimated_monthly_cost,
+    calculate_yearly_cost,
+    calculate_spending_by_category,
     count_active_subscriptions,
     count_renewing_soon,
+    get_cheapest_subscription,
+    get_most_expensive_subscription,
+    get_upcoming_renewals,
+    calculate_next_renewal_date,
 )
 
 app = Flask(
@@ -37,7 +43,6 @@ db.init_app(app)
 @app.route("/")
 def home():
     return render_template("index.html")
-
 
 
 @app.route("/dashboard")
@@ -62,27 +67,22 @@ def dashboard():
         subscriptions_query = subscriptions_query.order_by(
             Subscription.name.asc()
         )
-
     elif sort_by == "name_desc":
         subscriptions_query = subscriptions_query.order_by(
             Subscription.name.desc()
         )
-
     elif sort_by == "amount_asc":
         subscriptions_query = subscriptions_query.order_by(
             Subscription.amount.asc()
         )
-
     elif sort_by == "amount_desc":
         subscriptions_query = subscriptions_query.order_by(
             Subscription.amount.desc()
         )
-
     elif sort_by == "renewal_asc":
         subscriptions_query = subscriptions_query.order_by(
             Subscription.next_renewal_date.asc()
         )
-
     elif sort_by == "renewal_desc":
         subscriptions_query = subscriptions_query.order_by(
             Subscription.next_renewal_date.desc()
@@ -93,6 +93,11 @@ def dashboard():
     active_subscriptions = count_active_subscriptions()
     estimated_monthly_cost = calculate_estimated_monthly_cost()
     renewing_soon = count_renewing_soon()
+    yearly_cost = calculate_yearly_cost()
+    most_expensive = get_most_expensive_subscription()
+    cheapest = get_cheapest_subscription()
+    category_totals = calculate_spending_by_category()
+    upcoming_renewals = get_upcoming_renewals()
 
     return render_template(
         "dashboard.html",
@@ -103,24 +108,53 @@ def dashboard():
         search_query=search_query,
         status_filter=status_filter,
         sort_by=sort_by,
+        yearly_cost=yearly_cost,
+        most_expensive=most_expensive,
+        cheapest=cheapest,
+        category_totals=category_totals,
+        upcoming_renewals=upcoming_renewals,
     )
 
 
-
+    
 @app.route("/add_subscription", methods=["GET", "POST"])
 def add_subscription():
     if request.method == "POST":
+        start_date = datetime.strptime(
+            request.form["start_date"],
+            "%Y-%m-%d",
+        ).date()
+
+        next_renewal_date = datetime.strptime(
+            request.form["next_renewal_date"],
+            "%Y-%m-%d",
+        ).date()
+
+        billing_frequency = request.form["billing_frequency"]
+
+        expected_renewal_date = calculate_next_renewal_date(
+            start_date,
+            billing_frequency,
+        )
+
+        if expected_renewal_date and next_renewal_date < expected_renewal_date:
+            flash(
+                "Next renewal date cannot be earlier than the expected billing cycle.",
+                "error",
+            )
+
+            return render_template(
+                "add_subscription.html",
+                form_data=request.form,
+            )
+
         subscription = Subscription(
             name=request.form["subscription_name"],
             category=request.form["category"],
             amount=Decimal(request.form["amount"]),
-            billing_frequency=request.form["billing_frequency"],
-            start_date=datetime.strptime(
-                request.form["start_date"], "%Y-%m-%d"
-            ).date(),
-            next_renewal_date=datetime.strptime(
-                request.form["next_renewal_date"], "%Y-%m-%d"
-            ).date(),
+            billing_frequency=billing_frequency,
+            start_date=start_date,
+            next_renewal_date=next_renewal_date,
             status=request.form["status"],
         )
 
