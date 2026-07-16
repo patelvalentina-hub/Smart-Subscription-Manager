@@ -19,7 +19,7 @@
 - [x] Better button layout
 
 ## Subscription Management
-- [ ] Search subscriptions
+- [x] Search subscriptions
 - [ ] Filter subscriptions
 - [ ] Sort subscriptions
 
