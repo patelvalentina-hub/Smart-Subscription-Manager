@@ -197,6 +197,14 @@ body {
     gap: 1.25rem;
 }
 
+.subscriptions__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 .subscriptions__title {
     font-size: 1.25rem;
     font-weight: 700;
@@ -342,6 +350,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.5rem;
     align-self: flex-start;
     padding: 0.875rem 1.75rem;
     background-color: var(--color-primary);

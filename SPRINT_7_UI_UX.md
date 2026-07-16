@@ -6,7 +6,7 @@
 - [x] Add colored status badges
 - [x] Improve subscription card spacing
 - [x] Add icons to statistics cards
-- [ ] Improve dashboard spacing
+- [x] Improve dashboard spacing
 
 ## Notifications
 - [x] Polish flash message animations

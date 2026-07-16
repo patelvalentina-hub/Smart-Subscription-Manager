@@ -48,7 +48,18 @@
 
             <!-- Subscriptions list -->
             <section class="subscriptions">
-                <h2 class="subscriptions__title">Subscriptions</h2>
+
+                <div class="subscriptions__header">
+                    <h2 class="subscriptions__title">
+                        Subscriptions
+                    </h2>
+            
+                    <a href="/add_subscription" class="dashboard__add-btn">
+                        <i class="bi bi-plus-lg"></i>
+                        Add Subscription
+                    </a>
+                </div>
+
 
                 <div class="subscriptions__list">
                     {% for subscription in subscriptions %}
@@ -125,11 +136,7 @@
                     {% endfor %}
                 </div>
             </section>
-
-            <!-- Add subscription button -->
-            <a href="/add_subscription" class="dashboard__add-btn">
-                + Add Subscription
-            </a>
+        
 
         </div>
     </main>
