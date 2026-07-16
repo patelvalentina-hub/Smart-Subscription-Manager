@@ -43,12 +43,18 @@ def home():
 @app.route("/dashboard")
 def dashboard():
     search_query = request.args.get("search", "").strip()
+    status_filter = request.args.get("status", "")
 
     subscriptions_query = Subscription.query
 
     if search_query:
         subscriptions_query = subscriptions_query.filter(
             Subscription.name.ilike(f"%{search_query}%")
+        )
+
+    if status_filter:
+        subscriptions_query = subscriptions_query.filter(
+            Subscription.status == status_filter
         )
 
     subscriptions = subscriptions_query.all()
@@ -64,6 +70,7 @@ def dashboard():
         estimated_monthly_cost=estimated_monthly_cost,
         renewing_soon=renewing_soon,
         search_query=search_query,
+        status_filter=status_filter,
     )
 
 

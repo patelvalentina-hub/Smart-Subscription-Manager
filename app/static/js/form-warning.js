@@ -1,7 +1,7 @@
-// Find the form on the page
-const form = document.querySelector("form");
+// Find the first form that should show the unsaved changes warning
+const form = document.querySelector("form:not([data-ignore-warning])");
 
-// Only run on pages that contain a form
+// Only run on pages that contain a supported form
 if (form) {
 
     let isDirty = false;
@@ -27,4 +27,5 @@ if (form) {
             event.returnValue = "";
         }
     });
+
 }

@@ -243,6 +243,18 @@ body {
     background: transparent;
 }
 
+.subscriptions__search select {
+    border: none;
+    border-left: 1px solid #cbd5e1;
+    outline: none;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--color-text);
+    background-color: var(--color-white);
+    cursor: pointer;
+}
+
 .subscriptions__search button {
     border: none;
     background-color: var(--color-primary);

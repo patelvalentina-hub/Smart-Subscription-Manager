@@ -20,7 +20,7 @@
 
 ## Subscription Management
 - [x] Search subscriptions
-- [ ] Filter subscriptions
+- [x] Filter subscriptions
 - [ ] Sort subscriptions
 
 ## Future Features

@@ -59,6 +59,7 @@
                             method="get"
                             action="{{ url_for('dashboard') }}"
                             class="subscriptions__search"
+                            data-ignore-warning="true"
                         >
                             <label for="search" class="visually-hidden">
                                 Search subscriptions
@@ -71,8 +72,39 @@
                                 placeholder="Search subscriptions..."
                                 value="{{ search_query }}"
                             >
+
+                            <select
+                                id="status"
+                                name="status"
+                                aria-label="Filter subscriptions by status"
+                                onchange="this.form.submit()"
+                            >
+                            
+                            <option value="">All statuses</option>
+
+                            <option
+                                value="Active"
+                                {% if status_filter == "Active" %}selected{% endif %}
+                                >
+                                Active
+                            </option>
+
+                            <option
+                                value="Paused"
+                                {% if status_filter == "Paused" %}selected{% endif %}
+                            >
+                                Paused
+                            </option>
+
+                            <option
+                                value="Cancelled"
+                                {% if status_filter == "Cancelled" %}selected{% endif %}
+                            >
+                                 Cancelled
+                            </option>
+                        </select>
                 
-                            <button type="submit" aria-label="Search">
+                            <button type="submit" aria-label="Search and filter">
                                 <i class="bi bi-search"></i>
                             </button>
                         </form>
