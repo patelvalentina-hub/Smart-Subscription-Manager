@@ -14,7 +14,7 @@
 
 ## Forms
 - [x] Add Cancel button
-- [ ] Unsaved changes warning
+- [x] Unsaved changes warning
 - [ ] Better form spacing
 - [x] Better button layout
 
