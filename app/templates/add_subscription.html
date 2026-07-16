@@ -221,13 +221,19 @@
                     </select>
                 </p>
 
-                <button type="submit" class="dashboard__add-btn">
-                    {% if is_editing %}
-                        Save Changes
-                    {% else %}
-                        Save Subscription
-                    {% endif %}
-                </button>
+                <div class="form-page__actions">
+                    <button type="submit" class="dashboard__add-btn">
+                        {% if is_editing %}
+                            Save Changes
+                        {% else %}
+                            Save Subscription
+                        {% endif %}
+                    </button>
+                
+                    <a href="{{ url_for('dashboard') }}" class="form-page__cancel-btn">
+                        Cancel
+                    </a>
+                </div>
 
             </form>
 

@@ -445,6 +445,43 @@ body {
     cursor: pointer;
 }
 
+.form-page__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.form-page__actions .dashboard__add-btn {
+    align-self: auto;
+    margin-top: 0;
+}
+
+.form-page__cancel-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.875rem 1.75rem;
+    color: var(--color-text-muted);
+    background-color: var(--color-white);
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition:
+        background-color var(--transition),
+        border-color var(--transition),
+        color var(--transition);
+}
+
+.form-page__cancel-btn:hover {
+    color: var(--color-text);
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+}
+
 /* --- Responsive Adjustments --- */
 @media (min-width: 768px) {
     .navbar__container {
@@ -483,6 +520,15 @@ body {
     }
     
     .form-page__container form button.dashboard__add-btn {
+        width: 100%;
+    }
+
+    .form-page__actions {
+        flex-direction: column;
+    }
+    
+    .form-page__actions .dashboard__add-btn,
+    .form-page__cancel-btn {
         width: 100%;
     }
 }
