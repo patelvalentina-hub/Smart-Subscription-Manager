@@ -438,12 +438,6 @@ body {
     box-shadow: 0 0 0 3px var(--color-primary-light);
 }
 
-.form-page__container form button.dashboard__add-btn {
-    align-self: center;
-    margin-top: 0.5rem;
-    border: none;
-    cursor: pointer;
-}
 
 .form-page__actions {
     display: flex;
@@ -455,21 +449,35 @@ body {
 
 .form-page__actions .dashboard__add-btn {
     align-self: auto;
-    margin-top: 0;
+    height: 48px;
+    margin: 0;
+    padding: 0 1.75rem;
+    border: none;
+    line-height: 1;
+    cursor: pointer;
 }
 
 .form-page__cancel-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.875rem 1.75rem;
+
+    height: 48px;
+    padding: 0 1.75rem;
+
     color: var(--color-text-muted);
     background-color: var(--color-white);
     border: 1px solid #cbd5e1;
     border-radius: var(--radius);
+
+    font-family: inherit;
     font-size: 1rem;
     font-weight: 600;
+    line-height: 1;
+
     text-decoration: none;
+    cursor: pointer;
+
     transition:
         background-color var(--transition),
         border-color var(--transition),

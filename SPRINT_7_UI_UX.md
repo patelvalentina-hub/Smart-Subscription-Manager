@@ -9,14 +9,14 @@
 - [x] Improve dashboard spacing
 
 ## Notifications
-- [x] Polish flash message animations
-- [x] Add success icons
+- [ ] Polish flash message animations
+- [ ] Add success icons
 
 ## Forms
-- [ ] Add Cancel button
+- [x] Add Cancel button
 - [ ] Unsaved changes warning
 - [ ] Better form spacing
-- [ ] Better button layout
+- [x] Better button layout
 
 ## Subscription Management
 - [ ] Search subscriptions
