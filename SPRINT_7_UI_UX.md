@@ -10,7 +10,7 @@
 
 ## Notifications
 - [x] Polish flash message animations
-- [ ] Add success icons
+- [x] Add success icons
 
 ## Forms
 - [x] Add Cancel button
