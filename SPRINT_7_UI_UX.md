@@ -1,16 +1,16 @@
 # Sprint 7 – UI / UX Improvements
 
 ## Dashboard
-- [ ] Improve Edit/Delete button alignment
-- [ ] Replace emoji icons with Bootstrap Icons
-- [ ] Add colored status badges
-- [ ] Improve subscription card spacing
-- [ ] Add icons to statistics cards
+- [x] Improve Edit/Delete button alignment
+- [x] Replace emoji icons with Bootstrap Icons
+- [x] Add colored status badges
+- [x] Improve subscription card spacing
+- [x] Add icons to statistics cards
 - [ ] Improve dashboard spacing
 
 ## Notifications
-- [ ] Polish flash message animations
-- [ ] Add success icons
+- [x] Polish flash message animations
+- [x] Add success icons
 
 ## Forms
 - [ ] Add Cancel button

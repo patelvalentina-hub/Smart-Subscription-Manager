@@ -10,20 +10,40 @@
 
             <!-- Statistic cards -->
             <section class="stats" aria-label="Subscription statistics">
+                
                 <article class="stats__card">
-                    <p class="stats__label">Estimated Monthly Cost</p>
+                    <p class="stats__label">
+                        <i class="bi bi-wallet2"></i>
+                        Estimated Monthly Cost
+                    </p>
+                
                     <p class="stats__value">
                         ฿{{ "%.2f"|format(estimated_monthly_cost) }}
                     </p>
                 </article>
+
                 <article class="stats__card">
-                    <p class="stats__label">Active Subscriptions</p>
-                    <p class="stats__value">{{ active_subscriptions }}</p>
+                    <p class="stats__label">
+                        <i class="bi bi-collection"></i>
+                        Active Subscriptions
+                    </p>
+                
+                    <p class="stats__value">
+                        {{ active_subscriptions }}
+                    </p>
                 </article>
+
                 <article class="stats__card">
-                    <p class="stats__label">Renewing Soon</p>
-                    <p class="stats__value">{{ renewing_soon }}</p>
+                    <p class="stats__label">
+                        <i class="bi bi-calendar-event"></i>
+                        Renewing Soon
+                    </p>
+                
+                    <p class="stats__value">
+                        {{ renewing_soon }}
+                    </p>
                 </article>
+
             </section>
 
             <!-- Subscriptions list -->
@@ -45,7 +65,7 @@
                             >
                                 {{ subscription.status }}
                             </span>
-                            
+
                         </div>
 
                 
