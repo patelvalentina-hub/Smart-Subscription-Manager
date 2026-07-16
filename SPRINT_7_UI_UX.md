@@ -9,7 +9,7 @@
 - [x] Improve dashboard spacing
 
 ## Notifications
-- [ ] Polish flash message animations
+- [x] Polish flash message animations
 - [ ] Add success icons
 
 ## Forms
@@ -21,7 +21,7 @@
 ## Subscription Management
 - [x] Search subscriptions
 - [x] Filter subscriptions
-- [ ] Sort subscriptions
+- [x] Sort subscriptions
 
 ## Future Features
 - [ ] Dark mode

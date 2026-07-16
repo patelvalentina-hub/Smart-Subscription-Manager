@@ -44,6 +44,7 @@ def home():
 def dashboard():
     search_query = request.args.get("search", "").strip()
     status_filter = request.args.get("status", "")
+    sort_by = request.args.get("sort", "")
 
     subscriptions_query = Subscription.query
 
@@ -55,6 +56,36 @@ def dashboard():
     if status_filter:
         subscriptions_query = subscriptions_query.filter(
             Subscription.status == status_filter
+        )
+
+    if sort_by == "name_asc":
+        subscriptions_query = subscriptions_query.order_by(
+            Subscription.name.asc()
+        )
+
+    elif sort_by == "name_desc":
+        subscriptions_query = subscriptions_query.order_by(
+            Subscription.name.desc()
+        )
+
+    elif sort_by == "amount_asc":
+        subscriptions_query = subscriptions_query.order_by(
+            Subscription.amount.asc()
+        )
+
+    elif sort_by == "amount_desc":
+        subscriptions_query = subscriptions_query.order_by(
+            Subscription.amount.desc()
+        )
+
+    elif sort_by == "renewal_asc":
+        subscriptions_query = subscriptions_query.order_by(
+            Subscription.next_renewal_date.asc()
+        )
+
+    elif sort_by == "renewal_desc":
+        subscriptions_query = subscriptions_query.order_by(
+            Subscription.next_renewal_date.desc()
         )
 
     subscriptions = subscriptions_query.all()
@@ -71,6 +102,7 @@ def dashboard():
         renewing_soon=renewing_soon,
         search_query=search_query,
         status_filter=status_filter,
+        sort_by=sort_by,
     )
 
 

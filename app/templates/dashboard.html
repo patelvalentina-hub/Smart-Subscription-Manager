@@ -73,6 +73,58 @@
                                 value="{{ search_query }}"
                             >
 
+                                <select
+                                    id="sort"
+                                    name="sort"
+                                    aria-label="Sort subscriptions"
+                                    onchange="this.form.submit()"
+                                >
+    
+                                <option value="">Sort By</option>
+
+                                <option
+                                    value="name_asc"
+                                    {% if sort_by == "name_asc" %}selected{% endif %}
+                                >
+                                    Name (A–Z)
+                                </option>
+
+                                <option
+                                    value="name_desc"
+                                    {% if sort_by == "name_desc" %}selected{% endif %}
+                                >
+                                    Name (Z–A)
+                                </option>
+
+                                <option
+                                    value="amount_asc"
+                                    {% if sort_by == "amount_asc" %}selected{% endif %}
+                                >
+                                    Amount (Low → High)
+                                </option>
+
+                                <option
+                                    value="amount_desc"
+                                    {% if sort_by == "amount_desc" %}selected{% endif %}
+                                >
+                                    Amount (High → Low)
+                                </option>
+
+                                <option
+                                    value="renewal_asc"
+                                    {% if sort_by == "renewal_asc" %}selected{% endif %}
+                                >
+                                    Renewal (Earliest)
+                                </option>
+
+                                <option
+                                    value="renewal_desc"
+                                    {% if sort_by == "renewal_desc" %}selected{% endif %}
+                                >
+                                    Renewal (Latest)
+                                </option>
+                            </select>
+
                             <select
                                 id="status"
                                 name="status"
@@ -104,9 +156,12 @@
                             </option>
                         </select>
                 
-                            <button type="submit" aria-label="Search and filter">
-                                <i class="bi bi-search"></i>
-                            </button>
+                        <button type="submit" aria-label="Search and filter">
+                            <i class="bi bi-search"></i>
+                        </button>
+
+
+
                         </form>
                 
                         <a href="/add_subscription" class="dashboard__add-btn">
