@@ -17,223 +17,232 @@
                 action="{% if is_editing %}{{ url_for('edit_subscription', subscription_id=subscription.id) }}{% else %}{{ url_for('add_subscription') }}{% endif %}"
             >
 
-                <p>
-                    <label for="subscription_name">Subscription Name</label><br>
-                    <input
-                        type="text"
-                        id="subscription_name"
-                        name="subscription_name"
-                        value="{{ subscription.name if is_editing else '' }}"
-                        required
+            <div class="form-field">
+                <label for="subscription_name">Subscription Name</label>
+            
+                <input
+                    type="text"
+                    id="subscription_name"
+                    name="subscription_name"
+                    value="{{ subscription.name if is_editing else '' }}"
+                    required
+                >
+            </div>
+
+            <div class="form-field">
+                <label for="category">Category</label>
+
+                <select id="category" name="category" required>
+
+                    <option value="">-- Select a category --</option>
+                    
+                    <option
+                        value="Entertainment"
+                        {% if is_editing and subscription.category == "Entertainment" %}selected{% endif %}
                     >
-                </p>
-
-                <p>
-                    <label for="category">Category</label><br>
-                    <select id="category" name="category" required>
-
-                        <option value="">-- Select a category --</option>
-                        <option
-                            value="Entertainment"
-                            {% if is_editing and subscription.category == "Entertainment" %}selected{% endif %}
-                        >
-                            Entertainment
-                        </option>
-
-                        <option 
-                            value="Music" 
-                            {% if is_editing and subscription.category == "Music" %}selected{% endif %}
-                            > 
-                            Music 
-                        </option>
-
-                        <option 
-                            value="Video Streaming" 
-                            {% if is_editing and subscription.category == "Video Streaming" %}selected{% endif %} 
-                            > 
-                            Video Streaming 
-                        </option>
-
-                        <option 
-                            value="Productivity"
-                            {% if is_editing and subscription.category == "Productivity" %}selected{% endif %}
-                            >
-                            Productivity
-                        </option>
-
-                        <option 
-                            value="AI"
-                            {% if is_editing and subscription.category == "AI" %}selected{% endif %}
-                            >
-                            AI
-                        </option>
-
-                        <option 
-                            value="Cloud Storage"
-                            {% if is_editing and subscription.category == "Cloud Storage" %}selected{% endif %}
-                            >
-                            Cloud Storage
-                        </option>
-
-                        <option 
-                            value="Education"
-                            {% if is_editing and subscription.category == "Education" %}selected{% endif %}
-                            >
-                            Education
-                        </option>
-
-                        <option 
-                            value="Gaming"
-                            {% if is_editing and subscription.category == "Gaming" %}selected{% endif %}
-                            >
-                            Gaming
-                        </option>
-
-                        <option 
-                            value="Fitness"
-                            {% if is_editing and subscription.category == "Fitness" %}selected{% endif %}
-                            >
-                            Fitness
-                        </option>
-                        
-                        <option 
-                            value="Finance"
-                            {% if is_editing and subscription.category == "Finance" %}selected{% endif %}
-                            >
-                            Finance
-                        </option>
-                        
-                        <option 
-                            value="Other"
-                            {% if is_editing and subscription.category == "Other" %}selected{% endif %}
-                            >
-                            Other
-                        </option>
-
-                    </select>
-                </p>
-
-                <p>
-                    <label for="amount">Amount (THB)</label><br>
-                    <input
-                        type="number"
-                        id="amount"
-                        name="amount"
-                        step="0.01"
-                        min="0"
-                        value="{{ subscription.amount if is_editing else '' }}"
-                        required
-                    >
-                </p>
-
-                <p>
-                    <label for="billing_frequency">Billing Frequency</label><br>
-                    <select id="billing_frequency" name="billing_frequency" required>
-                        
-                        <option value="">Select billing frequency</option>
-                        
-                        <option 
-                            value="Weekly"
-                            {% if is_editing and subscription.billing_frequency == "Weekly" %}selected{% endif %}
-                            >
-                            Weekly
-                        </option>
-
-                        <option 
-                            value="Monthly"
-                            {% if is_editing and subscription.billing_frequency == "Monthly" %}selected{% endif %}
-                            >
-                            Monthly
-                        </option>
-
-                        <option 
-                            value="Every 3 Months"
-                            {% if is_editing and subscription.billing_frequency == "Every 3 Months" %}selected{% endif %}
-                            >
-                            Every 3 Months
-                        </option>
-
-                        <option 
-                            value="Every 6 Months"
-                            {% if is_editing and subscription.billing_frequency == "Every 6 Months" %}selected{% endif %}
-                            >
-                            Every 6 Months
-                        </option>
-
-                        <option 
-                            value="Yearly"
-                            {% if is_editing and subscription.billing_frequency == "Yearly" %}selected{% endif %}
-                            >
-                            Yearly
-                        </option>
-                    </select>
-                </p>
-
-                <p>
-                    <label for="start_date">Start Date</label><br>
-                    <input 
-                        type="date" 
-                        id="start_date" 
-                        name="start_date" 
-                        value="{{ subscription.start_date.strftime('%Y-%m-%d') if is_editing else '' }}"
-                        required
-                        >
-                </p>
-
-                <p>
-                    <label for="next_renewal_date">Next Renewal Date</label><br>
-                    <input 
-                        type="date" 
-                        id="next_renewal_date" 
-                        name="next_renewal_date" 
-                        value="{{ subscription.next_renewal_date.strftime('%Y-%m-%d') if is_editing else '' }}"
-                        required
-                        >
-                </p>
-
-                <p>
-                    <label for="status">Status</label><br>
-                    <select id="status" name="status" required>
-
-                        <option value="">Select status</option>
-
-                        <option 
-                            value="Active" 
-                            {% if is_editing and subscription.status == "Active" %}selected{% endif %} 
-                            >
-                            Active
-                        </option>
-                        
-                        <option 
-                            value="Paused" 
-                            {% if is_editing and subscription.status == "Paused" %}selected{% endif %} 
-                            > 
-                            Paused 
-                        </option>
-
-                        <option 
-                        value="Cancelled" 
-                        {% if is_editing and subscription.status == "Cancelled" %}selected{% endif %} 
-                        > 
-                        Cancelled 
+                        Entertainment
                     </option>
 
-                    </select>
-                </p>
+                    <option 
+                        value="Music" 
+                        {% if is_editing and subscription.category == "Music" %}selected{% endif %}
+                        > 
+                        Music 
+                    </option>
 
-                <div class="form-page__actions">
-                    <button type="submit" class="dashboard__add-btn">
-                        {% if is_editing %}
-                            Save Changes
-                        {% else %}
-                            Save Subscription
-                        {% endif %}
-                    </button>
+                    <option 
+                        value="Video Streaming" 
+                        {% if is_editing and subscription.category == "Video Streaming" %}selected{% endif %} 
+                        > 
+                        Video Streaming 
+                    </option>
+
+                    <option 
+                        value="Productivity"
+                        {% if is_editing and subscription.category == "Productivity" %}selected{% endif %}                            
+                        >
+                        Productivity
+                    </option>
+
+                    <option 
+                        value="AI"
+                        {% if is_editing and subscription.category == "AI" %}selected{% endif %}
+                        >
+                        AI
+                    </option>
+
+                    <option 
+                        value="Cloud Storage"
+                        {% if is_editing and subscription.category == "Cloud Storage" %}selected{% endif %}
+                        >
+                        Cloud Storage
+                    </option>
+
+                    <option 
+                        value="Education"
+                        {% if is_editing and subscription.category == "Education" %}selected{% endif %}
+                        >
+                        Education
+                    </option>
+
+                    <option 
+                        value="Gaming"
+                        {% if is_editing and subscription.category == "Gaming" %}selected{% endif %}
+                        >
+                        Gaming
+                    </option>
+
+                    <option 
+                        value="Fitness"
+                        {% if is_editing and subscription.category == "Fitness" %}selected{% endif %}
+                        >
+                        Fitness
+                    </option>
+                        
+                    <option 
+                        value="Finance"
+                        {% if is_editing and subscription.category == "Finance" %}selected{% endif %}
+                        >
+                        Finance
+                    </option>
+                        
+                    <option 
+                        value="Other"
+                        {% if is_editing and subscription.category == "Other" %}selected{% endif %}
+                        >
+                        Other
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label for="amount">Amount (THB)</label>
+            
+                <input
+                    type="number"
+                    id="amount"
+                    name="amount"
+                    step="0.01"
+                    min="0"
+                    value="{{ subscription.amount if is_editing else '' }}"
+                    required
+                >
+            </div>
+
+            <div class="form-field">
+                <label for="billing_frequency">Billing Frequency</label>
+            
+                <select id="billing_frequency" name="billing_frequency" required>
+                    
+                    <option value="">Select billing frequency</option>
+                        
+                    <option 
+                        value="Weekly"
+                        {% if is_editing and subscription.billing_frequency == "Weekly" %}selected{% endif %}
+                        >
+                        Weekly
+                    </option>
+
+                    <option 
+                        value="Monthly"
+                        {% if is_editing and subscription.billing_frequency == "Monthly" %}selected{% endif %}
+                        >
+                        Monthly
+                    </option>
+
+                    <option 
+                        value="Every 3 Months"
+                        {% if is_editing and subscription.billing_frequency == "Every 3 Months" %}selected{% endif %}
+                        >
+                        Every 3 Months
+                    </option>
+
+                    <option 
+                        value="Every 6 Months"
+                        {% if is_editing and subscription.billing_frequency == "Every 6 Months" %}selected{% endif %}
+                        >
+                        Every 6 Months
+                    </option>
+
+                    <option 
+                        value="Yearly"
+                        {% if is_editing and subscription.billing_frequency == "Yearly" %}selected{% endif %}
+                        >
+                        Yearly
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label for="start_date">Start Date</label>
+            
+                <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    value="{{ subscription.start_date.strftime('%Y-%m-%d') if is_editing else '' }}"
+                    required
+                >
+            </div>
+
+            <div class="form-field">
+                <label for="next_renewal_date">Next Renewal Date</label>
+            
+                <input
+                    type="date"
+                    id="next_renewal_date"
+                    name="next_renewal_date"
+                    value="{{ subscription.next_renewal_date.strftime('%Y-%m-%d') if is_editing else '' }}"
+                    required
+                >
+            </div>
+
+            <div class="form-field">
+                <label for="status">Status</label>
+            
+                <select id="status" name="status" required>
+            
+                    <option value="">Select status</option>
+            
+                    <option
+                        value="Active"
+                        {% if is_editing and subscription.status == "Active" %}selected{% endif %}
+                    >
+                        Active
+                    </option>
+            
+                    <option
+                        value="Paused"
+                        {% if is_editing and subscription.status == "Paused" %}selected{% endif %}
+                    >
+                        Paused
+                    </option>
+            
+                    <option
+                        value="Cancelled"
+                        {% if is_editing and subscription.status == "Cancelled" %}selected{% endif %}
+                    >
+                        Cancelled
+                    </option>
+            
+                </select>
+            </div>
+
+
+            <div class="form-page__actions">
+                <button type="submit" class="dashboard__add-btn">
+                    {% if is_editing %}
+                        Save Changes
+                    {% else %}
+                        Save Subscription
+                    {% endif %}
+                </button>
                 
-                    <a href="{{ url_for('dashboard') }}" class="form-page__cancel-btn">
-                        Cancel
-                    </a>
-                </div>
+                <a href="{{ url_for('dashboard') }}" class="form-page__cancel-btn">
+                    Cancel
+                </a>
+            </div>
 
             </form>
 

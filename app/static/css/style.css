@@ -402,14 +402,10 @@ body {
     gap: 1.25rem;
 }
 
-.form-page__container form p {
+.form-field {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
-
-.form-page__container form p br {
-    display: none;
 }
 
 .form-page__container form label {

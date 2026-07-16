@@ -15,7 +15,7 @@
 ## Forms
 - [x] Add Cancel button
 - [x] Unsaved changes warning
-- [ ] Better form spacing
+- [x] Better form spacing
 - [x] Better button layout
 
 ## Subscription Management
