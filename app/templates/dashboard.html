@@ -38,31 +38,16 @@
                             <h3 class="subscription-card__name">
                                 {{ subscription.name }}
                             </h3>
-                
-                            <a
-                                href="{{ url_for('edit_subscription', subscription_id=subscription.id) }}"
-                                class="subscription-card__edit"
-                                aria-label="Edit {{ subscription.name }}"
+                        
+                            <span
+                                class="subscription-card__status
+                                subscription-card__status--{{ subscription.status|lower }}"
                             >
-                                ✏️
-                            </a>
-
-                            <form
-                                method="post"
-                                action="{{ url_for('delete_subscription', subscription_id=subscription.id) }}"
-                                onsubmit="return confirm('Delete {{ subscription.name }}? This action cannot be undone.');"
-                            >
-                                <button
-                                    type="submit"
-                                    class="subscription-card__delete"
-                                    aria-label="Delete {{ subscription.name }}"
-                                >
-                                    🗑️
-                                </button>
-                            </form>
-
+                                {{ subscription.status }}
+                            </span>
                             
                         </div>
+
                 
                         <p class="subscription-card__detail">
                             Category:
@@ -85,12 +70,35 @@
                                 {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
                             </span>
                         </p>
-                
-                        <p class="subscription-card__detail">
-                            Status:
-                            <span>{{ subscription.status }}</span>
-                        </p>
-                
+
+                        <div class="subscription-card__actions">
+
+                            <a
+                                href="{{ url_for('edit_subscription', subscription_id=subscription.id) }}"
+                                class="subscription-card__action subscription-card__action--edit"
+                                aria-label="Edit {{ subscription.name }}"
+                            >
+                                <i class="bi bi-pencil-square"></i>
+                                <span>Edit</span>
+                            </a>
+                        
+                            <form
+                                method="post"
+                                action="{{ url_for('delete_subscription', subscription_id=subscription.id) }}"
+                                onsubmit="return confirm('Delete {{ subscription.name }}? This action cannot be undone.');"
+                            >
+                                <button
+                                    type="submit"
+                                    class="subscription-card__action subscription-card__action--delete"
+                                    aria-label="Delete {{ subscription.name }}"
+                                >
+                                    <i class="bi bi-trash"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </form>
+                        
+                        </div>
+                        
                     </article>
                     {% else %}   
                         <p>No subscriptions added yet.</p>
