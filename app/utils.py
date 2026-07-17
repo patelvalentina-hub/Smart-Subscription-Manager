@@ -55,6 +55,24 @@ def count_active_subscriptions():
     return Subscription.query.filter_by(status="Active").count()
 
 
+def get_monthly_cost(subscription):
+    if subscription.billing_frequency == "Weekly":
+        return (subscription.amount * 52) / 12
+
+    elif subscription.billing_frequency == "Monthly":
+        return subscription.amount
+
+    elif subscription.billing_frequency == "Every 3 Months":
+        return subscription.amount / 3
+
+    elif subscription.billing_frequency == "Every 6 Months":
+        return subscription.amount / 6
+
+    elif subscription.billing_frequency == "Yearly":
+        return subscription.amount / 12
+
+    return 0
+
 
 def calculate_estimated_monthly_cost():
     subscriptions = Subscription.query.filter_by(status="Active").all()
@@ -62,21 +80,7 @@ def calculate_estimated_monthly_cost():
     total = 0
 
     for subscription in subscriptions:
-
-        if subscription.billing_frequency == "Weekly":
-            total += (subscription.amount * 52) / 12
-
-        elif subscription.billing_frequency == "Monthly":
-            total += subscription.amount
-
-        elif subscription.billing_frequency == "Every 3 Months":
-            total += subscription.amount / 3
-
-        elif subscription.billing_frequency == "Every 6 Months":
-            total += subscription.amount / 6
-
-        elif subscription.billing_frequency == "Yearly":
-            total += subscription.amount / 12
+        total += get_monthly_cost(subscription)
 
     return round(total, 2)
 

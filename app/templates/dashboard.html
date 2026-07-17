@@ -164,6 +164,81 @@
 
             </section>
 
+            <!-- Dashboard charts -->
+            <section class="charts" aria-labelledby="charts-title">
+
+                <div class="charts__header">
+                    <div>
+                        <h2 id="charts-title" class="charts__title">
+                            Spending Overview
+                        </h2>
+
+                        <p class="charts__description">
+                            Visual summaries of your subscription spending and statuses.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="charts__grid">
+
+                    <article class="charts__card">
+                        <div class="charts__card-header">
+                            <h3>Spending by Category</h3>
+
+                            <p>
+                                Estimated monthly cost grouped by subscription category.
+                            </p>
+                        </div>
+
+                        <div class="charts__canvas-container">
+                            <canvas
+                                id="category-spending-chart"
+                                aria-label="Category spending chart"
+                                role="img"
+                            ></canvas>
+                        </div>
+                    </article>
+
+                    <article class="charts__card">
+                        <div class="charts__card-header">
+                            <h3>Subscription Status</h3>
+
+                            <p>
+                                Number of active, paused, and cancelled subscriptions.
+                            </p>
+                        </div>
+
+                        <div class="charts__canvas-container">
+                            <canvas
+                                id="subscription-status-chart"
+                                aria-label="Subscription status chart"
+                                role="img"
+                            ></canvas>
+                        </div>
+                    </article>
+
+                    <article class="charts__card charts__card--full">
+                        <div class="charts__card-header">
+                            <h3>Estimated Monthly Cost Breakdown</h3>
+                    
+                            <p>
+                                Estimated monthly cost for each active subscription.
+                            </p>
+                        </div>
+                    
+                        <div class="charts__canvas-container">
+                            <canvas
+                                id="monthly-cost-chart"
+                                aria-label="Estimated monthly cost breakdown"
+                                role="img"
+                            ></canvas>
+                        </div>
+                    </article>
+
+                </div>
+
+            </section>
+
             <!-- Subscriptions list -->
             <section class="subscriptions">
 
@@ -418,4 +493,223 @@
 
         </div>
     </main>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const categoryLabels = {{ category_labels | tojson }};
+    const categoryAmounts = {{ category_amounts | tojson }};
+    
+    const statusLabels = {{ status_labels | tojson }};
+    const statusCounts = {{ status_counts | tojson }};
+
+    const monthlyCostLabels = {{ monthly_cost_labels | tojson }};
+    const monthlyCostAmounts = {{ monthly_cost_amounts | tojson }};
+
+    const categoryChartCanvas = document.getElementById(
+        "category-spending-chart"
+    );
+
+    if (categoryChartCanvas && categoryLabels.length > 0) {
+        new Chart(categoryChartCanvas, {
+            type: "doughnut",
+
+            data: {
+                labels: categoryLabels,
+
+                datasets: [
+                    {
+                        label: "Estimated Monthly Cost",
+                        data: categoryAmounts,
+
+                        backgroundColor: [
+                            "#2563eb", // Blue
+                            "#7c3aed", // Purple
+                            "#0891b2", // Cyan
+                            "#6366f1", // Indigo
+                            "#ec4899", // Pink
+                            "#8b5cf6", // Violet
+                            "#06b6d4", // Sky Blue
+                            "#a855f7", // Bright Purple
+                            "#3b82f6", // Light Blue
+                            "#64748b", // Slate
+                            "#1e40af"  // Dark Blue
+                        ],
+
+                        borderColor: "#ffffff",
+                        borderWidth: 3,
+                        hoverOffset: 8
+                    }
+                ]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "62%",
+
+                plugins: {
+                    legend: {
+                        position: "bottom",
+
+                        labels: {
+                            usePointStyle: true,
+                            padding: 18
+                        }
+                    },
+
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const amount = Number(context.raw);
+
+                                return `${context.label}: ฿${amount.toFixed(2)}`;
+                            }
+                        }
+                    }
+                }           
+            }
+        });
+    }
+
+    const statusChartCanvas = document.getElementById(
+        "subscription-status-chart"
+    );
+
+    const hasStatusData = statusCounts.some(count => count > 0);
+
+    if (statusChartCanvas && hasStatusData) {
+        new Chart(statusChartCanvas, {
+            type: "doughnut",
+
+            data: {
+                labels: statusLabels,
+
+                datasets: [
+                    {
+                        label: "Subscriptions",
+                        data: statusCounts,
+
+                        backgroundColor: [
+                            "#22c55e",
+                            "#f59e0b",
+                            "#ef4444"
+                        ],
+
+                        borderColor: "#ffffff",
+                        borderWidth: 3,
+                        hoverOffset: 8
+                    }
+                ]
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "62%",
+
+                plugins: {
+                    legend: {
+                        position: "bottom",
+
+                        labels: {
+                            usePointStyle: true,
+                            padding: 18
+                        }
+                    },
+
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const count = Number(context.raw);
+                                const word = count === 1
+                                    ? "subscription"
+                                    : "subscriptions";
+
+                                return `${context.label}: ${count} ${word}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    const monthlyCostChartCanvas = document.getElementById(
+        "monthly-cost-chart"
+    );
+
+    if (monthlyCostChartCanvas && monthlyCostLabels.length > 0) {
+        new Chart(monthlyCostChartCanvas, {
+            type: "bar",
+
+            data: {
+                labels: monthlyCostLabels,
+
+                datasets: [
+                    {
+                        label: "Estimated Monthly Cost",
+                        data: monthlyCostAmounts,
+                        backgroundColor: "#2563eb",
+                        borderRadius: 6,
+                        borderSkipped: false
+                    }
+                ]
+            },
+
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+
+                scales: {
+                    x: {
+                        beginAtZero: true,
+
+                        ticks: {
+                            maxRotation: 0,
+                            minRotation: 0,
+
+                            callback: function (value) {
+                                return "฿" + Number(value).toLocaleString("en-US", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            }
+                        },
+
+                        title: {
+                            display: true,
+                            text: "Monthly Cost"
+                        }
+                    },
+
+                    y: {
+                        ticks: {
+                            autoSkip: false
+                        }
+                    }
+                },
+
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return "฿" + Number(context.raw).toLocaleString("en-US", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+</script>
 {% endblock %}

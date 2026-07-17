@@ -539,6 +539,86 @@ body {
     background-color: #dc2626;
 }
 
+/* =========================
+   Dashboard Charts
+   ========================= */
+
+   .charts {
+    margin-top: 2rem;
+}
+
+.charts__header {
+    margin-bottom: 1rem;
+}
+
+.charts__title {
+    font-size: 1.5rem;
+    color: var(--color-text);
+}
+
+.charts__description {
+    margin-top: 0.35rem;
+    color: var(--color-text-muted);
+}
+
+.charts__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.charts__card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+}
+
+.charts__card-header {
+    margin-bottom: 1.25rem;
+}
+
+.charts__card-header h3 {
+    font-size: 1.1rem;
+    color: var(--color-text);
+}
+
+.charts__card-header p {
+    margin-top: 0.35rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.charts__canvas-container {
+    position: relative;
+    width: 100%;
+    height: 290px;
+}
+
+.charts__card--full {
+    grid-column: 1 / -1;
+}
+
+.charts__card--full .charts__canvas-container {
+    height: 360px;
+}
+
+@media (max-width: 768px) {
+    .charts__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .charts__canvas-container {
+        height: 260px;
+    }
+
+    .charts__card--full .charts__canvas-container {
+        height: 300px;
+        min-height: 300px;
+    }
+}
+
 /* --- Add Subscription Button --- */
 .dashboard__add-btn {
     display: inline-flex;

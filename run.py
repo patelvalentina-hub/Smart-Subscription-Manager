@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 
 from flask import (
@@ -15,11 +15,12 @@ from app.models import Subscription, db
 
 from app.utils import (
     calculate_estimated_monthly_cost,
-    calculate_yearly_cost,
     calculate_spending_by_category,
+    calculate_yearly_cost,
     count_active_subscriptions,
     count_renewing_soon,
     get_cheapest_subscription,
+    get_monthly_cost,
     get_most_expensive_subscription,
     get_upcoming_renewals,
     is_valid_renewal_date,
@@ -90,6 +91,37 @@ def dashboard():
 
     subscriptions = subscriptions_query.all()
 
+    all_subscriptions = Subscription.query.all()
+
+    active_subscription_list = [
+        subscription
+        for subscription in all_subscriptions
+        if subscription.status == "Active"
+    ]
+
+    monthly_cost_labels = [
+        subscription.name
+        for subscription in active_subscription_list
+    ]
+
+    monthly_cost_amounts = [
+        round(float(get_monthly_cost(subscription)), 2)
+        for subscription in active_subscription_list
+    ]
+
+    status_totals = {
+        "Active": 0,
+        "Paused": 0,
+        "Cancelled": 0,
+    }
+
+    for subscription in all_subscriptions:
+        if subscription.status in status_totals:
+            status_totals[subscription.status] += 1
+
+    status_labels = list(status_totals.keys())
+    status_counts = list(status_totals.values())
+
     active_subscriptions = count_active_subscriptions()
     estimated_monthly_cost = calculate_estimated_monthly_cost()
     renewing_soon = count_renewing_soon()
@@ -97,22 +129,33 @@ def dashboard():
     most_expensive = get_most_expensive_subscription()
     cheapest = get_cheapest_subscription()
     category_totals = calculate_spending_by_category()
+    category_labels = list(category_totals.keys())
+    category_amounts = [
+        float(amount)
+        for amount in category_totals.values()
+    ]
     upcoming_renewals = get_upcoming_renewals()
 
     return render_template(
-        "dashboard.html",
-        subscriptions=subscriptions,
-        active_subscriptions=active_subscriptions,
-        estimated_monthly_cost=estimated_monthly_cost,
-        renewing_soon=renewing_soon,
-        search_query=search_query,
-        status_filter=status_filter,
-        sort_by=sort_by,
-        yearly_cost=yearly_cost,
-        most_expensive=most_expensive,
-        cheapest=cheapest,
-        category_totals=category_totals,
-        upcoming_renewals=upcoming_renewals,
+    "dashboard.html",
+    subscriptions=subscriptions,
+    active_subscriptions=active_subscriptions,
+    estimated_monthly_cost=estimated_monthly_cost,
+    renewing_soon=renewing_soon,
+    search_query=search_query,
+    status_filter=status_filter,
+    sort_by=sort_by,
+    yearly_cost=yearly_cost,
+    most_expensive=most_expensive,
+    cheapest=cheapest,
+    category_totals=category_totals,
+    category_labels=category_labels,
+    category_amounts=category_amounts,
+    status_labels=status_labels,
+    status_counts=status_counts,
+    monthly_cost_labels=monthly_cost_labels,
+    monthly_cost_amounts=monthly_cost_amounts,
+    upcoming_renewals=upcoming_renewals,
     )
 
 
@@ -129,6 +172,32 @@ def add_subscription():
             request.form["next_renewal_date"],
             "%Y-%m-%d",
         ).date()
+
+        status = request.form["status"]
+        today = date.today()
+
+        if start_date > today:
+            flash(
+                "Start date cannot be in the future. "
+                "Please select today's date or an earlier date.",
+                "error",
+            )
+
+            return render_template(
+                "add_subscription.html",
+                form_data=request.form,
+            )
+
+        if status == "Active" and next_renewal_date < today:
+            flash(
+                "An active subscription must have a renewal date of today or later.",
+                "error",
+            )
+
+            return render_template(
+                "add_subscription.html",
+                form_data=request.form,
+            )
 
         billing_frequency = request.form["billing_frequency"]
 
@@ -154,7 +223,7 @@ def add_subscription():
             billing_frequency=billing_frequency,
             start_date=start_date,
             next_renewal_date=next_renewal_date,
-            status=request.form["status"],
+            status=status,
         )
 
         db.session.add(subscription)
@@ -182,7 +251,36 @@ def edit_subscription(subscription_id):
             request.form["next_renewal_date"],
             "%Y-%m-%d",
         ).date()
+        
+        status = request.form["status"]
+        today = date.today()
 
+        if start_date > today:
+            flash(
+                "Start date cannot be in the future. "
+                "Please select today's date or an earlier date.",
+                "error",
+            )
+
+            return render_template(
+                "add_subscription.html",
+                subscription=subscription,
+                is_editing=True,
+                form_data=request.form,
+            )
+
+        if status == "Active" and next_renewal_date < today:
+            flash(
+                "An active subscription must have a renewal date of today or later.",
+                "error",
+            )
+
+            return render_template(
+                "add_subscription.html",
+                subscription=subscription,
+                is_editing=True,
+                form_data=request.form,
+            )
         billing_frequency = request.form["billing_frequency"]
 
         if not is_valid_renewal_date(
@@ -199,6 +297,7 @@ def edit_subscription(subscription_id):
                 "add_subscription.html",
                 subscription=subscription,
                 is_editing=True,
+                form_data=request.form,
             )
 
         subscription.name = request.form["subscription_name"]
@@ -207,7 +306,7 @@ def edit_subscription(subscription_id):
         subscription.billing_frequency = billing_frequency
         subscription.start_date = start_date
         subscription.next_renewal_date = next_renewal_date
-        subscription.status = request.form["status"]
+        subscription.status = status
 
         db.session.commit()
 
