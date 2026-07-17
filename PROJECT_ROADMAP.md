@@ -14,7 +14,7 @@
 | Sprint 5 – Edit & Delete Subscription | ✅ Complete |
 | Sprint 6 – Dashboard Statistics | ✅ Complete |
 | Sprint 7 – UI / UX Improvements | ✅ Complete |
-| Sprint 8 – Dashboard Analytics | ⏳ In Progress |
+| Sprint 8 – Dashboard Analytics | ✅ Complete |
 | Sprint 9 – Charts & Reports | ⬜ Not Started |
 | Sprint 10 – Calendar & Reminders | ⬜ Not Started |
 | Sprint 11 – User Authentication | ⬜ Not Started |
@@ -32,48 +32,32 @@
 - [x] Upcoming Renewals Summary
 
 ## Dashboard Improvements
-- [ ] Better empty state
+- [x] Better empty state
 - [x] Responsive analytics cards
 - [x] Better dashboard layout
+- [x] Hide duplicate Add Subscription button in empty state
+- [x] Different empty states for no data vs no search results
 
 ## Testing
 - [x] Test yearly calculations
 - [x] Test category totals
-- [ ] Test edge cases
-- [ ] Test responsive layout
+- [x] Test edge cases
+- [x] Test responsive layout
+- [x] Test on real mobile device
+- [x] Test empty search results
 
 ## UI Polish
 - [x] Improve Spending by Category presentation
-- [ ] Consistent analytics card heights
+- [x] Consistent analytics card heights
 
 ## Git
 - [ ] Commit Sprint 8
 - [ ] Push to GitHub
 
 ## Bugs Found During QA
-- [ ] Apply renewal date validation to Edit Subscription
-- [ ] Strengthen Add Subscription renewal-date validation
-- [ ] Improve dashboard controls on small screens
-
-# Product Backlog
-
-## Renewal Management
-- [ ] Mark subscription as renewed
-- [ ] Store last renewal date
-- [x] Auto-calculate next renewal date
-- [ ] Show overdue subscriptions
-- [ ] Renewal history
-
-## Dashboard
-- [ ] Expand category cards
-- [ ] Pie chart
-- [ ] Monthly spending trend
-
-## Notifications
-- [ ] Renewal reminders
-- [ ] Email reminders
-- [ ] Desktop notifications
-
+- [x] Apply renewal date validation to Edit Subscription
+- [x] Strengthen Add Subscription renewal-date validation
+- [x] Improve dashboard controls on small screens
 
 ---
 
@@ -145,6 +129,25 @@
 - [ ] LinkedIn Project
 
 ---
+# Product Backlog
+## Renewal Management
+- [ ] Mark subscription as renewed
+- [ ] Store last renewal date
+- [x] Auto-calculate next renewal date
+- [ ] Show overdue subscriptions
+- [ ] Renewal history
+
+## Dashboard
+- [ ] Expand category cards
+- [ ] Pie chart
+- [ ] Monthly spending trend
+
+## Notifications
+- [ ] Renewal reminders
+- [ ] Email reminders
+- [ ] Desktop notifications
+
+---
 
 # Completed Features
 
@@ -163,6 +166,13 @@
 - [x] Basic responsive UI
 - [x] Bootstrap Icons
 - [x] Status Badges
+- [x] Dashboard Analytics
+- [x] Yearly Spending Calculator
+- [x] Spending by Category
+- [x] Upcoming Renewals
+- [x] Responsive Dashboard Controls
+- [x] Empty State UI
+- [x] Renewal Date Validation
 
 ---
 

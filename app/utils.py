@@ -27,7 +27,30 @@ def calculate_next_renewal_date(start_date, billing_frequency):
     return None
 
 
-    
+
+def is_valid_renewal_date(
+    start_date,
+    billing_frequency,
+    next_renewal_date,
+    tolerance_days=0,
+):
+    """
+    Check whether the renewal date is close to the expected billing date.
+    """
+
+    expected_date = calculate_next_renewal_date(
+        start_date,
+        billing_frequency,
+    )
+
+    if expected_date is None:
+        return False
+
+    difference = abs((next_renewal_date - expected_date).days)
+
+    return difference <= tolerance_days
+
+            
 def count_active_subscriptions():
     return Subscription.query.filter_by(status="Active").count()
 

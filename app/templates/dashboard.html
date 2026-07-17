@@ -282,10 +282,17 @@
 
                         </form>
                 
-                        <a href="/add_subscription" class="dashboard__add-btn">
-                            <i class="bi bi-plus-lg"></i>
-                            Add Subscription
-                        </a>
+                        {% if subscriptions %}
+
+                            <a
+                                href="{{ url_for('add_subscription') }}"
+                                class="dashboard__add-btn"
+                            >
+                                <i class="bi bi-plus-lg"></i>
+                                Add Subscription
+                            </a>
+
+                        {% endif %}
                     </div>
                 </div>
 
@@ -360,9 +367,51 @@
                         </div>
                         
                     </article>
-                    {% else %}   
-                        <p>No subscriptions added yet.</p>
-                    {% endfor %}
+                    {% else %}
+                        <div class="subscriptions__empty">
+
+                            {% if search_query or status_filter %}
+
+                                <i class="bi bi-search subscriptions__empty-icon"></i>
+
+                                <h3>No matching subscriptions</h3>
+
+                                <p>
+                                    No subscriptions match your current search or filter.
+                                    Try changing your search term or selected status.
+                                </p>
+
+                                <a
+                                    href="{{ url_for('dashboard') }}"
+                                    class="dashboard__add-btn"
+                                >
+                                    <i class="bi bi-arrow-counterclockwise"></i>
+                                    Clear Search and Filters
+                                </a>
+
+                            {% else %}
+
+                                <i class="bi bi-inbox subscriptions__empty-icon"></i>
+
+                             <h3>No subscriptions yet</h3>
+
+                            <p>
+                                Start tracking your recurring subscriptions to see your
+                                spending, upcoming renewals, and analytics.
+                            </p>
+
+                            <a
+                                href="{{ url_for('add_subscription') }}"
+                                class="dashboard__add-btn"
+                            >
+                                <i class="bi bi-plus-lg"></i>
+                                Add Your First Subscription
+                            </a>
+
+                        {% endif %}
+
+                     </div>
+                {% endfor %}
                 </div>
             </section>
         

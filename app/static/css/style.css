@@ -186,6 +186,8 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    
+    min-height: 180px;
 }
 
 .stats__label {
@@ -220,7 +222,8 @@ body {
 }
 
 .stats__supporting {
-    margin-top: 0.35rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
     font-size: 0.9rem;
     color: var(--color-text-muted);
 }
@@ -368,6 +371,44 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 1.25rem;
+}
+
+.subscriptions__empty {
+    width: 100%;
+    padding: 4rem 2rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    text-align: center;
+
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.subscriptions__empty-icon {
+    font-size: 4rem;
+    color: var(--color-primary-light);
+    
+}
+
+.subscriptions__empty h3 {
+    font-size: 1.5rem;
+    color: var(--color-text);
+}
+
+.subscriptions__empty p {
+    max-width: 420px;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+.subscriptions__empty .dashboard__add-btn {
+    align-self: center;
 }
 
 /* --- Individual Subscription Card --- */
@@ -686,6 +727,43 @@ body {
     
     .form-page__actions .dashboard__add-btn,
     .form-page__cancel-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .subscriptions__header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .subscriptions__controls {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .subscriptions__search {
+        flex-direction: column;
+        width: 100%;
+        overflow: visible;
+    }
+
+    .subscriptions__search input,
+    .subscriptions__search select,
+    .subscriptions__search button {
+        width: 100%;
+        min-width: 0;
+        border-left: none;
+        border-top: 1px solid #cbd5e1;
+    }
+
+    .subscriptions__search input {
+        border-top: none;
+    }
+
+    .dashboard__add-btn {
         width: 100%;
     }
 }

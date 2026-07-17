@@ -22,7 +22,7 @@ from app.utils import (
     get_cheapest_subscription,
     get_most_expensive_subscription,
     get_upcoming_renewals,
-    calculate_next_renewal_date,
+    is_valid_renewal_date,
 )
 
 app = Flask(
@@ -132,14 +132,13 @@ def add_subscription():
 
         billing_frequency = request.form["billing_frequency"]
 
-        expected_renewal_date = calculate_next_renewal_date(
+        if not is_valid_renewal_date(
             start_date,
             billing_frequency,
-        )
-
-        if expected_renewal_date and next_renewal_date < expected_renewal_date:
+            next_renewal_date,
+        ):
             flash(
-                "Next renewal date cannot be earlier than the expected billing cycle.",
+                "Please select a valid renewal date for the chosen billing frequency.",
                 "error",
             )
 
@@ -174,16 +173,40 @@ def edit_subscription(subscription_id):
     subscription = Subscription.query.get_or_404(subscription_id)
 
     if request.method == "POST":
+        start_date = datetime.strptime(
+            request.form["start_date"],
+            "%Y-%m-%d",
+        ).date()
+
+        next_renewal_date = datetime.strptime(
+            request.form["next_renewal_date"],
+            "%Y-%m-%d",
+        ).date()
+
+        billing_frequency = request.form["billing_frequency"]
+
+        if not is_valid_renewal_date(
+            start_date,
+            billing_frequency,
+            next_renewal_date,
+        ):
+            flash(
+                "Please select a valid renewal date for the chosen billing frequency.",
+                "error",
+            )
+
+            return render_template(
+                "add_subscription.html",
+                subscription=subscription,
+                is_editing=True,
+            )
+
         subscription.name = request.form["subscription_name"]
         subscription.category = request.form["category"]
         subscription.amount = Decimal(request.form["amount"])
-        subscription.billing_frequency = request.form["billing_frequency"]
-        subscription.start_date = datetime.strptime(
-            request.form["start_date"], "%Y-%m-%d"
-        ).date()
-        subscription.next_renewal_date = datetime.strptime(
-            request.form["next_renewal_date"], "%Y-%m-%d"
-        ).date()
+        subscription.billing_frequency = billing_frequency
+        subscription.start_date = start_date
+        subscription.next_renewal_date = next_renewal_date
         subscription.status = request.form["status"]
 
         db.session.commit()
@@ -197,7 +220,6 @@ def edit_subscription(subscription_id):
         subscription=subscription,
         is_editing=True,
     )
-
 
 
 @app.route("/delete_subscription/<int:subscription_id>", methods=["POST"])
@@ -218,4 +240,8 @@ with app.app_context():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=True,
+    )
