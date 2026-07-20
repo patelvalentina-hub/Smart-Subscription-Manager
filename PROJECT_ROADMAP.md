@@ -100,15 +100,15 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Charts
 
+
 - [x] Set up chart library
 - [x] Prepare chart data in Flask
 - [x] Estimated Monthly Cost Breakdown
 - [x] Category Spending Chart
 - [x] Active vs Paused vs Cancelled Chart
-- [ ] Add empty states for charts
+- [x] Add empty states for charts
 - [x] Make charts responsive
-- [ ] Assign fixed colors for categories *(new)*
-  > Since we've decided on the fixed color mapping, I'd keep it here until it's implemented.
+- [x] Assign fixed colors for categories and statuses
 
 ---
 
@@ -116,13 +116,19 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Reports
 
-- [ ] Create Reports page
-- [ ] Monthly Spending Summary
-- [ ] Yearly Spending Summary
-- [ ] Subscription Status Summary
-- [ ] Upcoming Renewal Summary
-- [ ] Add navigation between Dashboard and Reports
-- [ ] Export PDF — optional stretch goal
+## Reports
+
+- [x] Create Reports page
+- [x] Add navigation between Dashboard and Reports
+- [x] Monthly Spending Summary
+- [x] Yearly Spending Summary
+- [x] Subscription Status Summary
+- [x] Upcoming Renewal Summary
+
+### Reports Page Layout
+- [x] Create report cards
+- [x] Add summary sections
+- [x] Make responsive
 
 ---
 
@@ -132,12 +138,15 @@ Add clear visual charts and report summaries that help users understand their su
 
 - [ ] Test charts with multiple subscriptions
 - [ ] Test charts with one subscription
-- [ ] Test charts with no subscriptions
+- [x] Test charts with no subscriptions
+- [x] Test charts with no active subscriptions
 - [ ] Test different billing frequencies
-- [ ] Test active, paused, and cancelled subscriptions
+- [x] Test active, paused, and cancelled subscriptions
 - [ ] Test responsive chart layout
 - [ ] Test Reports page on desktop
 - [ ] Test Reports page on mobile
+- [ ] Test fixed category colors remain consistent
+- [ ] Test dashboard with mixed subscription statuses and categories
 
 ---
 
@@ -147,9 +156,9 @@ Add clear visual charts and report summaries that help users understand their su
 
 - [x] Use consistent chart card styling
 - [x] Add chart titles and descriptions
-- [ ] Add clear empty-state messages
+- [x] Add clear empty-state messages
 - [x] Ensure chart labels are readable
-- [x] Improve currency formatting (฿) *(new)*
+- [x] Improve currency formatting (฿)
 - [ ] Ensure report sections have consistent spacing
 
 ---
@@ -161,8 +170,8 @@ Add clear visual charts and report summaries that help users understand their su
 - [ ] Refactor style.css
 - [ ] Refactor dashboard.html
 - [ ] Remove duplicate CSS
-- [ ] Organize JavaScript
-- [ ] Add comments where necessary
+- [x] Organize JavaScript
+- [x] Add comments where necessary
 
 ---
 
@@ -181,6 +190,7 @@ Add clear visual charts and report summaries that help users understand their su
 
 - [ ] Edit form should preserve user-entered values after validation failure.
 - [ ] Refactor monthly cost calculation to avoid duplicate logic *(new)*
+- [ ] Move repeated currency formatting into a reusable helper
 
 ---
 

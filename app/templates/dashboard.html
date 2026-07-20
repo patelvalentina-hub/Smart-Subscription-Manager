@@ -196,6 +196,20 @@
                                 aria-label="Category spending chart"
                                 role="img"
                             ></canvas>
+
+                            <div
+                                id="category-chart-empty"
+                                class="charts__empty-state"
+                                hidden
+                            >
+                                <i class="bi bi-graph-down"></i>
+
+                                <h4>No category data available</h4>
+
+                                <p>
+                                    Add an active subscription to see your spending by category.
+                                </p>
+                            </div>
                         </div>
                     </article>
 
@@ -214,6 +228,20 @@
                                 aria-label="Subscription status chart"
                                 role="img"
                             ></canvas>
+                        
+                            <div
+                                id="status-chart-empty"
+                                class="charts__empty-state"
+                                hidden
+                            >
+                                <i class="bi bi-pie-chart"></i>
+                        
+                                <h4>No status data available</h4>
+                        
+                                <p>
+                                    Add a subscription to view your subscription status summary.
+                                </p>
+                            </div>
                         </div>
                     </article>
 
@@ -232,6 +260,20 @@
                                 aria-label="Estimated monthly cost breakdown"
                                 role="img"
                             ></canvas>
+                        
+                            <div
+                                id="monthly-cost-chart-empty"
+                                class="charts__empty-state"
+                                hidden
+                            >
+                                <i class="bi bi-bar-chart"></i>
+                        
+                                <h4>No monthly cost data available</h4>
+                        
+                                <p>
+                                    Add an active subscription to view your monthly cost breakdown.
+                                </p>
+                            </div>
                         </div>
                     </article>
 
@@ -506,11 +548,37 @@
     const monthlyCostLabels = {{ monthly_cost_labels | tojson }};
     const monthlyCostAmounts = {{ monthly_cost_amounts | tojson }};
 
+// ---------------------------
+// Category Chart
+// ---------------------------
+
     const categoryChartCanvas = document.getElementById(
         "category-spending-chart"
     );
 
-    if (categoryChartCanvas && categoryLabels.length > 0) {
+    const categoryEmptyState = document.getElementById(
+        "category-chart-empty"
+    );
+
+    const categoryColors = {
+        "Video Streaming": "#2563eb", // Royal Blue
+        "Entertainment": "#9905fc", // Electric Purple
+        "Productivity": "#00d8fc", // Cyan
+        "Education": "#db7f39", // Sweet Potato
+        "Finance": "#fc007d", // Bright Pink
+        "Music": "#633e09", // Very Coffee
+        "AI": "#64748b", // Slate 500
+        "Gaming": "#8983eb", // Lavender Blue
+        "Cloud Storage": "#127880", // Dark cyan
+        "Fitness": "#c08497", // Viola Purple
+        "Other": "#374151" // Cloud Burst
+    };
+
+    const hasCategoryData = categoryAmounts.some(function(amount) {
+        return Number(amount) > 0;
+    });
+
+    if (categoryChartCanvas && hasCategoryData) {
         new Chart(categoryChartCanvas, {
             type: "doughnut",
 
@@ -522,19 +590,9 @@
                         label: "Estimated Monthly Cost",
                         data: categoryAmounts,
 
-                        backgroundColor: [
-                            "#2563eb", // Blue
-                            "#7c3aed", // Purple
-                            "#0891b2", // Cyan
-                            "#6366f1", // Indigo
-                            "#ec4899", // Pink
-                            "#8b5cf6", // Violet
-                            "#06b6d4", // Sky Blue
-                            "#a855f7", // Bright Purple
-                            "#3b82f6", // Light Blue
-                            "#64748b", // Slate
-                            "#1e40af"  // Dark Blue
-                        ],
+                        backgroundColor: categoryLabels.map(function(category) {
+                            return categoryColors[category] || categoryColors["Other"];
+                        }),
 
                         borderColor: "#ffffff",
                         borderWidth: 3,
@@ -567,16 +625,40 @@
                             }
                         }
                     }
-                }           
+                }
             }
         });
+    } else {
+        if (categoryChartCanvas) {
+            categoryChartCanvas.hidden = true;
+        }
+
+        if (categoryEmptyState) {
+            categoryEmptyState.hidden = false;
+        }
     }
+
+// ---------------------------
+// Status Chart
+// ---------------------------
 
     const statusChartCanvas = document.getElementById(
         "subscription-status-chart"
     );
 
-    const hasStatusData = statusCounts.some(count => count > 0);
+    const statusEmptyState = document.getElementById(
+        "status-chart-empty"
+    );
+
+    const hasStatusData = statusCounts.some(function(count) {
+        return Number(count) > 0;
+    });
+
+    const statusColors = {
+        "Active": "#22c55e",       // Green
+        "Paused": "#edcf26",       // Gold
+        "Cancelled": "#f22929"     // Crimson
+    };
 
     if (statusChartCanvas && hasStatusData) {
         new Chart(statusChartCanvas, {
@@ -590,11 +672,9 @@
                         label: "Subscriptions",
                         data: statusCounts,
 
-                        backgroundColor: [
-                            "#22c55e",
-                            "#f59e0b",
-                            "#ef4444"
-                        ],
+                        backgroundColor: statusLabels.map(function(status) {
+                            return statusColors[status];
+                        }),
 
                         borderColor: "#ffffff",
                         borderWidth: 3,
@@ -622,6 +702,7 @@
                         callbacks: {
                             label: function(context) {
                                 const count = Number(context.raw);
+
                                 const word = count === 1
                                     ? "subscription"
                                     : "subscriptions";
@@ -633,13 +714,31 @@
                 }
             }
         });
+    } else {
+        if (statusChartCanvas) {
+            statusChartCanvas.hidden = true;
+        }
+
+        if (statusEmptyState) {
+            statusEmptyState.hidden = false;
+        }
     }
+
+// ---------------------------
+// Monthly Cost Chart
+// ---------------------------
 
     const monthlyCostChartCanvas = document.getElementById(
         "monthly-cost-chart"
     );
+    const monthlyCostEmptyState = document.getElementById(
+        "monthly-cost-chart-empty"
+    );
+    const hasMonthlyCostData = monthlyCostAmounts.some(function(amount) {
+        return Number(amount) > 0;
+    });
 
-    if (monthlyCostChartCanvas && monthlyCostLabels.length > 0) {
+    if (monthlyCostChartCanvas && hasMonthlyCostData) {
         new Chart(monthlyCostChartCanvas, {
             type: "bar",
 
@@ -709,6 +808,14 @@
                 }
             }
         });
+    } else {
+        if (monthlyCostChartCanvas) {
+            monthlyCostChartCanvas.hidden = true;
+        }
+
+        if (monthlyCostEmptyState) {
+            monthlyCostEmptyState.hidden = false;
+        }
     }
 
 </script>

@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<main class="reports">
+
+    <div class="reports__container">
+
+        <div class="reports__header">
+
+            <h1 class="reports__title">
+                Reports
+            </h1>
+
+            <p class="reports__description">
+                View a summary of your subscriptions, spending, and upcoming renewals.
+            </p>
+
+        </div>
+
+        <section class="reports__grid">
+
+            <article class="reports__card">
+                <h3>Monthly Spending</h3>
+                <p class="reports__value">
+                    ฿{{ "%.2f"|format(estimated_monthly_cost) }}
+                </p>
+            </article>
+
+            <article class="reports__card">
+                <h3>Yearly Spending</h3>
+                <p class="reports__value">
+                    ฿{{ "%.2f"|format(yearly_cost) }}
+                </p>
+            </article>
+
+            <article class="reports__card">
+                <h3>Subscription Status</h3>
+            
+                <p>Active: {{ status_totals["Active"] }}</p>
+                <p>Paused: {{ status_totals["Paused"] }}</p>
+                <p>Cancelled: {{ status_totals["Cancelled"] }}</p>
+            </article>
+
+            <article class="reports__card">
+                <h3>Upcoming Renewals</h3>
+            
+                {% if upcoming_renewals %}
+                    <ul class="reports__renewals">
+                        {% for subscription in upcoming_renewals %}
+                            <li>
+                                <strong>{{ subscription.name }}</strong><br>
+                                {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No upcoming renewals.</p>
+                {% endif %}
+            </article>
+
+        </section>
+
+    </div>
+
+</main>
+
+{% endblock %}

@@ -12,6 +12,7 @@
     >
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
 </head>
 
 <body>
@@ -19,9 +20,29 @@
     <!-- Top navigation bar -->
     <header class="navbar">
         <div class="navbar__container">
+
             <a href="/" class="navbar__brand">
                 Smart Subscription Manager
             </a>
+        
+            <nav class="navbar__menu">
+        
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="navbar__link"
+                >
+                    Dashboard
+                </a>
+        
+                <a
+                    href="{{ url_for('reports') }}"
+                    class="navbar__link"
+                >
+                    Reports
+                </a>
+        
+            </nav>
+        
         </div>
     </header>
 

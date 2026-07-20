@@ -333,6 +333,33 @@ def delete_subscription(subscription_id):
     return redirect(url_for("dashboard"))
 
 
+@app.route("/reports")
+def reports():
+    estimated_monthly_cost = calculate_estimated_monthly_cost()
+    yearly_cost = calculate_yearly_cost()
+    upcoming_renewals = get_upcoming_renewals()
+
+    all_subscriptions = Subscription.query.all()
+
+    status_totals = {
+        "Active": 0,
+        "Paused": 0,
+        "Cancelled": 0,
+    }
+
+    for subscription in all_subscriptions:
+        if subscription.status in status_totals:
+            status_totals[subscription.status] += 1
+
+    return render_template(
+        "reports.html",
+        estimated_monthly_cost=estimated_monthly_cost,
+        yearly_cost=yearly_cost,
+        status_totals=status_totals,
+        upcoming_renewals=upcoming_renewals,
+
+    )
+
 
 with app.app_context():
     db.create_all()
@@ -344,3 +371,4 @@ if __name__ == "__main__":
         port=5000,
         debug=True,
     )
+
