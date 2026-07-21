@@ -1,6 +1,23 @@
 {% extends "base.html" %}
 
+
 {% block content %}
+
+{% set form_data = form_data | default(none) %}
+{% set errors = errors | default({}) %}
+{% set is_editing = is_editing | default(false) %}
+{% set subscription = subscription | default(none) %}
+
+{% set values = {
+    "subscription_name": form_data.get("subscription_name") if form_data else (subscription.name if is_editing and subscription else ""),
+    "category": form_data.get("category") if form_data else (subscription.category if is_editing and subscription else ""),
+    "amount": form_data.get("amount") if form_data else (subscription.amount if is_editing and subscription else ""),
+    "billing_frequency": form_data.get("billing_frequency") if form_data else (subscription.billing_frequency if is_editing and subscription else ""),
+    "start_date": form_data.get("start_date") if form_data else (subscription.start_date.strftime("%Y-%m-%d") if is_editing and subscription else ""),
+    "next_renewal_date": form_data.get("next_renewal_date") if form_data else (subscription.next_renewal_date.strftime("%Y-%m-%d") if is_editing and subscription else ""),
+    "status": form_data.get("status") if form_data else (subscription.status if is_editing and subscription else "")
+} %}
+
     <main class="form-page">
         <div class="form-page__container">
 
@@ -24,9 +41,16 @@
                     type="text"
                     id="subscription_name"
                     name="subscription_name"
-                    value="{{ subscription.name if is_editing else '' }}"
+                    value="{{ values.subscription_name }}"
+                    class="{% if errors.get('subscription_name') %}form-field__input--error{% endif %}"
                     required
                 >
+            
+                {% if errors.get("subscription_name") %}
+                    <p class="form-field__error">
+                        {{ errors["subscription_name"] }}
+                    </p>
+                {% endif %}
             </div>
 
             <div class="form-field">
@@ -34,81 +58,83 @@
 
                 <select id="category" name="category" required>
 
-                    <option value="">-- Select a category --</option>
-                    
+                    <option value="" {% if not values.category %}selected{% endif %}>
+                        -- Select a category --
+                    </option>
+
                     <option
                         value="Entertainment"
-                        {% if is_editing and subscription.category == "Entertainment" %}selected{% endif %}
+                        {% if values.category == "Entertainment" %}selected{% endif %}
                     >
                         Entertainment
                     </option>
 
                     <option 
                         value="Music" 
-                        {% if is_editing and subscription.category == "Music" %}selected{% endif %}
+                        {% if values.category == "Music" %}selected{% endif %}
                         > 
                         Music 
                     </option>
 
                     <option 
                         value="Video Streaming" 
-                        {% if is_editing and subscription.category == "Video Streaming" %}selected{% endif %} 
+                        {% if values.category == "Video Streaming" %}selected{% endif %}
                         > 
                         Video Streaming 
                     </option>
 
                     <option 
                         value="Productivity"
-                        {% if is_editing and subscription.category == "Productivity" %}selected{% endif %}                            
+                        {% if values.category == "Productivity" %}selected{% endif %}                            
                         >
                         Productivity
                     </option>
 
                     <option 
                         value="AI"
-                        {% if is_editing and subscription.category == "AI" %}selected{% endif %}
+                        {% if values.category == "AI" %}selected{% endif %}
                         >
                         AI
                     </option>
 
                     <option 
                         value="Cloud Storage"
-                        {% if is_editing and subscription.category == "Cloud Storage" %}selected{% endif %}
+                        {% if values.category == "Cloud Storage" %}selected{% endif %}
                         >
                         Cloud Storage
                     </option>
 
                     <option 
                         value="Education"
-                        {% if is_editing and subscription.category == "Education" %}selected{% endif %}
+                        {% if values.category == "Education" %}selected{% endif %}
                         >
                         Education
                     </option>
 
                     <option 
                         value="Gaming"
-                        {% if is_editing and subscription.category == "Gaming" %}selected{% endif %}
+                        {% if values.category == "Gaming" %}selected{% endif %}
                         >
                         Gaming
                     </option>
 
                     <option 
                         value="Fitness"
-                        {% if is_editing and subscription.category == "Fitness" %}selected{% endif %}
+                        {% if values.category == "Fitness" %}selected{% endif %}
                         >
                         Fitness
                     </option>
                         
                     <option 
                         value="Finance"
-                        {% if is_editing and subscription.category == "Finance" %}selected{% endif %}
+                        {% if values.category == "Finance" %}selected{% endif %}
                         >
                         Finance
                     </option>
                         
                     <option 
                         value="Other"
-                        {% if is_editing and subscription.category == "Other" %}selected{% endif %}
+                        {% if values.category == "Other" %}selected{% endif %}
                         >
                         Other
                     </option>
@@ -125,7 +151,7 @@
                     name="amount"
                     step="0.01"
                     min="0"
-                    value="{{ subscription.amount if is_editing else '' }}"
+                    value="{{ values.amount }}"
                     required
                 >
             </div>
@@ -135,39 +161,41 @@
             
                 <select id="billing_frequency" name="billing_frequency" required>
                     
-                    <option value="">Select billing frequency</option>
+                    <option value="" {% if not values.billing_frequency %}selected{% endif %}>
+                        Select billing frequency
+                    </option>
                         
                     <option 
                         value="Weekly"
-                        {% if is_editing and subscription.billing_frequency == "Weekly" %}selected{% endif %}
+                        {% if values.billing_frequency == "Weekly" %}selected{% endif %}
                         >
                         Weekly
                     </option>
 
                     <option 
                         value="Monthly"
-                        {% if is_editing and subscription.billing_frequency == "Monthly" %}selected{% endif %}
+                        {% if values.billing_frequency == "Monthly" %}selected{% endif %}
                         >
                         Monthly
                     </option>
 
                     <option 
                         value="Every 3 Months"
-                        {% if is_editing and subscription.billing_frequency == "Every 3 Months" %}selected{% endif %}
+                        {% if values.billing_frequency == "Every 3 Months" %}selected{% endif %}
                         >
                         Every 3 Months
                     </option>
 
                     <option 
                         value="Every 6 Months"
-                        {% if is_editing and subscription.billing_frequency == "Every 6 Months" %}selected{% endif %}
+                        {% if values.billing_frequency == "Every 6 Months" %}selected{% endif %}
                         >
                         Every 6 Months
                     </option>
 
                     <option 
                         value="Yearly"
-                        {% if is_editing and subscription.billing_frequency == "Yearly" %}selected{% endif %}
+                        {% if values.billing_frequency == "Yearly" %}selected{% endif %}
                         >
                         Yearly
                     </option>
@@ -181,9 +209,16 @@
                     type="date"
                     id="start_date"
                     name="start_date"
-                    value="{{ subscription.start_date.strftime('%Y-%m-%d') if is_editing else '' }}"
+                    value="{{ values.start_date }}"
+                    class="{% if errors.get('start_date') %}form-field__input--error{% endif %}"
                     required
                 >
+            
+                {% if errors.get("start_date") %}
+                    <p class="form-field__error">
+                        {{ errors["start_date"] }}
+                    </p>
+                {% endif %}
             </div>
 
             <div class="form-field">
@@ -193,9 +228,16 @@
                     type="date"
                     id="next_renewal_date"
                     name="next_renewal_date"
-                    value="{{ subscription.next_renewal_date.strftime('%Y-%m-%d') if is_editing else '' }}"
+                    value="{{ values.next_renewal_date }}"
+                    class="{% if errors.get('next_renewal_date') %}form-field__input--error{% endif %}"
                     required
                 >
+            
+                {% if errors.get("next_renewal_date") %}
+                    <p class="form-field__error">
+                        {{ errors["next_renewal_date"] }}
+                    </p>
+                {% endif %}
             </div>
 
             <div class="form-field">
@@ -203,25 +245,27 @@
             
                 <select id="status" name="status" required>
             
-                    <option value="">Select status</option>
+                    <option value="" {% if not values.status %}selected{% endif %}>
+                        Select status
+                    </option>
             
                     <option
                         value="Active"
-                        {% if is_editing and subscription.status == "Active" %}selected{% endif %}
+                        {% if values.status == "Active" %}selected{% endif %}
                     >
                         Active
                     </option>
             
                     <option
                         value="Paused"
-                        {% if is_editing and subscription.status == "Paused" %}selected{% endif %}
+                        {% if values.status == "Paused" %}selected{% endif %}
                     >
                         Paused
                     </option>
             
                     <option
                         value="Cancelled"
-                        {% if is_editing and subscription.status == "Cancelled" %}selected{% endif %}
+                        {% if values.status == "Cancelled" %}selected{% endif %}
                     >
                         Cancelled
                     </option>

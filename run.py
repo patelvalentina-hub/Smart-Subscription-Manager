@@ -175,28 +175,18 @@ def add_subscription():
 
         status = request.form["status"]
         today = date.today()
+        errors = {}
 
         if start_date > today:
-            flash(
+            errors["start_date"] = (
                 "Start date cannot be in the future. "
-                "Please select today's date or an earlier date.",
-                "error",
-            )
-
-            return render_template(
-                "add_subscription.html",
-                form_data=request.form,
+                "Please select today's date or an earlier date."
             )
 
         if status == "Active" and next_renewal_date < today:
-            flash(
-                "An active subscription must have a renewal date of today or later.",
-                "error",
-            )
-
-            return render_template(
-                "add_subscription.html",
-                form_data=request.form,
+            errors["next_renewal_date"] = (
+                "An active subscription must have a renewal date "
+                "of today or later."
             )
 
         billing_frequency = request.form["billing_frequency"]
@@ -206,14 +196,21 @@ def add_subscription():
             billing_frequency,
             next_renewal_date,
         ):
+            errors["next_renewal_date"] = (
+                "Please select a valid renewal date "
+                "for the chosen billing frequency."
+            )
+        
+        if errors:
             flash(
-                "Please select a valid renewal date for the chosen billing frequency.",
+                "Please correct the highlighted fields below.",
                 "error",
             )
 
             return render_template(
                 "add_subscription.html",
                 form_data=request.form,
+                errors=errors,
             )
 
         subscription = Subscription(
@@ -254,33 +251,20 @@ def edit_subscription(subscription_id):
         
         status = request.form["status"]
         today = date.today()
+        errors = {}
 
         if start_date > today:
-            flash(
+            errors["start_date"] = (
                 "Start date cannot be in the future. "
-                "Please select today's date or an earlier date.",
-                "error",
-            )
-
-            return render_template(
-                "add_subscription.html",
-                subscription=subscription,
-                is_editing=True,
-                form_data=request.form,
+                "Please select today's date or an earlier date."
             )
 
         if status == "Active" and next_renewal_date < today:
-            flash(
-                "An active subscription must have a renewal date of today or later.",
-                "error",
+            errors["next_renewal_date"] = (
+                "An active subscription must have a renewal date "
+                "of today or later."
             )
 
-            return render_template(
-                "add_subscription.html",
-                subscription=subscription,
-                is_editing=True,
-                form_data=request.form,
-            )
         billing_frequency = request.form["billing_frequency"]
 
         if not is_valid_renewal_date(
@@ -288,8 +272,14 @@ def edit_subscription(subscription_id):
             billing_frequency,
             next_renewal_date,
         ):
+            errors["next_renewal_date"] = (
+                "Please select a valid renewal date "
+                "for the chosen billing frequency."
+            )
+
+        if errors:
             flash(
-                "Please select a valid renewal date for the chosen billing frequency.",
+                "Please correct the highlighted fields below.",
                 "error",
             )
 
@@ -298,6 +288,7 @@ def edit_subscription(subscription_id):
                 subscription=subscription,
                 is_editing=True,
                 form_data=request.form,
+                errors=errors,
             )
 
         subscription.name = request.form["subscription_name"]

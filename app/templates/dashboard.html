@@ -18,7 +18,7 @@
                     </p>
 
                     <p class="stats__value">
-                        ฿{{ "%.2f"|format(estimated_monthly_cost) }}
+                        ฿{{ "{:,.2f}".format(estimated_monthly_cost) }}
                     </p>
                 </article>
 
@@ -29,7 +29,7 @@
                     </p>
 
                     <p class="stats__value">
-                        ฿{{ "%.2f"|format(yearly_cost) }}
+                        ฿{{ "{:,.2f}".format(yearly_cost) }}
                     </p>
                 </article>
 
@@ -67,7 +67,7 @@
                         </p>
 
                         <p class="stats__supporting">
-                            ฿{{ "%.2f"|format(most_expensive.amount) }}
+                            ฿{{ "{:,.2f}".format(most_expensive.amount) }}
                             · {{ most_expensive.billing_frequency }} 
                         </p>
 
@@ -91,7 +91,7 @@
                         </p>
 
                         <p class="stats__supporting">
-                            ฿{{ "%.2f"|format(cheapest.amount) }}
+                            ฿{{ "{:,.2f}".format(cheapest.amount) }}
                             · {{ cheapest.billing_frequency }}
                         </p>
 
@@ -117,7 +117,7 @@
 
                                 <div class="stats__category-item">
                                     <span>{{ category }}</span>
-                                    <strong>฿{{ "%.2f"|format(total) }}</strong>
+                                    <strong>฿{{ "{:,.2f}".format(total) }}</strong>
                                 </div>
 
                             {% endfor %}
@@ -440,7 +440,7 @@
                 
                         <p class="subscription-card__detail">
                             Amount:
-                            <span>฿{{ "%.2f"|format(subscription.amount) }}</span>
+                            <span>฿{{ "{:,.2f}".format(subscription.amount) }}</span>
                         </p>
                 
                         <p class="subscription-card__detail">

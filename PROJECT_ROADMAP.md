@@ -100,7 +100,6 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Charts
 
-
 - [x] Set up chart library
 - [x] Prepare chart data in Flask
 - [x] Estimated Monthly Cost Breakdown
@@ -116,8 +115,6 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Reports
 
-## Reports
-
 - [x] Create Reports page
 - [x] Add navigation between Dashboard and Reports
 - [x] Monthly Spending Summary
@@ -125,10 +122,14 @@ Add clear visual charts and report summaries that help users understand their su
 - [x] Subscription Status Summary
 - [x] Upcoming Renewal Summary
 
+
+
 ### Reports Page Layout
+
 - [x] Create report cards
 - [x] Add summary sections
 - [x] Make responsive
+- [x] Style upcoming renewal items
 
 ---
 
@@ -136,17 +137,17 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Testing
 
-- [ ] Test charts with multiple subscriptions
-- [ ] Test charts with one subscription
+- [x] Test charts with multiple subscriptions
+- [x] Test charts with one subscription
 - [x] Test charts with no subscriptions
 - [x] Test charts with no active subscriptions
-- [ ] Test different billing frequencies
+- [x] Test different billing frequencies
 - [x] Test active, paused, and cancelled subscriptions
-- [ ] Test responsive chart layout
-- [ ] Test Reports page on desktop
-- [ ] Test Reports page on mobile
-- [ ] Test fixed category colors remain consistent
-- [ ] Test dashboard with mixed subscription statuses and categories
+- [x] Test responsive chart layout
+- [x] Test Reports page on desktop
+- [x] Test Reports page on mobile
+- [x] Test fixed category colors remain consistent
+- [x] Test dashboard with mixed subscription statuses and categories
 
 ---
 
@@ -159,7 +160,9 @@ Add clear visual charts and report summaries that help users understand their su
 - [x] Add clear empty-state messages
 - [x] Ensure chart labels are readable
 - [x] Improve currency formatting (฿)
-- [ ] Ensure report sections have consistent spacing
+- [x] Ensure report sections have consistent spacing
+- [x] Highlight the active navigation link
+- [x] Use comma-separated currency formatting across Dashboard and Reports
 
 ---
 
@@ -167,11 +170,10 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Technical Debt
 
-- [ ] Refactor style.css
-- [ ] Refactor dashboard.html
-- [ ] Remove duplicate CSS
 - [x] Organize JavaScript
 - [x] Add comments where necessary
+- [x] Verify monthly cost calculation uses shared helper functions
+
 
 ---
 
@@ -188,24 +190,36 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Bug Fix List
 
-- [ ] Edit form should preserve user-entered values after validation failure.
-- [ ] Refactor monthly cost calculation to avoid duplicate logic *(new)*
-- [ ] Move repeated currency formatting into a reusable helper
+- [ ] Preserve entered values and highlight invalid fields on both Add and Edit Subscription forms
+
 
 ---
+## Sprint Outcome
+
+Completed:
+- Dashboard analytics with Chart.js
+- Three interactive charts
+- Reports page
+- Report summaries
+- UI polish and navigation improvements
+
+Status:
+🟡 Sprint 9 In Progress
 
 
-
-# Sprint 10 – Calendar & Reminders
+# Sprint 10 – Renewal Management
 
 
 
 ## Features
 
 - [ ] Renewal Calendar
-- [ ] Upcoming Renewals
-- [ ] Renewal Notifications
 - [ ] Days Remaining
+- [ ] Mark subscription as renewed
+- [ ] Store last renewal date
+- [ ] Renewal history
+- [ ] Show overdue subscriptions
+- [ ] In-app renewal Notification
 
 ---
 
@@ -272,11 +286,7 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Renewal Management
 
-- [ ] Mark subscription as renewed
-- [ ] Store last renewal date
 - [x] Auto-calculate next renewal date
-- [ ] Show overdue subscriptions
-- [ ] Renewal history
 
 
 
@@ -286,6 +296,10 @@ Add clear visual charts and report summaries that help users understand their su
 - [x] Pie / doughnut charts
 - [ ] Monthly spending trend
 
+## Reports Page
+- [ ] Export CSV
+- [ ] Export PDF
+
 
 
 ## Notifications
@@ -293,6 +307,12 @@ Add clear visual charts and report summaries that help users understand their su
 - [ ] Renewal reminders
 - [ ] Email reminders
 - [ ] Desktop notifications
+- [ ] Renewal Notifications
+
+## MAintenance/Refactoring
+- [ ] Refactor style.css
+- [ ] Refactor dashboard.html
+- [ ] Move repeated currency formatting into a reusable helper
 
 ---
 
@@ -322,6 +342,9 @@ Add clear visual charts and report summaries that help users understand their su
 - [x] Responsive Dashboard Controls
 - [x] Empty State UI
 - [x] Renewal Date Validation
+- [x] Reports Page
+- [x] Dashboard Charts
+- [x] Reports & Dashboard Navigation
 
 ---
 
@@ -334,8 +357,6 @@ Add clear visual charts and report summaries that help users understand their su
 - Email Reminders
 - Historical Spending Trends
 - Payment History Analytics
-- Export CSV
-- Export PDF
 - Mobile App
 - AI Spending Insights
 - Family Accounts
