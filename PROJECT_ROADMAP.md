@@ -17,7 +17,7 @@
 | Sprint 6 – Dashboard Statistics       | ✅ Complete     |
 | Sprint 7 – UI / UX Improvements       | ✅ Complete     |
 | Sprint 8 – Dashboard Analytics        | ✅ Complete     |
-| Sprint 9 – Charts & Reports           | 🟡 In Progress |
+| Sprint 9 – Charts & Reports           | ✅ Complete |
 | Sprint 10 – Calendar & Reminders      | ⬜ Not Started  |
 | Sprint 11 – User Authentication       | ⬜ Not Started  |
 | Sprint 12 – Deployment & Portfolio    | ⬜ Not Started  |
@@ -181,8 +181,8 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Git
 
-- [ ] Commit Sprint 9
-- [ ] Push Sprint 9 to GitHub
+- [x] Commit Sprint 9
+- [x] Push Sprint 9 to GitHub
 
 ---
 
@@ -190,7 +190,7 @@ Add clear visual charts and report summaries that help users understand their su
 
 ## Bug Fix List
 
-- [ ] Preserve entered values and highlight invalid fields on both Add and Edit Subscription forms
+- [x] Preserve entered values and highlight invalid fields on both Add and Edit Subscription forms
 
 
 ---
@@ -202,9 +202,11 @@ Completed:
 - Reports page
 - Report summaries
 - UI polish and navigation improvements
+- Add and Edit form value preservation
+- Inline validation messages and invalid-field highlighting
 
 Status:
-🟡 Sprint 9 In Progress
+✅ Sprint 9 Complete
 
 
 # Sprint 10 – Renewal Management
