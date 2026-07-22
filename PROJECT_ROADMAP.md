@@ -17,11 +17,15 @@
 | Sprint 6 – Dashboard Statistics       | ✅ Complete     |
 | Sprint 7 – UI / UX Improvements       | ✅ Complete     |
 | Sprint 8 – Dashboard Analytics        | ✅ Complete     |
-| Sprint 9 – Charts & Reports           | ✅ Complete |
-| Sprint 10 – Calendar & Reminders      | ⬜ Not Started  |
+| Sprint 9 – Charts & Reports           | ✅ Complete     |
+| Sprint 10 – Renewal Management        | ⬜ In Progress  |
 | Sprint 11 – User Authentication       | ⬜ Not Started  |
 | Sprint 12 – Deployment & Portfolio    | ⬜ Not Started  |
 
+
+## Project Overview
+
+Smart Subscription Manager is a Flask-based web application that helps users manage recurring subscriptions, monitor spending, visualize analytics, track renewals, and receive renewal reminders through an intuitive dashboard.
 
 ---
 
@@ -211,17 +215,130 @@ Status:
 
 # Sprint 10 – Renewal Management
 
+## Phase 1 – Planning & Database Design 
 
+### 10.1 Database Design
 
-## Features
+- [x] Review current Subscription model
+- [x] Compare one-table vs two-table design
+- [x] Decide to use a separate RenewalHistory table
+- [x] Finalize database schema
+- [x] Update ERD documentation
 
-- [ ] Renewal Calendar
-- [ ] Days Remaining
-- [ ] Mark subscription as renewed
-- [ ] Store last renewal date
-- [ ] Renewal history
-- [ ] Show overdue subscriptions
-- [ ] In-app renewal Notification
+### 10.2 Renewal Logic
+- [ ] Define "Days Remaining"
+- [ ] Define "Due Today"
+- [ ] Define "Overdue"
+- [x] Define automatic next renewal calculation
+- [x] Define renewal workflow
+
+### 10.3 Navigation & Page Planning
+
+- [x] Keep Upcoming Renewals on Dashboard
+- [x] Create dedicated Renewals page
+- [x] Add Renewals navigation item
+- [ ] Add notification badge to Renewals navigation
+- [ ] Add "View All" link from Dashboard
+
+### 10.4 UI Mockup
+
+No coding.
+
+Just sketch:
+
+- Dashboard navigation
+- Renewals page
+- Calendar
+- Renewal History
+- Renewal Button
+- Reminder badge
+
+## Phase 2 – Database & Core Renewal Logic
+
+- [x] Add `last_renewal_date` to Subscription
+- [x] Create RenewalHistory model
+- [x] Create SQLAlchemy relationship
+- [ ] Verify relationship queries
+- [ ] Update existing database safely
+- [ ] Test database changes
+- [ ] Calculate Days Remaining
+- [ ] Unit test Days Remaining
+
+## Phase 3 – Renewal Features
+
+- [ ] Calculate Renewal Status
+- [ ] Overdue subscriptions
+- [ ] Calendar page
+- [ ] Monthly calendar view
+- [ ] Display renewal dates
+- [ ] Highlight overdue renewals
+- [ ] Highlight today's renewals
+
+### Testing
+
+- [ ] Test overdue subscriptions
+- [ ] Test future renewals
+- [ ] Test leap years
+- [ ] Test monthly/yearly subscriptions
+
+## Phase 4 – Renewal Workflow
+
+### Dashboard / Renewals Page
+
+- [ ] Show "Mark as Renewed" button only for Due Today or Overdue subscriptions
+
+### Backend
+
+- [ ] Create renewal route
+- [ ] Save RenewalHistory record
+- [ ] Update last_renewal_date
+- [ ] Calculate next_renewal_date
+- [ ] Refresh renewal status
+
+### Business Rules
+
+- [x] Renewal is available only for Due Today or Overdue subscriptions.
+- [x] Renewals are created through the Renew action, not by editing the subscription.
+
+## Phase 5 – Renewal History
+
+### Backend
+
+- [ ] Retrieve renewal history
+- [ ] Sort history by most recent renewal
+- [ ] Handle subscriptions with no renewal history
+
+### UI
+
+- [ ] History page
+- [ ] Timeline/List view
+- [ ] Search renewal history
+
+## Phase 6 – Notifications
+ 
+- [ ] In-app reminder badges
+- [ ] In-app renewal notifications
+- [ ] Notification badge on navigation
+
+## Git
+
+- [ ] Commit Sprint 10
+- [ ] Push Sprint 10 to GitHub
+
+## Sprint Outcome
+
+Goal:
+
+- Renewal management
+- Renewal history
+- Renewal status calculation
+- Renewal calendar
+- Reminder badges
+- Automatic renewal workflow
+
+Current Status:
+
+🟡 Phase 1 – Planning & Database Design
 
 ---
 
@@ -290,6 +407,12 @@ Status:
 
 - [x] Auto-calculate next renewal date
 
+## Renewals
+
+- [ ] Search Renewal History
+- [ ] Filter Renewal History
+- [ ] Export Renewal History
+
 
 
 ## Dashboard
@@ -318,7 +441,19 @@ Status:
 
 ---
 
+# Development Infrastructure
 
+## Environment
+
+- [x] Create virtual environment
+- [x] Create requirements.txt
+
+## Database
+
+- [ ] Configure Flask-Migrate
+- [ ] Initialize Alembic migrations
+- [ ] Create initial database migration
+- [ ] Verify migration workflow
 
 # Completed Features
 

@@ -2,16 +2,18 @@ from datetime import date, datetime
 from decimal import Decimal
 
 from flask import (
-    Flask, 
+    Flask,
     flash,
-    redirect, 
-    render_template, 
-    request, 
-    url_for
+    redirect,
+    render_template,
+    request,
+    url_for,
 )
 
+from flask_migrate import Migrate
 
-from app.models import Subscription, db
+
+from app.models import RenewalHistory, Subscription, db
 
 from app.utils import (
     calculate_estimated_monthly_cost,
@@ -19,6 +21,7 @@ from app.utils import (
     calculate_yearly_cost,
     count_active_subscriptions,
     count_renewing_soon,
+    calculate_next_renewal_date,
     get_cheapest_subscription,
     get_monthly_cost,
     get_most_expensive_subscription,
@@ -39,6 +42,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///subscriptions.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
 
 @app.route("/")
@@ -238,6 +242,16 @@ def add_subscription():
 def edit_subscription(subscription_id):
     subscription = Subscription.query.get_or_404(subscription_id)
 
+    today = date.today()
+
+    if subscription.next_renewal_date > today:
+        flash(
+            f"{subscription.name} is not due for renewal yet.",
+            "error",
+        )
+        return redirect(url_for("renewals"))
+        
+
     if request.method == "POST":
         start_date = datetime.strptime(
             request.form["start_date"],
@@ -324,6 +338,87 @@ def delete_subscription(subscription_id):
     return redirect(url_for("dashboard"))
 
 
+@app.route("/renewals")
+def renewals():
+    today = date.today()
+
+    active_subscriptions = Subscription.query.filter_by(
+        status="Active"
+    ).order_by(
+        Subscription.next_renewal_date.asc()
+    ).all()
+
+    overdue_subscriptions = [
+        subscription
+        for subscription in active_subscriptions
+        if subscription.next_renewal_date < today
+    ]
+
+    due_today_subscriptions = [
+        subscription
+        for subscription in active_subscriptions
+        if subscription.next_renewal_date == today
+    ]
+
+    upcoming_subscriptions = [
+        subscription
+        for subscription in active_subscriptions
+        if subscription.next_renewal_date > today
+    ]
+
+    return render_template(
+        "renewals.html",
+        overdue_subscriptions=overdue_subscriptions,
+        due_today_subscriptions=due_today_subscriptions,
+        upcoming_subscriptions=upcoming_subscriptions,
+    )
+
+
+@app.route(
+    "/renew_subscription/<int:subscription_id>",
+    methods=["POST"],
+)
+def renew_subscription(subscription_id):
+    subscription = Subscription.query.get_or_404(subscription_id)
+
+    today = date.today()
+
+    # Prevent renewing subscriptions that are not due yet
+    if subscription.next_renewal_date > today:
+        flash(
+            f"{subscription.name} is not due for renewal yet.",
+            "error",
+        )
+        return redirect(url_for("renewals"))
+
+    renewed_on = today
+
+    next_renewal_date = calculate_next_renewal_date(
+        subscription.next_renewal_date,
+        subscription.billing_frequency,
+    )
+
+    renewal_record = RenewalHistory(
+        subscription_id=subscription.id,
+        renewed_on=renewed_on,
+        amount_paid=subscription.amount,
+    )
+
+    subscription.last_renewal_date = renewed_on
+    subscription.next_renewal_date = next_renewal_date
+
+    db.session.add(renewal_record)
+    db.session.commit()
+
+    flash(
+        f"{subscription.name} marked as renewed successfully.",
+        "success",
+    )
+
+    return redirect(url_for("renewals"))
+
+
+
 @app.route("/reports")
 def reports():
     estimated_monthly_cost = calculate_estimated_monthly_cost()
@@ -352,14 +447,13 @@ def reports():
     )
 
 
-with app.app_context():
-    db.create_all()
-
-
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
         port=5000,
         debug=True,
     )
+
+
+
 

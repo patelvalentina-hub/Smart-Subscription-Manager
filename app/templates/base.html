@@ -33,6 +33,13 @@
                 >
                     Dashboard
                 </a>
+
+                <a
+                    href="{{ url_for('renewals') }}"
+                    class="navbar__link {% if request.endpoint == 'renewals' %}navbar__link--active{% endif %}"
+                >
+                    Renewals
+                </a>
         
                 <a
                     href="{{ url_for('reports') }}"
@@ -40,6 +47,7 @@
                 >
                     Reports
                 </a>
+                
         
             </nav>
         

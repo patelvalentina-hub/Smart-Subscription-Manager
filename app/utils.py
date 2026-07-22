@@ -50,6 +50,26 @@ def is_valid_renewal_date(
 
     return difference <= tolerance_days
 
+
+
+def calculate_next_renewal_date(current_renewal_date, billing_frequency):
+    frequency_offsets = {
+        "Weekly": relativedelta(weeks=1),
+        "Monthly": relativedelta(months=1),
+        "Every 3 Months": relativedelta(months=3),
+        "Every 6 Months": relativedelta(months=6),
+        "Yearly": relativedelta(years=1),
+    }
+
+    offset = frequency_offsets.get(billing_frequency)
+
+    if offset is None:
+        raise ValueError(
+            f"Unsupported billing frequency: {billing_frequency}"
+        )
+
+    return current_renewal_date + offset
+            
             
 def count_active_subscriptions():
     return Subscription.query.filter_by(status="Active").count()
