@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from flask import (
@@ -21,6 +21,7 @@ from app.utils import (
     calculate_yearly_cost,
     count_active_subscriptions,
     count_renewing_soon,
+    calculate_days_remaining,
     calculate_next_renewal_date,
     get_cheapest_subscription,
     get_monthly_cost,
@@ -238,19 +239,14 @@ def add_subscription():
 
 
 
-@app.route("/edit_subscription/<int:subscription_id>", methods=["GET", "POST"])
+@app.route(
+    "/edit_subscription/<int:subscription_id>",
+    methods=["GET", "POST"],
+)
 def edit_subscription(subscription_id):
-    subscription = Subscription.query.get_or_404(subscription_id)
-
-    today = date.today()
-
-    if subscription.next_renewal_date > today:
-        flash(
-            f"{subscription.name} is not due for renewal yet.",
-            "error",
-        )
-        return redirect(url_for("renewals"))
-        
+    subscription = Subscription.query.get_or_404(
+        subscription_id
+    )
 
     if request.method == "POST":
         start_date = datetime.strptime(
@@ -262,7 +258,7 @@ def edit_subscription(subscription_id):
             request.form["next_renewal_date"],
             "%Y-%m-%d",
         ).date()
-        
+
         status = request.form["status"]
         today = date.today()
         errors = {}
@@ -279,7 +275,9 @@ def edit_subscription(subscription_id):
                 "of today or later."
             )
 
-        billing_frequency = request.form["billing_frequency"]
+        billing_frequency = request.form[
+            "billing_frequency"
+        ]
 
         if not is_valid_renewal_date(
             start_date,
@@ -305,17 +303,28 @@ def edit_subscription(subscription_id):
                 errors=errors,
             )
 
-        subscription.name = request.form["subscription_name"]
+        subscription.name = request.form[
+            "subscription_name"
+        ]
         subscription.category = request.form["category"]
-        subscription.amount = Decimal(request.form["amount"])
-        subscription.billing_frequency = billing_frequency
+        subscription.amount = Decimal(
+            request.form["amount"]
+        )
+        subscription.billing_frequency = (
+            billing_frequency
+        )
         subscription.start_date = start_date
-        subscription.next_renewal_date = next_renewal_date
+        subscription.next_renewal_date = (
+            next_renewal_date
+        )
         subscription.status = status
 
         db.session.commit()
 
-        flash("Subscription updated successfully.", "success")
+        flash(
+            "Subscription updated successfully.",
+            "success",
+        )
 
         return redirect(url_for("dashboard"))
 
@@ -365,6 +374,7 @@ def renewals():
         for subscription in active_subscriptions
         if subscription.next_renewal_date > today
     ]
+
 
     return render_template(
         "renewals.html",

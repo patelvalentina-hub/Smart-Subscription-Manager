@@ -258,49 +258,107 @@ Just sketch:
 - [x] Add `last_renewal_date` to Subscription
 - [x] Create RenewalHistory model
 - [x] Create SQLAlchemy relationship
-- [ ] Verify relationship queries
-- [ ] Update existing database safely
-- [ ] Test database changes
-- [ ] Calculate Days Remaining
+- [x] Verify relationship queries
+- [x] Update existing database safely
+- [x] Test database changes
+- [x] Calculate Days Remaining
 - [ ] Unit test Days Remaining
 
-## Phase 3 – Renewal Features
+## Phase 3 – Renewals UI & Features
 
-- [ ] Calculate Renewal Status
-- [ ] Overdue subscriptions
+- [x] Create Renewals page
+- [x] Group subscriptions by renewal status
+- [x] Calculate Renewal Status
+- [x] Overdue subscriptions
 - [ ] Calendar page
 - [ ] Monthly calendar view
-- [ ] Display renewal dates
+- [x] Display renewal dates
 - [ ] Highlight overdue renewals
 - [ ] Highlight today's renewals
+
+
+### Subscription Editing Lifecycle
+
+#### Before First Renewal
+
+- [x] Allow editing all subscription details
+- [x] Allow changing Start Date
+- [x] Allow changing Billing Frequency
+- [x] Allow changing Amount
+- [x] Validate Next Renewal Date
+
+#### After First Renewal
+
+- [ ] Preserve Original Start Date
+- [ ] Lock Original Start Date
+- [ ] Disable billing-related editing from Edit Subscription
+- [ ] Allow only Status changes
+- [ ] Allow Delete Subscription
 
 ### Testing
 
 - [ ] Test overdue subscriptions
-- [ ] Test future renewals
+- [x] Test future renewals
 - [ ] Test leap years
-- [ ] Test monthly/yearly subscriptions
+- [x] Test monthly/yearly subscriptions
+- [ ] Test duplicate renewal prevention
+- [ ] Test renewal history creation
 
-## Phase 4 – Renewal Workflow
+## Phase 4 – Renewal Confirmation Workflow
+
+### Renewal Confirmation Page
+
+- [ ] Create Renewal Confirmation page
+- [ ] Display Original Start Date
+- [ ] Display Current Subscription Details
+- [ ] Display Current Billing Frequency
+- [ ] Display Current Amount
+- [ ] Allow editing Subscription Name
+- [ ] Allow editing Amount
+- [ ] Allow editing Billing Frequency
+- [ ] Allow editing Renewal Date
+- [ ] Auto-calculate Next Renewal Date
+- [ ] Show confirmation summary
+
+### Renewal Validation
+
+- [ ] Prevent renewal dates before the previous renewal
+- [ ] Prevent future renewal dates beyond today (optional)
+- [ ] Validate billing frequency changes
+- [ ] Auto-recalculate next renewal after edits
 
 ### Dashboard / Renewals Page
 
-- [ ] Show "Mark as Renewed" button only for Due Today or Overdue subscriptions
+- [x] Show "Renew Subscription" button only for Due Today or Overdue subscriptions
 
 ### Backend
 
-- [ ] Create renewal route
-- [ ] Save RenewalHistory record
-- [ ] Update last_renewal_date
-- [ ] Calculate next_renewal_date
-- [ ] Refresh renewal status
+- [ ] Load Renewal Confirmation
+- [ ] Validate renewal information
+- [ ] Save RenewalHistory
+- [ ] Update Subscription
+- [ ] Update Subscription Name (if changed)
+- [ ] Update Billing Frequency (if changed)
+- [ ] Update Amount (if changed)
+- [ ] Update Last Renewal Date
+- [ ] Update Next Renewal Date
 
 ### Business Rules
 
 - [x] Renewal is available only for Due Today or Overdue subscriptions.
 - [x] Renewals are created through the Renew action, not by editing the subscription.
+- [ ] Prevent duplicate renewals
+- [x] Before first renewal all fields are editable
+- [x] After first renewal billing changes only occur during Renewal Confirmation
+- [x] Original Start Date is immutable after first renewal
+- [x] Renewal History must preserve previous billing events
+
+### Phase 4 Outcome
+
+- [ ] Complete end-to-end renewal workflow
 
 ## Phase 5 – Renewal History
+
 
 ### Backend
 
@@ -320,10 +378,19 @@ Just sketch:
 - [ ] In-app renewal notifications
 - [ ] Notification badge on navigation
 
+## Sprint 10 Fixes
+
+### Business Logic
+
+- [ ] Prevent duplicate renewals
+- [ ] Protect future renewal dates from accidental updates
+- [ ] Support billing cycle validation during Renewal Confirmation
+
 ## Git
 
-- [ ] Commit Sprint 10
+- [x] Commit Sprint 10 Phase 1 & 2
 - [ ] Push Sprint 10 to GitHub
+
 
 ## Sprint Outcome
 
@@ -338,7 +405,8 @@ Goal:
 
 Current Status:
 
-🟡 Phase 1 – Planning & Database Design
+
+🟡 Phase 3 – Renewals UI & Features (In Progress)
 
 ---
 
@@ -438,6 +506,12 @@ Current Status:
 - [ ] Refactor style.css
 - [ ] Refactor dashboard.html
 - [ ] Move repeated currency formatting into a reusable helper
+
+## Future Enhancement
+
+- Support multiple Billing Cycle Policies
+  - [ ] Fixed Billing Cycle
+  - [ ] Reset Billing Cycle on Renewal
 
 ---
 
