@@ -360,19 +360,25 @@ def renewals():
     overdue_subscriptions = [
         subscription
         for subscription in active_subscriptions
-        if subscription.next_renewal_date < today
+        if calculate_days_remaining(
+            subscription.next_renewal_date
+        ) < 0
     ]
 
     due_today_subscriptions = [
         subscription
         for subscription in active_subscriptions
-        if subscription.next_renewal_date == today
+        if calculate_days_remaining(
+            subscription.next_renewal_date
+        ) == 0
     ]
 
     upcoming_subscriptions = [
         subscription
         for subscription in active_subscriptions
-        if subscription.next_renewal_date > today
+        if 1 <= calculate_days_remaining(
+            subscription.next_renewal_date
+        ) <= 7
     ]
 
 
@@ -381,6 +387,7 @@ def renewals():
         overdue_subscriptions=overdue_subscriptions,
         due_today_subscriptions=due_today_subscriptions,
         upcoming_subscriptions=upcoming_subscriptions,
+        calculate_days_remaining=calculate_days_remaining,
     )
 
 

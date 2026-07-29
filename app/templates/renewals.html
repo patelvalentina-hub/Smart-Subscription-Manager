@@ -13,6 +13,41 @@
 
 <div class="renewals-section">
 
+    <div class="renewal-status-filters">
+        <button
+            type="button"
+            class="renewal-filter renewal-filter--active"
+            data-renewal-filter="overdue"
+        >
+            <span class="renewal-filter__label">Overdue</span>
+            <span class="renewal-filter__count">
+                {{ overdue_subscriptions | length }}
+            </span>
+        </button>
+    
+        <button
+            type="button"
+            class="renewal-filter"
+            data-renewal-filter="due-today"
+        >
+            <span class="renewal-filter__label">Due Today</span>
+            <span class="renewal-filter__count">
+                {{ due_today_subscriptions | length }}
+            </span>
+        </button>
+    
+        <button
+            type="button"
+            class="renewal-filter"
+            data-renewal-filter="upcoming"
+        >
+            <span class="renewal-filter__label">Upcoming</span>
+            <span class="renewal-filter__count">
+                {{ upcoming_subscriptions | length }}
+            </span>
+        </button>
+    </div>
+
     <section class="renewal-group">
         <h2>🔴 Overdue</h2>
 
@@ -34,6 +69,12 @@
                     <p>
                         <strong>Renewal Date:</strong>
                         {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                    </p>
+
+                    <p>
+                        Overdue by
+                        {{ calculate_days_remaining(subscription.next_renewal_date) | abs }}
+                        day{% if calculate_days_remaining(subscription.next_renewal_date) | abs != 1 %}s{% endif %}
                     </p>
 
                     <form
@@ -72,8 +113,10 @@
 
                     <p>
                         <strong>Renewal Date:</strong>
-                        Today
+                        {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
                     </p>
+                    
+                    <p>Due Today</p>
 
                     <form
                         action="{{ url_for('renew_subscription', subscription_id=subscription.id) }}"
@@ -113,6 +156,13 @@
                         <strong>Renewal Date:</strong>
                         {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
                     </p>
+
+                    {% set days = calculate_days_remaining(subscription.next_renewal_date) %}
+
+                    <p>
+                        Due in {{ days }} day{% if days != 1 %}s{% endif %}
+                    </p>
+
                 </div>
             {% endfor %}
         {% else %}

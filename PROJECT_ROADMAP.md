@@ -7,20 +7,22 @@
 # Project Progress
 
 
-| Sprint                                | Status         |
-| ------------------------------------- | -------------- |
-| Sprint 1 – Project Setup              | ✅ Complete     |
-| Sprint 2 – Dashboard UI               | ✅ Complete     |
-| Sprint 3 – Database Integration       | ✅ Complete     |
-| Sprint 4 – Add Subscription           | ✅ Complete     |
-| Sprint 5 – Edit & Delete Subscription | ✅ Complete     |
-| Sprint 6 – Dashboard Statistics       | ✅ Complete     |
-| Sprint 7 – UI / UX Improvements       | ✅ Complete     |
-| Sprint 8 – Dashboard Analytics        | ✅ Complete     |
-| Sprint 9 – Charts & Reports           | ✅ Complete     |
-| Sprint 10 – Renewal Management        | ⬜ In Progress  |
-| Sprint 11 – User Authentication       | ⬜ Not Started  |
-| Sprint 12 – Deployment & Portfolio    | ⬜ Not Started  |
+| Sprint                                | Status        |
+| ------------------------------------- | ------------- |
+| Sprint 1 – Project Setup              | ✅ Complete    |
+| Sprint 2 – Dashboard UI               | ✅ Complete    |
+| Sprint 3 – Database Integration       | ✅ Complete    |
+| Sprint 4 – Add Subscription           | ✅ Complete    |
+| Sprint 5 – Edit & Delete Subscription | ✅ Complete    |
+| Sprint 6 – Dashboard Statistics       | ✅ Complete    |
+| Sprint 7 – UI / UX Improvements       | ✅ Complete    |
+| Sprint 8 – Dashboard Analytics        | ✅ Complete    |
+| Sprint 9 – Charts & Reports           | ✅ Complete    |
+| Sprint 10 – Renewal Management        | ⬜ In Progress |
+| Sprint 11 – User Authentication       | ⬜ Not Started |
+| Sprint 12 – Deployment & Portfolio    | ⬜ Not Started |
+
+
 
 
 ## Project Overview
@@ -178,7 +180,6 @@ Add clear visual charts and report summaries that help users understand their su
 - [x] Add comments where necessary
 - [x] Verify monthly cost calculation uses shared helper functions
 
-
 ---
 
 
@@ -196,11 +197,14 @@ Add clear visual charts and report summaries that help users understand their su
 
 - [x] Preserve entered values and highlight invalid fields on both Add and Edit Subscription forms
 
-
 ---
+
+
+
 ## Sprint Outcome
 
 Completed:
+
 - Dashboard analytics with Chart.js
 - Three interactive charts
 - Reports page
@@ -212,10 +216,13 @@ Completed:
 Status:
 ✅ Sprint 9 Complete
 
-
 # Sprint 10 – Renewal Management
 
-## Phase 1 – Planning & Database Design 
+
+
+## Phase 1 – Planning & Database Design
+
+
 
 ### 10.1 Database Design
 
@@ -225,12 +232,17 @@ Status:
 - [x] Finalize database schema
 - [x] Update ERD documentation
 
+
+
 ### 10.2 Renewal Logic
-- [ ] Define "Days Remaining"
-- [ ] Define "Due Today"
-- [ ] Define "Overdue"
+
+- [x] Define "Days Remaining"
+- [x] Define "Due Today"
+- [x] Define "Overdue"
 - [x] Define automatic next renewal calculation
 - [x] Define renewal workflow
+
+
 
 ### 10.3 Navigation & Page Planning
 
@@ -239,6 +251,8 @@ Status:
 - [x] Add Renewals navigation item
 - [ ] Add notification badge to Renewals navigation
 - [ ] Add "View All" link from Dashboard
+
+
 
 ### 10.4 UI Mockup
 
@@ -253,6 +267,8 @@ Just sketch:
 - Renewal Button
 - Reminder badge
 
+
+
 ## Phase 2 – Database & Core Renewal Logic
 
 - [x] Add `last_renewal_date` to Subscription
@@ -264,6 +280,8 @@ Just sketch:
 - [x] Calculate Days Remaining
 - [ ] Unit test Days Remaining
 
+
+
 ## Phase 3 – Renewals UI & Features
 
 - [x] Create Renewals page
@@ -273,11 +291,14 @@ Just sketch:
 - [ ] Calendar page
 - [ ] Monthly calendar view
 - [x] Display renewal dates
-- [ ] Highlight overdue renewals
-- [ ] Highlight today's renewals
+- [ ] Highlight overdue renewals on Dashboard
+- [ ] Highlight today's renewals on Dashboard
+
 
 
 ### Subscription Editing Lifecycle
+
+
 
 #### Before First Renewal
 
@@ -287,6 +308,8 @@ Just sketch:
 - [x] Allow changing Amount
 - [x] Validate Next Renewal Date
 
+
+
 #### After First Renewal
 
 - [ ] Preserve Original Start Date
@@ -295,16 +318,36 @@ Just sketch:
 - [ ] Allow only Status changes
 - [ ] Allow Delete Subscription
 
+
+
 ### Testing
 
-- [ ] Test overdue subscriptions
+- [x] Test overdue subscriptions
 - [x] Test future renewals
 - [ ] Test leap years
 - [x] Test monthly/yearly subscriptions
 - [ ] Test duplicate renewal prevention
 - [ ] Test renewal history creation
 
+
+### Renewals Page UI Redesign
+
+- [ ] Design page layout
+- [ ] Create tab navigation
+- [ ] Overdue tab
+- [ ] Due Today tab
+- [ ] Upcoming tab
+- [ ] Display counts on each tab
+- [ ] Default to Overdue tab
+- [ ] Design compact renewal cards
+- [ ] Style active tab
+- [ ] Style Renew Subscription button
+- [ ] Responsive design
+
+
 ## Phase 4 – Renewal Confirmation Workflow
+
+
 
 ### Renewal Confirmation Page
 
@@ -320,6 +363,8 @@ Just sketch:
 - [ ] Auto-calculate Next Renewal Date
 - [ ] Show confirmation summary
 
+
+
 ### Renewal Validation
 
 - [ ] Prevent renewal dates before the previous renewal
@@ -327,9 +372,13 @@ Just sketch:
 - [ ] Validate billing frequency changes
 - [ ] Auto-recalculate next renewal after edits
 
+
+
 ### Dashboard / Renewals Page
 
 - [x] Show "Renew Subscription" button only for Due Today or Overdue subscriptions
+
+
 
 ### Backend
 
@@ -343,6 +392,8 @@ Just sketch:
 - [ ] Update Last Renewal Date
 - [ ] Update Next Renewal Date
 
+
+
 ### Business Rules
 
 - [x] Renewal is available only for Due Today or Overdue subscriptions.
@@ -353,11 +404,16 @@ Just sketch:
 - [x] Original Start Date is immutable after first renewal
 - [x] Renewal History must preserve previous billing events
 
+
+
 ### Phase 4 Outcome
 
 - [ ] Complete end-to-end renewal workflow
 
+
+
 ## Phase 5 – Renewal History
+
 
 
 ### Backend
@@ -366,19 +422,26 @@ Just sketch:
 - [ ] Sort history by most recent renewal
 - [ ] Handle subscriptions with no renewal history
 
+
+
 ### UI
 
 - [ ] History page
 - [ ] Timeline/List view
 - [ ] Search renewal history
 
+
 ## Phase 6 – Notifications
- 
+
 - [ ] In-app reminder badges
 - [ ] In-app renewal notifications
 - [ ] Notification badge on navigation
 
+
+
 ## Sprint 10 Fixes
+
+
 
 ### Business Logic
 
@@ -386,10 +449,13 @@ Just sketch:
 - [ ] Protect future renewal dates from accidental updates
 - [ ] Support billing cycle validation during Renewal Confirmation
 
+
+
 ## Git
 
 - [x] Commit Sprint 10 Phase 1 & 2
 - [ ] Push Sprint 10 to GitHub
+
 
 
 ## Sprint Outcome
@@ -404,7 +470,6 @@ Goal:
 - Automatic renewal workflow
 
 Current Status:
-
 
 🟡 Phase 3 – Renewals UI & Features (In Progress)
 
@@ -475,6 +540,8 @@ Current Status:
 
 - [x] Auto-calculate next renewal date
 
+
+
 ## Renewals
 
 - [ ] Search Renewal History
@@ -489,7 +556,10 @@ Current Status:
 - [x] Pie / doughnut charts
 - [ ] Monthly spending trend
 
+
+
 ## Reports Page
+
 - [ ] Export CSV
 - [ ] Export PDF
 
@@ -502,10 +572,15 @@ Current Status:
 - [ ] Desktop notifications
 - [ ] Renewal Notifications
 
+
+
 ## MAintenance/Refactoring
+
 - [ ] Refactor style.css
 - [ ] Refactor dashboard.html
 - [ ] Move repeated currency formatting into a reusable helper
+
+
 
 ## Future Enhancement
 
@@ -515,12 +590,18 @@ Current Status:
 
 ---
 
+
+
 # Development Infrastructure
+
+
 
 ## Environment
 
 - [x] Create virtual environment
 - [x] Create requirements.txt
+
+
 
 ## Database
 
@@ -528,6 +609,8 @@ Current Status:
 - [ ] Initialize Alembic migrations
 - [ ] Create initial database migration
 - [ ] Verify migration workflow
+
+
 
 # Completed Features
 

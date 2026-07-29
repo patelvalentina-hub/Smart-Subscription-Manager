@@ -1022,3 +1022,52 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================
+   Renewal Status Filters
+========================== */
+
+.renewal-status-filters {
+    display: flex;
+    gap: 16px;
+    margin: 24px 0 32px;
+}
+
+.renewal-filter {
+    flex: 1;
+    background-color: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.2s ease;
+}
+
+.renewal-filter:hover {
+    border-color: #2563eb;
+    transform: translateY(-2px);
+}
+
+.renewal-filter--active {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+}
+
+.renewal-filter__label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+.renewal-filter__count {
+    margin-top: 6px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2563eb;
+}
