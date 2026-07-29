@@ -332,17 +332,18 @@ Just sketch:
 
 ### Renewals Page UI Redesign
 
-- [ ] Design page layout
-- [ ] Create tab navigation
-- [ ] Overdue tab
-- [ ] Due Today tab
-- [ ] Upcoming tab
-- [ ] Display counts on each tab
-- [ ] Default to Overdue tab
-- [ ] Design compact renewal cards
-- [ ] Style active tab
-- [ ] Style Renew Subscription button
+- [x] Create renewal status filter bar
+- [x] Design compact renewal cards
+- [x] Create tab navigation
+- [x] Overdue tab
+- [x] Due Today tab
+- [x] Upcoming tab
+- [x] Display counts on each tab
+- [x] Default to Overdue tab
+- [x] Style active tab
+- [x] Style Renew Subscription button
 - [ ] Responsive design
+- [ ] Remove duplicate section headings
 
 
 ## Phase 4 – Renewal Confirmation Workflow
