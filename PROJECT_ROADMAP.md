@@ -342,37 +342,54 @@ Just sketch:
 - [x] Default to Overdue tab
 - [x] Style active tab
 - [x] Style Renew Subscription button
-- [ ] Responsive design
-- [ ] Remove duplicate section headings
+- [ ] Test responsive Renewals page
+- [x] Remove duplicate section headings
 
 
 ## Phase 4 – Renewal Confirmation Workflow
 
-
-
-### Renewal Confirmation Page
+### 4.1 UI
 
 - [ ] Create Renewal Confirmation page
+- [ ] Create page layout
 - [ ] Display Original Start Date
 - [ ] Display Current Subscription Details
 - [ ] Display Current Billing Frequency
 - [ ] Display Current Amount
+- [ ] Display Current Renewal Date
+- [ ] Display calculated Next Renewal Date
+
+### 4.2 Editable Fields
+
 - [ ] Allow editing Subscription Name
 - [ ] Allow editing Amount
 - [ ] Allow editing Billing Frequency
 - [ ] Allow editing Renewal Date
-- [ ] Auto-calculate Next Renewal Date
-- [ ] Show confirmation summary
 
+### 4.3 Validation
 
-
-### Renewal Validation
-
-- [ ] Prevent renewal dates before the previous renewal
-- [ ] Prevent future renewal dates beyond today (optional)
+- [ ] Prevent renewal dates before previous renewal
+- [ ] Prevent future renewal dates
 - [ ] Validate billing frequency changes
-- [ ] Auto-recalculate next renewal after edits
+- [ ] Auto-recalculate next renewal
 
+### 4.3 Validation
+
+- [ ] Save RenewalHistory
+- [ ] Update Subscription
+- [ ] Update Last Renewal Date
+- [ ] Update Next Renewal Date
+- [ ] Update Name (if changed)
+- [ ] Update Amount (if changed)
+- [ ] Update Billing Frequency (if changed)
+
+### 4.5 Testing
+
+- [ ] Test first renewal
+- [ ] Test second renewal
+- [ ] Test billing frequency changes
+- [ ] Test duplicate renewal prevention
+- [ ] Test validation errors
 
 
 ### Dashboard / Renewals Page
@@ -472,7 +489,7 @@ Goal:
 
 Current Status:
 
-🟡 Phase 3 – Renewals UI & Features (In Progress)
+🟡 Phase 4 – Renewal Confirmation Workflow (In Progress)
 
 ---
 

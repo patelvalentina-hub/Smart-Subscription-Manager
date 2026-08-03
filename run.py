@@ -393,6 +393,23 @@ def renewals():
 
 @app.route(
     "/renew_subscription/<int:subscription_id>",
+    methods=["GET"],
+)
+def renew_subscription_confirmation(subscription_id):
+
+    subscription = Subscription.query.get_or_404(
+        subscription_id
+    )
+
+    return render_template(
+        "renew_subscription.html",
+        subscription=subscription,
+        today=date.today(),
+    )
+
+    
+@app.route(
+    "/renew_subscription/<int:subscription_id>",
     methods=["POST"],
 )
 def renew_subscription(subscription_id):
@@ -400,27 +417,63 @@ def renew_subscription(subscription_id):
 
     today = date.today()
 
-    # Prevent renewing subscriptions that are not due yet
-    if subscription.next_renewal_date > today:
+    renewed_on = datetime.strptime(
+        request.form["renewed_on"],
+        "%Y-%m-%d",
+    ).date()
+
+    subscription_name = request.form[
+        "subscription_name"
+    ].strip()
+
+    amount = Decimal(request.form["amount"])
+
+    billing_frequency = request.form[
+        "billing_frequency"
+    ]
+
+    # Renewal must not be recorded in the future.
+    if renewed_on > today:
         flash(
-            f"{subscription.name} is not due for renewal yet.",
+            "Renewal date cannot be in the future.",
             "error",
         )
-        return redirect(url_for("renewals"))
 
-    renewed_on = today
+        return redirect(
+            url_for(
+                "renew_subscription_confirmation",
+                subscription_id=subscription.id,
+            )
+        )
+
+    # Renewal cannot happen before the currently scheduled due date.
+    if renewed_on < subscription.next_renewal_date:
+        flash(
+            "Renewal date cannot be before the current renewal date.",
+            "error",
+        )
+
+        return redirect(
+            url_for(
+                "renew_subscription_confirmation",
+                subscription_id=subscription.id,
+            )
+        )
 
     next_renewal_date = calculate_next_renewal_date(
-        subscription.next_renewal_date,
-        subscription.billing_frequency,
+        renewed_on,
+        billing_frequency,
     )
 
     renewal_record = RenewalHistory(
         subscription_id=subscription.id,
         renewed_on=renewed_on,
-        amount_paid=subscription.amount,
+        amount_paid=amount,
     )
 
+    subscription.name = subscription_name
+    subscription.amount = amount
+    subscription.billing_frequency = billing_frequency
     subscription.last_renewal_date = renewed_on
     subscription.next_renewal_date = next_renewal_date
 

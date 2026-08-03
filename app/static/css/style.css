@@ -1239,6 +1239,15 @@ body {
     color: #92400e;
 }
 
+.status-badge--upcoming {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.renewal-status-text--upcoming {
+    color: #166534;
+}
+
 .renewal-status-text--due-today {
     color: #92400e;
 }
@@ -1267,4 +1276,147 @@ body {
 #due-today-section,
 #upcoming-section {
     display: none;
+}
+
+/* ========================================
+   Renewal Confirmation Page
+======================================== */
+
+.renewal-page {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.renewal-confirmation-card {
+    width: 100%;
+    max-width: 900px;
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 40px;
+
+    box-shadow: 0 8px 25px rgba(0,0,0,.08);
+}
+
+.renewal-confirmation-card hr {
+    margin: 32px 0;
+
+    border: none;
+
+    border-top: 1px solid #e5e7eb;
+}
+
+.renewal-current-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 40px;
+    margin-top: 24px;
+}
+
+.renewal-current-grid > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.renewal-current-label {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 6px;
+}
+
+.renewal-current-grid strong {
+    font-size: 1.1rem;
+    color: #111827;
+}
+
+.renewal-section-description {
+    margin-top: 0.35rem;
+    color: var(--color-text-muted);
+}
+
+.renewal-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem 1.5rem;
+    margin-top: 1.25rem;
+}
+
+.renewal-form-grid input,
+.renewal-form-grid select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius);
+    font: inherit;
+    color: var(--color-text);
+    background-color: var(--color-white);
+}
+
+.renewal-form-grid input:focus,
+.renewal-form-grid select:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+/* ==========================
+   Renewal Summary
+========================== */
+
+.renewal-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.75rem;
+    margin-top: 1.5rem;
+}
+
+.summary-box {
+    display: flex;
+    flex-direction: column;
+}
+
+.summary-label {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 0.35rem;
+}
+
+.summary-value {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.renewal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-secondary {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: white;
+    color: #374151;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.btn-primary {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
 }
