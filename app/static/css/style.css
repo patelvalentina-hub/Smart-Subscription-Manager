@@ -1420,3 +1420,32 @@ body {
 .btn-primary:hover {
     background: #1d4ed8;
 }
+
+.billing-lock-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+
+    padding: 0.9rem 1rem;
+
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: var(--radius);
+
+    color: #1d4ed8;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.billing-lock-message i {
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+}
+
+.form-page__container form input:disabled,
+.form-page__container form select:disabled {
+    background-color: #f1f5f9;
+    color: #64748b;
+    cursor: not-allowed;
+    opacity: 1;
+}

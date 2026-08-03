@@ -248,76 +248,97 @@ def edit_subscription(subscription_id):
         subscription_id
     )
 
+    has_been_renewed = (
+        subscription.last_renewal_date is not None
+    )
+
     if request.method == "POST":
-        start_date = datetime.strptime(
-            request.form["start_date"],
-            "%Y-%m-%d",
-        ).date()
-
-        next_renewal_date = datetime.strptime(
-            request.form["next_renewal_date"],
-            "%Y-%m-%d",
-        ).date()
-
         status = request.form["status"]
-        today = date.today()
         errors = {}
 
-        if start_date > today:
-            errors["start_date"] = (
-                "Start date cannot be in the future. "
-                "Please select today's date or an earlier date."
-            )
-
-        if status == "Active" and next_renewal_date < today:
-            errors["next_renewal_date"] = (
-                "An active subscription must have a renewal date "
-                "of today or later."
-            )
-
-        billing_frequency = request.form[
-            "billing_frequency"
-        ]
-
-        if not is_valid_renewal_date(
-            start_date,
-            billing_frequency,
-            next_renewal_date,
-        ):
-            errors["next_renewal_date"] = (
-                "Please select a valid renewal date "
-                "for the chosen billing frequency."
-            )
-
-        if errors:
-            flash(
-                "Please correct the highlighted fields below.",
-                "error",
-            )
-
-            return render_template(
-                "add_subscription.html",
-                subscription=subscription,
-                is_editing=True,
-                form_data=request.form,
-                errors=errors,
-            )
-
+        # These fields remain editable after renewal.
         subscription.name = request.form[
             "subscription_name"
+        ].strip()
+
+        subscription.category = request.form[
+            "category"
         ]
-        subscription.category = request.form["category"]
-        subscription.amount = Decimal(
-            request.form["amount"]
-        )
-        subscription.billing_frequency = (
-            billing_frequency
-        )
-        subscription.start_date = start_date
-        subscription.next_renewal_date = (
-            next_renewal_date
-        )
+
         subscription.status = status
+
+        # Billing-related fields are editable only
+        # before the first renewal.
+        if not has_been_renewed:
+            start_date = datetime.strptime(
+                request.form["start_date"],
+                "%Y-%m-%d",
+            ).date()
+
+            next_renewal_date = datetime.strptime(
+                request.form["next_renewal_date"],
+                "%Y-%m-%d",
+            ).date()
+
+            billing_frequency = request.form[
+                "billing_frequency"
+            ]
+
+            today = date.today()
+
+            if start_date > today:
+                errors["start_date"] = (
+                    "Start date cannot be in the future. "
+                    "Please select today's date or an earlier date."
+                )
+
+            if (
+                status == "Active"
+                and next_renewal_date < today
+            ):
+                errors["next_renewal_date"] = (
+                    "An active subscription must have a "
+                    "renewal date of today or later."
+                )
+
+            if not is_valid_renewal_date(
+                start_date,
+                billing_frequency,
+                next_renewal_date,
+            ):
+                errors["next_renewal_date"] = (
+                    "Please select a valid renewal date "
+                    "for the chosen billing frequency."
+                )
+
+            if errors:
+                flash(
+                    "Please correct the highlighted fields below.",
+                    "error",
+                )
+
+                return render_template(
+                    "add_subscription.html",
+                    subscription=subscription,
+                    is_editing=True,
+                    has_been_renewed=has_been_renewed,
+                    form_data=request.form,
+                    errors=errors,
+                )
+
+            subscription.amount = Decimal(
+                request.form["amount"]
+            )
+
+            subscription.billing_frequency = (
+                billing_frequency
+            )
+
+            subscription.start_date = start_date
+
+            subscription.next_renewal_date = (
+                next_renewal_date
+            )
 
         db.session.commit()
 
@@ -332,6 +353,7 @@ def edit_subscription(subscription_id):
         "add_subscription.html",
         subscription=subscription,
         is_editing=True,
+        has_been_renewed=has_been_renewed,
     )
 
 

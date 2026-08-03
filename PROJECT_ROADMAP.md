@@ -288,9 +288,9 @@ Just sketch:
 - [x] Group subscriptions by renewal status
 - [x] Calculate Renewal Status
 - [x] Overdue subscriptions
+- [x] Display renewal dates
 - [ ] Calendar page
 - [ ] Monthly calendar view
-- [x] Display renewal dates
 - [ ] Highlight overdue renewals on Dashboard
 - [ ] Highlight today's renewals on Dashboard
 
@@ -314,8 +314,12 @@ Just sketch:
 
 - [ ] Preserve Original Start Date
 - [ ] Lock Original Start Date
-- [ ] Disable billing-related editing from Edit Subscription
-- [ ] Allow only Status changes
+- [ ] Lock Next Renewal Date
+- [ ] Lock Amount on Edit Subscription
+- [ ] Lock Billing Frequency on Edit Subscription
+- [ ] Allow Name changes
+- [ ] Allow Category changes
+- [ ] Allow Status changes
 - [ ] Allow Delete Subscription
 
 
@@ -350,32 +354,32 @@ Just sketch:
 
 ### 4.1 UI
 
-- [ ] Create Renewal Confirmation page
-- [ ] Create page layout
-- [ ] Display Original Start Date
-- [ ] Display Current Subscription Details
-- [ ] Display Current Billing Frequency
-- [ ] Display Current Amount
-- [ ] Display Current Renewal Date
-- [ ] Display calculated Next Renewal Date
+- [x] Create Renewal Confirmation page
+- [x] Create page layout
+- [x] Display Original Start Date
+- [x] Display Current Subscription Details
+- [x] Display Current Billing Frequency
+- [x] Display Current Amount
+- [x] Display Current Renewal Date
+- [x] Display calculated Next Renewal Date
 
 ### 4.2 Editable Fields
 
-- [ ] Allow editing Subscription Name
-- [ ] Allow editing Amount
-- [ ] Allow editing Billing Frequency
-- [ ] Allow editing Renewal Date
+- [x] Allow editing Subscription Name
+- [x] Allow editing Amount
+- [x] Allow editing Billing Frequency
+- [x] Allow editing Renewal Date
 
 ### 4.3 Validation
 
-- [ ] Prevent renewal dates before previous renewal
-- [ ] Prevent future renewal dates
+- [ ] Restrict "Renewed On" to the valid renewal window
+      (Current Renewal Date → Today)
 - [ ] Validate billing frequency changes
 - [ ] Auto-recalculate next renewal
 
 ### 4.3 Validation
 
-- [ ] Save RenewalHistory
+- [] Save RenewalHistory
 - [ ] Update Subscription
 - [ ] Update Last Renewal Date
 - [ ] Update Next Renewal Date
@@ -383,13 +387,23 @@ Just sketch:
 - [ ] Update Amount (if changed)
 - [ ] Update Billing Frequency (if changed)
 
+### 4.4 Save Renewal
+
+- [x] Save RenewalHistory
+- [x] Update Subscription
+- [x] Update Last Renewal Date
+- [x] Update Next Renewal Date
+- [x] Update Name (if changed)
+- [x] Update Amount (if changed)
+- [x] Update Billing Frequency (if changed)
+
 ### 4.5 Testing
 
-- [ ] Test first renewal
+- [x] Test first renewal
 - [ ] Test second renewal
 - [ ] Test billing frequency changes
 - [ ] Test duplicate renewal prevention
-- [ ] Test validation errors
+- [x] Test validation errors
 
 
 ### Dashboard / Renewals Page
@@ -400,15 +414,15 @@ Just sketch:
 
 ### Backend
 
-- [ ] Load Renewal Confirmation
-- [ ] Validate renewal information
-- [ ] Save RenewalHistory
-- [ ] Update Subscription
-- [ ] Update Subscription Name (if changed)
-- [ ] Update Billing Frequency (if changed)
-- [ ] Update Amount (if changed)
-- [ ] Update Last Renewal Date
-- [ ] Update Next Renewal Date
+- [x] Load Renewal Confirmation
+- [x] Validate renewal information
+- [x] Save RenewalHistory
+- [x] Update Subscription
+- [x] Update Subscription Name (if changed)
+- [x] Update Billing Frequency (if changed)
+- [x] Update Amount (if changed)
+- [x] Update Last Renewal Date
+- [x] Update Next Renewal Date
 
 
 
@@ -422,11 +436,19 @@ Just sketch:
 - [x] Original Start Date is immutable after first renewal
 - [x] Renewal History must preserve previous billing events
 
+### Subscription Lifecycle
+
+- [x] Before first renewal all fields editable
+- [x] After first renewal lock billing information
+- [x] Billing changes only through Renewal Confirmation
+- [x] Preserve Original Start Date
+- [x] Preserve Renewal History
+
 
 
 ### Phase 4 Outcome
 
-- [ ] Complete end-to-end renewal workflow
+- [x] Complete end-to-end renewal workflow
 
 
 

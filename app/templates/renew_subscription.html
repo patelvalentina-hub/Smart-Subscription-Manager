@@ -156,6 +156,8 @@
                         id="renewed_on"
                         name="renewed_on"
                         value="{{ today.strftime('%Y-%m-%d') }}"
+                        min="{{ subscription.next_renewal_date.strftime('%Y-%m-%d') }}"
+                        max="{{ today.strftime('%Y-%m-%d') }}"
                         required
                     >
                 </div>
