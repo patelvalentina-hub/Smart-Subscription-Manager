@@ -1449,3 +1449,190 @@ body {
     cursor: not-allowed;
     opacity: 1;
 }
+
+/* ==========================
+   Renewal History
+========================== */
+
+.renewal-history {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+}
+
+.renewal-history__header {
+    margin-bottom: 2rem;
+}
+
+.renewal-history-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.renewal-history-group {
+    width: 100%;
+}
+
+.renewal-history-date {
+    margin-bottom: 0.75rem;
+    color: #64748b;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.renewal-history__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.renewal-history__description {
+    margin-top: .5rem;
+    color: #64748b;
+}
+
+.renewal-history-list {
+    width: 100%;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+}
+
+.renewal-transaction {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.renewal-transaction:last-child {
+    border-bottom: none;
+}
+
+.renewal-transaction__icon {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+    color: #16a34a;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 1.2rem;
+}
+
+.renewal-transaction__content {
+    flex: 1;
+}
+
+.renewal-transaction__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.renewal-transaction__name {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #0f172a;
+}
+
+.renewal-transaction__status {
+    margin-top: 4px;
+    color: #16a34a;
+    font-size: .9rem;
+}
+
+.renewal-transaction__amount {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.renewal-transaction__meta {
+    margin-top: 10px;
+
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    color: #64748b;
+    font-size: .9rem;
+}
+
+.renewal-history-empty {
+    padding: 5rem 2rem;
+    text-align: center;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+.renewal-history-empty i {
+    font-size: 3rem;
+    color: #2563eb;
+    margin-bottom: 1rem;
+}
+
+.renewal-history-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin: 2rem 0;
+
+    padding: 14px 18px;
+
+    background: white;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+
+    box-shadow: 0 2px 10px rgba(15,23,42,.05);
+}
+
+.renewal-history-search i {
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.renewal-history-search input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font: inherit;
+    background: transparent;
+}
+
+.renewal-history-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 1rem;
+    padding: 0.7rem 1.1rem;
+
+    color: #ffffff;
+    background-color: var(--color-primary);
+    border-radius: var(--radius);
+
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.renewal-history-clear:hover {
+    background-color: var(--color-primary-dark);
+}

@@ -528,6 +528,49 @@ def renew_subscription(subscription_id):
     return redirect(url_for("renewals"))
 
 
+@app.route("/renewal-history")
+def renewal_history():
+    search = request.args.get("search", "").strip()
+
+    query = RenewalHistory.query
+
+    if search:
+        query = (
+            query
+            .join(Subscription)
+            .filter(
+                Subscription.name.ilike(f"%{search}%")
+            )
+        )
+
+    renewal_records = (
+        query
+        .order_by(RenewalHistory.renewed_on.desc())
+        .all()
+    )
+
+    grouped_history = []
+
+    for record in renewal_records:
+        if (
+            not grouped_history
+            or grouped_history[-1]["date"] != record.renewed_on
+        ):
+            grouped_history.append(
+                {
+                    "date": record.renewed_on,
+                    "records": [],
+                }
+            )
+
+        grouped_history[-1]["records"].append(record)
+
+    return render_template(
+        "renewal_history.html",
+        grouped_history=grouped_history,
+        search=search,
+    )
+
 
 @app.route("/reports")
 def reports():

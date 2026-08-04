@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block title %}Renewal History{% endblock %}
+
+{% block content %}
+
+<div class="renewal-history">
+
+    <header class="renewal-history__header">
+        <h1 class="renewal-history__title">
+            Renewal History
+        </h1>
+
+        <p class="renewal-history__description">
+            Review every completed subscription renewal in chronological order.
+        </p>
+
+        <form
+            class="renewal-history-search"
+            method="GET"
+        >
+
+            <i class="bi bi-search"></i>
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search subscription..."
+                value="{{ search }}"
+        >
+
+        </form>
+    </header>
+
+    {% if grouped_history %}
+
+        <div class="renewal-history-groups">
+
+            {% for group in grouped_history %}
+
+                <section class="renewal-history-group">
+
+                    <div class="renewal-history-date">
+                        {{ group.date.strftime("%d %b %Y") }}
+                    </div>
+
+                    <div class="renewal-history-list">
+
+                        {% for record in group.records %}
+
+                            <article class="renewal-transaction">
+
+                                <div class="renewal-transaction__icon">
+                                    <i class="bi bi-check-lg"></i>
+                                </div>
+
+                                <div class="renewal-transaction__content">
+
+                                    <div class="renewal-transaction__top">
+
+                                        <div>
+                                            <h3 class="renewal-transaction__name">
+                                                {{ record.subscription.name }}
+                                            </h3>
+
+                                            <p class="renewal-transaction__status">
+                                                Renewal completed
+                                            </p>
+                                        </div>
+
+                                        <strong class="renewal-transaction__amount">
+                                            ฿{{ "{:,.2f}".format(record.amount_paid) }}
+                                        </strong>
+
+                                    </div>
+
+                                    <div class="renewal-transaction__meta">
+                                        <span>
+                                            {{ record.subscription.billing_frequency }}
+                                        </span>
+
+                                        <span aria-hidden="true">•</span>
+
+                                        <span>
+                                            {{ record.subscription.category }}
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </article>
+
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="renewal-history-empty">
+            {% if search %}
+                <i class="bi bi-search"></i>
+    
+                <h2>No matching renewals</h2>
+    
+                <p>
+                    No renewal history matches
+                    <strong>"{{ search }}"</strong>.
+                </p>
+    
+                <a
+                    href="{{ url_for('renewal_history') }}"
+                    class="renewal-history-clear"
+                >
+                    Clear Search
+                </a>
+            {% else %}
+                <i class="bi bi-clock-history"></i>
+    
+                <h2>No renewal history yet</h2>
+    
+                <p>
+                    Completed subscription renewals will appear here.
+                </p>
+            {% endif %}
+        </div>
+    
+    {% endif %}
+
+</div>
+
+{% endblock %}

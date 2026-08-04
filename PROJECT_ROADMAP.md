@@ -331,7 +331,7 @@ Just sketch:
 - [ ] Test leap years
 - [x] Test monthly/yearly subscriptions
 - [x] Test duplicate renewal prevention
-- [ ] Test renewal history creation
+- [x] Test renewal history creation
 
 
 ### Renewals Page UI Redesign
@@ -376,16 +376,6 @@ Just sketch:
       (Current Renewal Date → Today)
 - [ ] Validate billing frequency changes
 - [x] Auto-recalculate next renewal
-
-### 4.3 Validation
-
-- [] Save RenewalHistory
-- [ ] Update Subscription
-- [ ] Update Last Renewal Date
-- [ ] Update Next Renewal Date
-- [ ] Update Name (if changed)
-- [ ] Update Amount (if changed)
-- [ ] Update Billing Frequency (if changed)
 
 ### 4.4 Save Renewal
 
@@ -458,17 +448,22 @@ Just sketch:
 
 ### Backend
 
-- [ ] Retrieve renewal history
-- [ ] Sort history by most recent renewal
-- [ ] Handle subscriptions with no renewal history
+- [x] Retrieve renewal history
+- [x] Sort history by most recent renewal
+- [x] Handle subscriptions with no renewal history
 
 
 
 ### UI
 
-- [ ] History page
-- [ ] Timeline/List view
-- [ ] Search renewal history
+- [x] History page
+- [x] Timeline/List view
+- [x] Search renewal history
+- [x] Group renewal history by date
+- [x] Add banking-style transaction layout
+- [x] Add no-results state for search
+- [x] Add Clear Search action
+- [x] Add History navigation link
 
 
 ## Phase 6 – Notifications
@@ -486,7 +481,7 @@ Just sketch:
 ### Business Logic
 
 - [x] Prevent duplicate renewals
-- [ ] Protect future renewal dates from accidental updates
+- [x] Protect future renewal dates from accidental updates
 - [ ] Support billing cycle validation during Renewal Confirmation
 
 
@@ -494,7 +489,7 @@ Just sketch:
 ## Git
 
 - [x] Commit Sprint 10 Phase 1 & 2
-- [ ] Push Sprint 10 to GitHub
+- [x] Push Sprint 10 to GitHub
 
 
 
@@ -511,7 +506,7 @@ Goal:
 
 Current Status:
 
-🟡 Phase 5 – Renewal History (Ready to Begin)
+🟡 Phase 6 – Notifications (Ready to Begin)
 
 ---
 

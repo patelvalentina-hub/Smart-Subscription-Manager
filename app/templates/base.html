@@ -26,29 +26,21 @@
             </a>
         
             <nav class="navbar__menu">
-        
-                <a
-                    href="{{ url_for('dashboard') }}"
-                    class="navbar__link {% if request.endpoint == 'dashboard' %}navbar__link--active{% endif %}"
-                >
+                <a href="{{ url_for('dashboard') }}" class="navbar__link {% if request.endpoint == 'dashboard' %}navbar__link--active{% endif %}">
                     Dashboard
                 </a>
-
-                <a
-                    href="{{ url_for('renewals') }}"
-                    class="navbar__link {% if request.endpoint == 'renewals' %}navbar__link--active{% endif %}"
-                >
+            
+                <a href="{{ url_for('renewals') }}" class="navbar__link {% if request.endpoint == 'renewals' %}navbar__link--active{% endif %}">
                     Renewals
                 </a>
-        
-                <a
-                    href="{{ url_for('reports') }}"
-                    class="navbar__link {% if request.endpoint == 'reports' %}navbar__link--active{% endif %}"
-                >
+            
+                <a href="{{ url_for('renewal_history') }}" class="navbar__link {% if request.endpoint == 'renewal_history' %}navbar__link--active{% endif %}">
+                    History
+                </a>
+            
+                <a href="{{ url_for('reports') }}" class="navbar__link {% if request.endpoint == 'reports' %}navbar__link--active{% endif %}">
                     Reports
                 </a>
-                
-        
             </nav>
         
         </div>
