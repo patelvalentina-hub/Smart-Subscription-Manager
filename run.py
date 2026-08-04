@@ -140,6 +140,18 @@ def dashboard():
         for amount in category_totals.values()
     ]
     upcoming_renewals = get_upcoming_renewals()
+    today = date.today()
+
+    overdue_count = Subscription.query.filter(
+        Subscription.status == "Active",
+        Subscription.next_renewal_date < today,
+    ).count()
+
+    due_today_count = Subscription.query.filter(
+        Subscription.status == "Active",
+        Subscription.next_renewal_date == today,
+    ).count()
+    
 
     return render_template(
     "dashboard.html",
@@ -161,10 +173,26 @@ def dashboard():
     monthly_cost_labels=monthly_cost_labels,
     monthly_cost_amounts=monthly_cost_amounts,
     upcoming_renewals=upcoming_renewals,
+    overdue_count=overdue_count,
+    due_today_count=due_today_count,
+    calculate_days_remaining=calculate_days_remaining,
     )
 
 
-    
+@app.context_processor
+def inject_renewal_attention_count():
+    today = date.today()
+
+    renewal_attention_count = Subscription.query.filter(
+        Subscription.status == "Active",
+        Subscription.next_renewal_date <= today,
+    ).count()
+
+    return {
+        "renewal_attention_count": renewal_attention_count,
+    }
+
+
 @app.route("/add_subscription", methods=["GET", "POST"])
 def add_subscription():
     if request.method == "POST":

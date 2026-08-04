@@ -18,7 +18,7 @@
 | Sprint 7 – UI / UX Improvements       | ✅ Complete    |
 | Sprint 8 – Dashboard Analytics        | ✅ Complete    |
 | Sprint 9 – Charts & Reports           | ✅ Complete    |
-| Sprint 10 – Renewal Management        | ⬜ In Progress |
+| Sprint 10 – Renewal Management        | ✅ Complete    |
 | Sprint 11 – User Authentication       | ⬜ Not Started |
 | Sprint 12 – Deployment & Portfolio    | ⬜ Not Started |
 
@@ -249,8 +249,8 @@ Status:
 - [x] Keep Upcoming Renewals on Dashboard
 - [x] Create dedicated Renewals page
 - [x] Add Renewals navigation item
-- [ ] Add notification badge to Renewals navigation
-- [ ] Add "View All" link from Dashboard
+- [x] Add notification badge to Renewals navigation
+
 
 
 
@@ -289,10 +289,7 @@ Just sketch:
 - [x] Calculate Renewal Status
 - [x] Overdue subscriptions
 - [x] Display renewal dates
-- [ ] Calendar page
-- [ ] Monthly calendar view
-- [ ] Highlight overdue renewals on Dashboard
-- [ ] Highlight today's renewals on Dashboard
+
 
 
 
@@ -390,7 +387,7 @@ Just sketch:
 ### 4.5 Testing
 
 - [x] Test first renewal
-- [ ] Test second renewal
+- [x] Test second renewal
 - [ ] Test billing frequency changes
 - [x] Test duplicate renewal prevention
 - [x] Test validation errors
@@ -466,11 +463,22 @@ Just sketch:
 - [x] Add History navigation link
 
 
-## Phase 6 – Notifications
+## Phase 6 – Renewal Notifications
 
-- [ ] In-app reminder badges
-- [ ] In-app renewal notifications
-- [ ] Notification badge on navigation
+### Navigation
+
+- [x] Renewal badge on navigation
+
+### Dashboard
+
+- [x] Reminder badges
+- [x] Renewal alert banner
+
+### Testing
+
+- [x] Test overdue notifications
+- [x] Test due today notifications
+- [x] Test no notification state
 
 
 
@@ -482,7 +490,7 @@ Just sketch:
 
 - [x] Prevent duplicate renewals
 - [x] Protect future renewal dates from accidental updates
-- [ ] Support billing cycle validation during Renewal Confirmation
+- [x] Support billing cycle validation during Renewal Confirmation
 
 
 
@@ -506,7 +514,7 @@ Goal:
 
 Current Status:
 
-🟡 Phase 6 – Notifications (Ready to Begin)
+🟡 Sprint 10 – Final QA and Closure
 
 ---
 
@@ -590,6 +598,7 @@ Current Status:
 - [ ] Expand category cards
 - [x] Pie / doughnut charts
 - [ ] Monthly spending trend
+- [ ] Add "View All" link from Dashboard
 
 
 
@@ -622,6 +631,11 @@ Current Status:
 - Support multiple Billing Cycle Policies
   - [ ] Fixed Billing Cycle
   - [ ] Reset Billing Cycle on Renewal
+
+- [ ] Calendar page
+- [ ] Monthly calendar view
+- [ ] Highlight overdue renewals on Dashboard
+- [ ] Highlight today's renewals on Dashboard
 
 ---
 

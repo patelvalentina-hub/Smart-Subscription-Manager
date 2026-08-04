@@ -30,8 +30,26 @@
                     Dashboard
                 </a>
             
-                <a href="{{ url_for('renewals') }}" class="navbar__link {% if request.endpoint == 'renewals' %}navbar__link--active{% endif %}">
-                    Renewals
+                <a
+                    href="{{ url_for('renewals') }}"
+                    class="navbar__link
+                    {% if request.endpoint in [
+                        'renewals',
+                        'renew_subscription_confirmation'
+                    ] %}
+                        navbar__link--active
+                    {% endif %}"
+                >
+                    <span>Renewals</span>
+
+                    {% if renewal_attention_count > 0 %}
+                        <span
+                            class="navbar__notification-badge"
+                            aria-label="{{ renewal_attention_count }} renewals require attention"
+                        >
+                            {{ renewal_attention_count }}
+                        </span>
+                    {% endif %}
                 </a>
             
                 <a href="{{ url_for('renewal_history') }}" class="navbar__link {% if request.endpoint == 'renewal_history' %}navbar__link--active{% endif %}">

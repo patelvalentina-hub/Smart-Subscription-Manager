@@ -8,6 +8,48 @@
             <!-- Welcome heading -->
             <h1 class="dashboard__welcome">Welcome back, Valentina!</h1>
 
+            {% if overdue_count > 0 or due_today_count > 0 %}
+                <section class="renewal-alert" aria-label="Renewal alerts">
+
+                    <div class="renewal-alert__icon">
+                        <i class="bi bi-bell-fill"></i>
+                    </div>
+
+                    <div class="renewal-alert__content">
+                        <h2>Renewal alerts</h2>
+
+                        <p>
+                            {% if overdue_count > 0 %}
+                                {{ overdue_count }}
+                                overdue subscription{% if overdue_count != 1 %}s{% endif %}
+                            {% endif %}
+
+                            {% if overdue_count > 0 and due_today_count > 0 %}
+                                and
+                            {% endif %}
+
+                            {% if due_today_count > 0 %}
+                                {{ due_today_count }}
+                                subscription{% if due_today_count != 1 %}s{% endif %}
+                                due today
+                            {% endif %}
+
+                            require{% if overdue_count + due_today_count == 1 %}s{% endif %}
+                            your attention.
+                        </p>
+                    </div>
+
+                    <a
+                        href="{{ url_for('renewals') }}"
+                        class="renewal-alert__link"
+                    >
+                        View Renewals
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                </section>
+            {% endif %}
+
             <!-- Statistic cards -->
             <section class="stats" aria-label="Subscription statistics">
 
@@ -139,27 +181,56 @@
                     </p>
                 
                     {% if upcoming_renewals %}
-                        <div class="stats__renewal-list">
-                
-                            {% for subscription in upcoming_renewals %}
-                                <div class="stats__renewal-item">
-                                    <div>
-                                        <strong>{{ subscription.name }}</strong>
-                                        <span>{{ subscription.category }}</span>
-                                    </div>
-                
-                                    <time datetime="{{ subscription.next_renewal_date }}">
-                                        {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
-                                    </time>
-                                </div>
-                            {% endfor %}
-                
+                    <div class="stats__renewal-list">
+
+                        {% for subscription in upcoming_renewals %}
+                        {% set days = calculate_days_remaining(subscription.next_renewal_date) %}
+
+                        <div class="stats__renewal-item">
+
+                            <div>
+                                <strong>{{ subscription.name }}</strong>
+                                <span>{{ subscription.category }}</span>
+                            </div>
+
+                            <div class="stats__renewal-status">
+
+                                <time datetime="{{ subscription.next_renewal_date }}">
+                                    {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                                </time>
+
+                                {% if days < 0 %}
+                                    <span class="reminder-badge reminder-badge--overdue">
+                                        Overdue
+                                    </span>
+
+                                {% elif days == 0 %}
+                                    <span class="reminder-badge reminder-badge--due-today">
+                                        Due Today
+                                    </span>
+
+                                {% else %}
+                                    <span class="reminder-badge reminder-badge--upcoming">
+                                        {{ days }} day{% if days != 1 %}s{% endif %} left
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
                         </div>
-                    {% else %}
-                        <p class="stats__value stats__value--text">
-                            No renewals in the next 7 days
-                        </p>
-                    {% endif %}
+
+                    {% endfor %}
+
+                </div>
+
+                {% else %}
+
+                <p class="stats__value stats__value--text">
+                    No renewals in the next 7 days
+                </p>
+
+                {% endif %}
                 </article> 
 
             </section>
