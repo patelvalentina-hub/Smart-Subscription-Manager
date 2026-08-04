@@ -7,21 +7,27 @@
 # Project Progress
 
 
-| Sprint                                | Status         |
-| ------------------------------------- | -------------- |
-| Sprint 1 – Project Setup              | ✅ Complete     |
-| Sprint 2 – Dashboard UI               | ✅ Complete     |
-| Sprint 3 – Database Integration       | ✅ Complete     |
-| Sprint 4 – Add Subscription           | ✅ Complete     |
-| Sprint 5 – Edit & Delete Subscription | ✅ Complete     |
-| Sprint 6 – Dashboard Statistics       | ✅ Complete     |
-| Sprint 7 – UI / UX Improvements       | ✅ Complete     |
-| Sprint 8 – Dashboard Analytics        | ✅ Complete     |
-| Sprint 9 – Charts & Reports           | ✅ Complete |
-| Sprint 10 – Calendar & Reminders      | ⬜ Not Started  |
-| Sprint 11 – User Authentication       | ⬜ Not Started  |
-| Sprint 12 – Deployment & Portfolio    | ⬜ Not Started  |
+| Sprint                                | Status        |
+| ------------------------------------- | ------------- |
+| Sprint 1 – Project Setup              | ✅ Complete    |
+| Sprint 2 – Dashboard UI               | ✅ Complete    |
+| Sprint 3 – Database Integration       | ✅ Complete    |
+| Sprint 4 – Add Subscription           | ✅ Complete    |
+| Sprint 5 – Edit & Delete Subscription | ✅ Complete    |
+| Sprint 6 – Dashboard Statistics       | ✅ Complete    |
+| Sprint 7 – UI / UX Improvements       | ✅ Complete    |
+| Sprint 8 – Dashboard Analytics        | ✅ Complete    |
+| Sprint 9 – Charts & Reports           | ✅ Complete    |
+| Sprint 10 – Renewal Management        | ✅ Complete    |
+| Sprint 11 – User Authentication       | ⬜ Not Started |
+| Sprint 12 – Deployment & Portfolio    | ⬜ Not Started |
 
+
+
+
+## Project Overview
+
+Smart Subscription Manager is a Flask-based web application that helps users manage recurring subscriptions, monitor spending, visualize analytics, track renewals, and receive renewal reminders through an intuitive dashboard.
 
 ---
 
@@ -174,7 +180,6 @@ Add clear visual charts and report summaries that help users understand their su
 - [x] Add comments where necessary
 - [x] Verify monthly cost calculation uses shared helper functions
 
-
 ---
 
 
@@ -192,11 +197,14 @@ Add clear visual charts and report summaries that help users understand their su
 
 - [x] Preserve entered values and highlight invalid fields on both Add and Edit Subscription forms
 
-
 ---
+
+
+
 ## Sprint Outcome
 
 Completed:
+
 - Dashboard analytics with Chart.js
 - Three interactive charts
 - Reports page
@@ -208,20 +216,305 @@ Completed:
 Status:
 ✅ Sprint 9 Complete
 
-
 # Sprint 10 – Renewal Management
 
 
 
-## Features
+## Phase 1 – Planning & Database Design
 
-- [ ] Renewal Calendar
-- [ ] Days Remaining
-- [ ] Mark subscription as renewed
-- [ ] Store last renewal date
-- [ ] Renewal history
-- [ ] Show overdue subscriptions
-- [ ] In-app renewal Notification
+
+
+### 10.1 Database Design
+
+- [x] Review current Subscription model
+- [x] Compare one-table vs two-table design
+- [x] Decide to use a separate RenewalHistory table
+- [x] Finalize database schema
+- [x] Update ERD documentation
+
+
+
+### 10.2 Renewal Logic
+
+- [x] Define "Days Remaining"
+- [x] Define "Due Today"
+- [x] Define "Overdue"
+- [x] Define automatic next renewal calculation
+- [x] Define renewal workflow
+
+
+
+### 10.3 Navigation & Page Planning
+
+- [x] Keep Upcoming Renewals on Dashboard
+- [x] Create dedicated Renewals page
+- [x] Add Renewals navigation item
+- [x] Add notification badge to Renewals navigation
+
+
+
+
+### 10.4 UI Mockup
+
+No coding.
+
+Just sketch:
+
+- Dashboard navigation
+- Renewals page
+- Calendar
+- Renewal History
+- Renewal Button
+- Reminder badge
+
+
+
+## Phase 2 – Database & Core Renewal Logic
+
+- [x] Add `last_renewal_date` to Subscription
+- [x] Create RenewalHistory model
+- [x] Create SQLAlchemy relationship
+- [x] Verify relationship queries
+- [x] Update existing database safely
+- [x] Test database changes
+- [x] Calculate Days Remaining
+- [ ] Unit test Days Remaining
+
+
+
+## Phase 3 – Renewals UI & Features
+
+- [x] Create Renewals page
+- [x] Group subscriptions by renewal status
+- [x] Calculate Renewal Status
+- [x] Overdue subscriptions
+- [x] Display renewal dates
+
+
+
+
+### Subscription Editing Lifecycle
+
+
+
+#### Before First Renewal
+
+- [x] Allow editing all subscription details
+- [x] Allow changing Start Date
+- [x] Allow changing Billing Frequency
+- [x] Allow changing Amount
+- [x] Validate Next Renewal Date
+
+
+
+#### After First Renewal
+
+- [x] Preserve Original Start Date
+- [x] Lock Original Start Date
+- [x] Lock Next Renewal Date
+- [x] Lock Amount on Edit Subscription
+- [x] Lock Billing Frequency on Edit Subscription
+- [x] Allow Name changes
+- [x] Allow Category changes
+- [x] Allow Status changes
+- [x] Allow Delete Subscription
+
+
+
+### Testing
+
+- [x] Test overdue subscriptions
+- [x] Test future renewals
+- [ ] Test leap years
+- [x] Test monthly/yearly subscriptions
+- [x] Test duplicate renewal prevention
+- [x] Test renewal history creation
+
+
+### Renewals Page UI Redesign
+
+- [x] Create renewal status filter bar
+- [x] Design compact renewal cards
+- [x] Create tab navigation
+- [x] Overdue tab
+- [x] Due Today tab
+- [x] Upcoming tab
+- [x] Display counts on each tab
+- [x] Default to Overdue tab
+- [x] Style active tab
+- [x] Style Renew Subscription button
+- [ ] Test responsive Renewals page
+- [x] Remove duplicate section headings
+
+
+## Phase 4 – Renewal Confirmation Workflow
+
+### 4.1 UI
+
+- [x] Create Renewal Confirmation page
+- [x] Create page layout
+- [x] Display Original Start Date
+- [x] Display Current Subscription Details
+- [x] Display Current Billing Frequency
+- [x] Display Current Amount
+- [x] Display Current Renewal Date
+- [x] Display calculated Next Renewal Date
+
+### 4.2 Editable Fields
+
+- [x] Allow editing Subscription Name
+- [x] Allow editing Amount
+- [x] Allow editing Billing Frequency
+- [x] Allow editing Renewal Date
+
+### 4.3 Validation
+
+- [x] Restrict "Renewed On" to the valid renewal window
+      (Current Renewal Date → Today)
+- [ ] Validate billing frequency changes
+- [x] Auto-recalculate next renewal
+
+### 4.4 Save Renewal
+
+- [x] Save RenewalHistory
+- [x] Update Subscription
+- [x] Update Last Renewal Date
+- [x] Update Next Renewal Date
+- [x] Update Name (if changed)
+- [x] Update Amount (if changed)
+- [x] Update Billing Frequency (if changed)
+
+### 4.5 Testing
+
+- [x] Test first renewal
+- [x] Test second renewal
+- [ ] Test billing frequency changes
+- [x] Test duplicate renewal prevention
+- [x] Test validation errors
+
+
+### Dashboard / Renewals Page
+
+- [x] Show "Renew Subscription" button only for Due Today or Overdue subscriptions
+
+
+
+### Backend
+
+- [x] Load Renewal Confirmation
+- [x] Validate renewal information
+- [x] Save RenewalHistory
+- [x] Update Subscription
+- [x] Update Subscription Name (if changed)
+- [x] Update Billing Frequency (if changed)
+- [x] Update Amount (if changed)
+- [x] Update Last Renewal Date
+- [x] Update Next Renewal Date
+
+
+
+### Business Rules
+
+- [x] Renewal is available only for Due Today or Overdue subscriptions.
+- [x] Renewals are created through the Renew action, not by editing the subscription.
+- [x] Prevent duplicate renewals
+- [x] Before first renewal all fields are editable
+- [x] After first renewal billing changes only occur during Renewal Confirmation
+- [x] Original Start Date is immutable after first renewal
+- [x] Renewal History must preserve previous billing events
+
+### Subscription Lifecycle
+
+- [x] Before first renewal all fields editable
+- [x] After first renewal lock billing information
+- [x] Billing changes only through Renewal Confirmation
+- [x] Preserve Original Start Date
+- [x] Preserve Renewal History
+
+
+
+### Phase 4 Outcome
+
+- [x] Complete end-to-end renewal workflow
+
+
+
+## Phase 5 – Renewal History
+
+
+
+### Backend
+
+- [x] Retrieve renewal history
+- [x] Sort history by most recent renewal
+- [x] Handle subscriptions with no renewal history
+
+
+
+### UI
+
+- [x] History page
+- [x] Timeline/List view
+- [x] Search renewal history
+- [x] Group renewal history by date
+- [x] Add banking-style transaction layout
+- [x] Add no-results state for search
+- [x] Add Clear Search action
+- [x] Add History navigation link
+
+
+## Phase 6 – Renewal Notifications
+
+### Navigation
+
+- [x] Renewal badge on navigation
+
+### Dashboard
+
+- [x] Reminder badges
+- [x] Renewal alert banner
+
+### Testing
+
+- [x] Test overdue notifications
+- [x] Test due today notifications
+- [x] Test no notification state
+
+
+
+## Sprint 10 Fixes
+
+
+
+### Business Logic
+
+- [x] Prevent duplicate renewals
+- [x] Protect future renewal dates from accidental updates
+- [x] Support billing cycle validation during Renewal Confirmation
+
+
+
+## Git
+
+- [x] Commit Sprint 10 Phase 1 & 2
+- [x] Push Sprint 10 to GitHub
+
+
+
+## Sprint Outcome
+
+Goal:
+
+- Renewal management
+- Renewal history
+- Renewal status calculation
+- Renewal calendar
+- Reminder badges
+- Automatic renewal workflow
+
+Current Status:
+
+🟡 Sprint 10 – Final QA and Closure
 
 ---
 
@@ -292,13 +585,25 @@ Status:
 
 
 
+## Renewals
+
+- [ ] Search Renewal History
+- [ ] Filter Renewal History
+- [ ] Export Renewal History
+
+
+
 ## Dashboard
 
 - [ ] Expand category cards
 - [x] Pie / doughnut charts
 - [ ] Monthly spending trend
+- [ ] Add "View All" link from Dashboard
+
+
 
 ## Reports Page
+
 - [ ] Export CSV
 - [ ] Export PDF
 
@@ -311,12 +616,48 @@ Status:
 - [ ] Desktop notifications
 - [ ] Renewal Notifications
 
+
+
 ## MAintenance/Refactoring
+
 - [ ] Refactor style.css
 - [ ] Refactor dashboard.html
 - [ ] Move repeated currency formatting into a reusable helper
 
+
+
+## Future Enhancement
+
+- Support multiple Billing Cycle Policies
+  - [ ] Fixed Billing Cycle
+  - [ ] Reset Billing Cycle on Renewal
+
+- [ ] Calendar page
+- [ ] Monthly calendar view
+- [ ] Highlight overdue renewals on Dashboard
+- [ ] Highlight today's renewals on Dashboard
+
 ---
+
+
+
+# Development Infrastructure
+
+
+
+## Environment
+
+- [x] Create virtual environment
+- [x] Create requirements.txt
+
+
+
+## Database
+
+- [ ] Configure Flask-Migrate
+- [ ] Initialize Alembic migrations
+- [ ] Create initial database migration
+- [ ] Verify migration workflow
 
 
 

@@ -7,6 +7,7 @@
 {% set errors = errors | default({}) %}
 {% set is_editing = is_editing | default(false) %}
 {% set subscription = subscription | default(none) %}
+{% set has_been_renewed = has_been_renewed | default(false) %}
 
 {% set values = {
     "subscription_name": form_data.get("subscription_name") if form_data else (subscription.name if is_editing and subscription else ""),
@@ -152,6 +153,7 @@
                     step="0.01"
                     min="0"
                     value="{{ values.amount }}"
+                    {% if is_editing and has_been_renewed %}disabled{% endif %}
                     required
                 >
             </div>
@@ -159,7 +161,12 @@
             <div class="form-field">
                 <label for="billing_frequency">Billing Frequency</label>
             
-                <select id="billing_frequency" name="billing_frequency" required>
+                <select
+                    id="billing_frequency"
+                    name="billing_frequency"
+                    {% if is_editing and has_been_renewed %}disabled{% endif %}
+                    required
+                >
                     
                     <option value="" {% if not values.billing_frequency %}selected{% endif %}>
                         Select billing frequency
@@ -211,6 +218,7 @@
                     name="start_date"
                     value="{{ values.start_date }}"
                     class="{% if errors.get('start_date') %}form-field__input--error{% endif %}"
+                    {% if is_editing and has_been_renewed %}disabled{% endif %}
                     required
                 >
             
@@ -230,6 +238,7 @@
                     name="next_renewal_date"
                     value="{{ values.next_renewal_date }}"
                     class="{% if errors.get('next_renewal_date') %}form-field__input--error{% endif %}"
+                    {% if is_editing and has_been_renewed %}disabled{% endif %}
                     required
                 >
             
@@ -239,6 +248,18 @@
                     </p>
                 {% endif %}
             </div>
+
+            {% if is_editing and has_been_renewed %}
+                <div class="billing-lock-message">
+                    <i class="bi bi-lock-fill"></i>
+
+                    <span>
+                        Billing information is locked after the first renewal.
+                        Update the amount, billing frequency, and renewal date
+                        through the Renewal process.
+                    </span>
+                </div>
+            {% endif %}
 
             <div class="form-field">
                 <label for="status">Status</label>

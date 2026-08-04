@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block title %}Renew Subscription{% endblock %}
+
+{% block content %}
+
+<div class="renewal-page">
+
+    <div class="renewal-confirmation-card">
+
+        <form
+            method="POST"
+            action="{{ url_for(
+                'renew_subscription',
+                subscription_id=subscription.id
+            ) }}"
+        >
+
+        <div class="page-header">
+            <h1>Renew Subscription</h1>
+
+            <p>
+                Review the renewal details before confirming.
+            </p>
+        </div>
+
+        <section class="renewal-confirmation-section">
+            <h2>Current Subscription</h2>
+        
+            <div class="renewal-current-grid">
+
+                <div>
+                    <span class="renewal-current-label">
+                        Subscription Name
+                    </span>
+            
+                    <strong>
+                        {{ subscription.name }}
+                    </strong>
+                </div>
+            
+                <div>
+                    <span class="renewal-current-label">
+                        Original Start Date
+                    </span>
+            
+                    <strong>
+                        {{ subscription.start_date.strftime("%d %b %Y") }}
+                    </strong>
+                </div>
+            
+                <div>
+                    <span class="renewal-current-label">
+                        Last Renewal
+                    </span>
+            
+                    <strong>
+                        {% if subscription.last_renewal_date %}
+                            {{ subscription.last_renewal_date.strftime("%d %b %Y") }}
+                        {% else %}
+                            Not renewed yet
+                        {% endif %}
+                    </strong>
+                </div>
+            
+                <div>
+                    <span class="renewal-current-label">
+                        Current Renewal Date
+                    </span>
+            
+                    <strong>
+                        {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                    </strong>
+                </div>
+            
+            </div>
+        </section>
+
+        <hr>
+
+        <section class="renewal-confirmation-section">
+            <h2>Renewal Details</h2>
+        
+            <p class="renewal-section-description">
+                Update the details for this renewal.
+            </p>
+        
+            <div class="renewal-form-grid">
+        
+                <div class="form-field">
+                    <label for="subscription_name">
+                        Subscription Name
+                    </label>
+        
+                    <input
+                        type="text"
+                        id="subscription_name"
+                        name="subscription_name"
+                        value="{{ subscription.name }}"
+                        required
+                    >
+                </div>
+        
+                <div class="form-field">
+                    <label for="amount">
+                        Amount (THB)
+                    </label>
+        
+                    <input
+                        type="number"
+                        id="amount"
+                        name="amount"
+                        value="{{ '%.2f'|format(subscription.amount) }}"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+                </div>
+        
+                <div class="form-field">
+                    <label for="billing_frequency">
+                        Billing Frequency
+                    </label>
+        
+                    <select
+                        id="billing_frequency"
+                        name="billing_frequency"
+                        required
+                    >
+                        {% for frequency in [
+                            "Weekly",
+                            "Monthly",
+                            "Every 3 Months",
+                            "Every 6 Months",
+                            "Yearly"
+                        ] %}
+                            <option
+                                value="{{ frequency }}"
+                                {% if subscription.billing_frequency == frequency %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ frequency }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+        
+                <div class="form-field">
+                    <label for="renewed_on">
+                        Renewed On
+                    </label>
+        
+                    <input
+                        type="date"
+                        id="renewed_on"
+                        name="renewed_on"
+                        value="{{ today.strftime('%Y-%m-%d') }}"
+                        min="{{ subscription.next_renewal_date.strftime('%Y-%m-%d') }}"
+                        max="{{ today.strftime('%Y-%m-%d') }}"
+                        required
+                    >
+                </div>
+        
+            </div>
+        </section>
+
+        <hr>
+
+        <div class="renewal-summary-grid">
+
+            <div class="summary-box">
+                <span class="summary-label">Current Amount</span>
+                <span class="summary-value" id="summary-amount">
+                    ฿{{ "%.2f"|format(subscription.amount) }}
+                </span>
+            </div>
+        
+            <div class="summary-box">
+                <span class="summary-label">Billing Frequency</span>
+                <span class="summary-value" id="summary-frequency">
+                    {{ subscription.billing_frequency }}
+                </span>
+            </div>
+        
+            <div class="summary-box">
+                <span class="summary-label">Renewed On</span>
+                <span class="summary-value" id="summary-renewed-date">
+                    {{ today.strftime("%d %b %Y") }}
+                </span>
+            </div>
+        
+            <div class="summary-box">
+                <span class="summary-label">Next Renewal Date</span>
+                <span class="summary-value" id="summary-next-date">
+                    Calculating...
+                </span>
+            </div>
+        
+        </div>
+
+        <div class="renewal-actions">
+
+            <a
+                href="{{ url_for('renewals') }}"
+                class="btn-secondary"
+            >
+                Cancel
+            </a>
+        
+            <button
+                type="submit"
+                class="btn-primary"
+            >
+                Confirm Renewal
+            </button>
+        
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

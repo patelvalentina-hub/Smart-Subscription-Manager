@@ -4,39 +4,72 @@ from dateutil.relativedelta import relativedelta
 
 from app.models import Subscription
 
-def calculate_next_renewal_date(start_date, billing_frequency):
+
+def calculate_next_renewal_date(current_date, billing_frequency):
     """
-    Calculate the expected next renewal date.
+    Calculate one billing interval after the supplied date.
+    """
+
+    frequency_offsets = {
+        "Weekly": relativedelta(weeks=1),
+        "Monthly": relativedelta(months=1),
+        "Every 3 Months": relativedelta(months=3),
+        "Every 6 Months": relativedelta(months=6),
+        "Yearly": relativedelta(years=1),
+    }
+
+    offset = frequency_offsets.get(billing_frequency)
+
+    if offset is None:
+        return None
+
+    return current_date + offset
+
+
+def calculate_renewal_date_for_cycle(
+    start_date,
+    billing_frequency,
+    cycle_number,
+):
+    """
+    Calculate a scheduled renewal date using the original
+    subscription start date as the fixed billing anchor.
     """
 
     if billing_frequency == "Weekly":
-        return start_date + timedelta(weeks=1)
+        return start_date + relativedelta(weeks=cycle_number)
 
     if billing_frequency == "Monthly":
-        return start_date + relativedelta(months=1)
+        return start_date + relativedelta(months=cycle_number)
 
     if billing_frequency == "Every 3 Months":
-        return start_date + relativedelta(months=3)
+        return start_date + relativedelta(
+            months=3 * cycle_number
+        )
 
     if billing_frequency == "Every 6 Months":
-        return start_date + relativedelta(months=6)
+        return start_date + relativedelta(
+            months=6 * cycle_number
+        )
 
     if billing_frequency == "Yearly":
-        return start_date + relativedelta(years=1)
+        return start_date + relativedelta(years=cycle_number)
 
     return None
-
 
 
 def is_valid_renewal_date(
     start_date,
     billing_frequency,
     next_renewal_date,
-    tolerance_days=0,
 ):
     """
-    Check whether the renewal date is close to the expected billing date.
+    Validate the first renewal date for a subscription that has
+    never been renewed.
     """
+
+    if not start_date or not next_renewal_date:
+        return False
 
     expected_date = calculate_next_renewal_date(
         start_date,
@@ -46,11 +79,22 @@ def is_valid_renewal_date(
     if expected_date is None:
         return False
 
-    difference = abs((next_renewal_date - expected_date).days)
+    return next_renewal_date == expected_date
 
-    return difference <= tolerance_days
 
-            
+def calculate_days_remaining(renewal_date):
+    """
+    Returns the number of days until the renewal date.
+
+    Returns:
+        > 0 : Renewal is in the future
+        = 0 : Renewal is due today
+        < 0 : Renewal is overdue
+    """
+    today = date.today()
+    return (renewal_date - today).days
+
+
 def count_active_subscriptions():
     return Subscription.query.filter_by(status="Active").count()
 

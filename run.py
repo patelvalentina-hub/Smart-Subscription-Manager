@@ -1,17 +1,19 @@
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from decimal import Decimal
 
 from flask import (
-    Flask, 
+    Flask,
     flash,
-    redirect, 
-    render_template, 
-    request, 
-    url_for
+    redirect,
+    render_template,
+    request,
+    url_for,
 )
 
+from flask_migrate import Migrate
 
-from app.models import Subscription, db
+
+from app.models import RenewalHistory, Subscription, db
 
 from app.utils import (
     calculate_estimated_monthly_cost,
@@ -19,6 +21,8 @@ from app.utils import (
     calculate_yearly_cost,
     count_active_subscriptions,
     count_renewing_soon,
+    calculate_days_remaining,
+    calculate_next_renewal_date,
     get_cheapest_subscription,
     get_monthly_cost,
     get_most_expensive_subscription,
@@ -39,6 +43,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///subscriptions.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
 
 @app.route("/")
@@ -135,6 +140,18 @@ def dashboard():
         for amount in category_totals.values()
     ]
     upcoming_renewals = get_upcoming_renewals()
+    today = date.today()
+
+    overdue_count = Subscription.query.filter(
+        Subscription.status == "Active",
+        Subscription.next_renewal_date < today,
+    ).count()
+
+    due_today_count = Subscription.query.filter(
+        Subscription.status == "Active",
+        Subscription.next_renewal_date == today,
+    ).count()
+    
 
     return render_template(
     "dashboard.html",
@@ -156,10 +173,26 @@ def dashboard():
     monthly_cost_labels=monthly_cost_labels,
     monthly_cost_amounts=monthly_cost_amounts,
     upcoming_renewals=upcoming_renewals,
+    overdue_count=overdue_count,
+    due_today_count=due_today_count,
+    calculate_days_remaining=calculate_days_remaining,
     )
 
 
-    
+@app.context_processor
+def inject_renewal_attention_count():
+    today = date.today()
+
+    renewal_attention_count = Subscription.query.filter(
+        Subscription.status == "Active",
+        Subscription.next_renewal_date <= today,
+    ).count()
+
+    return {
+        "renewal_attention_count": renewal_attention_count,
+    }
+
+
 @app.route("/add_subscription", methods=["GET", "POST"])
 def add_subscription():
     if request.method == "POST":
@@ -234,74 +267,113 @@ def add_subscription():
 
 
 
-@app.route("/edit_subscription/<int:subscription_id>", methods=["GET", "POST"])
+@app.route(
+    "/edit_subscription/<int:subscription_id>",
+    methods=["GET", "POST"],
+)
 def edit_subscription(subscription_id):
-    subscription = Subscription.query.get_or_404(subscription_id)
+    subscription = Subscription.query.get_or_404(
+        subscription_id
+    )
+
+    has_been_renewed = (
+        subscription.last_renewal_date is not None
+    )
 
     if request.method == "POST":
-        start_date = datetime.strptime(
-            request.form["start_date"],
-            "%Y-%m-%d",
-        ).date()
-
-        next_renewal_date = datetime.strptime(
-            request.form["next_renewal_date"],
-            "%Y-%m-%d",
-        ).date()
-        
         status = request.form["status"]
-        today = date.today()
         errors = {}
 
-        if start_date > today:
-            errors["start_date"] = (
-                "Start date cannot be in the future. "
-                "Please select today's date or an earlier date."
-            )
+        # These fields remain editable after renewal.
+        subscription.name = request.form[
+            "subscription_name"
+        ].strip()
 
-        if status == "Active" and next_renewal_date < today:
-            errors["next_renewal_date"] = (
-                "An active subscription must have a renewal date "
-                "of today or later."
-            )
+        subscription.category = request.form[
+            "category"
+        ]
 
-        billing_frequency = request.form["billing_frequency"]
-
-        if not is_valid_renewal_date(
-            start_date,
-            billing_frequency,
-            next_renewal_date,
-        ):
-            errors["next_renewal_date"] = (
-                "Please select a valid renewal date "
-                "for the chosen billing frequency."
-            )
-
-        if errors:
-            flash(
-                "Please correct the highlighted fields below.",
-                "error",
-            )
-
-            return render_template(
-                "add_subscription.html",
-                subscription=subscription,
-                is_editing=True,
-                form_data=request.form,
-                errors=errors,
-            )
-
-        subscription.name = request.form["subscription_name"]
-        subscription.category = request.form["category"]
-        subscription.amount = Decimal(request.form["amount"])
-        subscription.billing_frequency = billing_frequency
-        subscription.start_date = start_date
-        subscription.next_renewal_date = next_renewal_date
         subscription.status = status
+
+        # Billing-related fields are editable only
+        # before the first renewal.
+        if not has_been_renewed:
+            start_date = datetime.strptime(
+                request.form["start_date"],
+                "%Y-%m-%d",
+            ).date()
+
+            next_renewal_date = datetime.strptime(
+                request.form["next_renewal_date"],
+                "%Y-%m-%d",
+            ).date()
+
+            billing_frequency = request.form[
+                "billing_frequency"
+            ]
+
+            today = date.today()
+
+            if start_date > today:
+                errors["start_date"] = (
+                    "Start date cannot be in the future. "
+                    "Please select today's date or an earlier date."
+                )
+
+            if (
+                status == "Active"
+                and next_renewal_date < today
+            ):
+                errors["next_renewal_date"] = (
+                    "An active subscription must have a "
+                    "renewal date of today or later."
+                )
+
+            if not is_valid_renewal_date(
+                start_date,
+                billing_frequency,
+                next_renewal_date,
+            ):
+                errors["next_renewal_date"] = (
+                    "Please select a valid renewal date "
+                    "for the chosen billing frequency."
+                )
+
+            if errors:
+                flash(
+                    "Please correct the highlighted fields below.",
+                    "error",
+                )
+
+                return render_template(
+                    "add_subscription.html",
+                    subscription=subscription,
+                    is_editing=True,
+                    has_been_renewed=has_been_renewed,
+                    form_data=request.form,
+                    errors=errors,
+                )
+
+            subscription.amount = Decimal(
+                request.form["amount"]
+            )
+
+            subscription.billing_frequency = (
+                billing_frequency
+            )
+
+            subscription.start_date = start_date
+
+            subscription.next_renewal_date = (
+                next_renewal_date
+            )
 
         db.session.commit()
 
-        flash("Subscription updated successfully.", "success")
+        flash(
+            "Subscription updated successfully.",
+            "success",
+        )
 
         return redirect(url_for("dashboard"))
 
@@ -309,6 +381,7 @@ def edit_subscription(subscription_id):
         "add_subscription.html",
         subscription=subscription,
         is_editing=True,
+        has_been_renewed=has_been_renewed,
     )
 
 
@@ -322,6 +395,209 @@ def delete_subscription(subscription_id):
     flash("Subscription deleted successfully.", "success")
 
     return redirect(url_for("dashboard"))
+
+
+@app.route("/renewals")
+def renewals():
+    today = date.today()
+
+    active_subscriptions = Subscription.query.filter_by(
+        status="Active"
+    ).order_by(
+        Subscription.next_renewal_date.asc()
+    ).all()
+
+    overdue_subscriptions = [
+        subscription
+        for subscription in active_subscriptions
+        if calculate_days_remaining(
+            subscription.next_renewal_date
+        ) < 0
+    ]
+
+    due_today_subscriptions = [
+        subscription
+        for subscription in active_subscriptions
+        if calculate_days_remaining(
+            subscription.next_renewal_date
+        ) == 0
+    ]
+
+    upcoming_subscriptions = [
+        subscription
+        for subscription in active_subscriptions
+        if 1 <= calculate_days_remaining(
+            subscription.next_renewal_date
+        ) <= 7
+    ]
+
+
+    return render_template(
+        "renewals.html",
+        overdue_subscriptions=overdue_subscriptions,
+        due_today_subscriptions=due_today_subscriptions,
+        upcoming_subscriptions=upcoming_subscriptions,
+        calculate_days_remaining=calculate_days_remaining,
+    )
+
+
+@app.route(
+    "/renew_subscription/<int:subscription_id>",
+    methods=["GET"],
+)
+def renew_subscription_confirmation(subscription_id):
+
+    subscription = Subscription.query.get_or_404(
+        subscription_id
+    )
+
+    return render_template(
+        "renew_subscription.html",
+        subscription=subscription,
+        today=date.today(),
+    )
+
+    
+@app.route(
+    "/renew_subscription/<int:subscription_id>",
+    methods=["POST"],
+)
+def renew_subscription(subscription_id):
+    subscription = Subscription.query.get_or_404(subscription_id)
+
+    today = date.today()
+
+    renewed_on = datetime.strptime(
+        request.form["renewed_on"],
+        "%Y-%m-%d",
+    ).date()
+
+    subscription_name = request.form[
+        "subscription_name"
+    ].strip()
+
+    amount = Decimal(request.form["amount"])
+
+    billing_frequency = request.form[
+        "billing_frequency"
+    ]
+
+    # Renewal must not be recorded in the future.
+    if renewed_on > today:
+        flash(
+            "Renewal date cannot be in the future.",
+            "error",
+        )
+
+        return redirect(
+            url_for(
+                "renew_subscription_confirmation",
+                subscription_id=subscription.id,
+            )
+        )
+
+    # Renewal cannot happen before the currently scheduled due date.
+    if renewed_on < subscription.next_renewal_date:
+        flash(
+            "Renewal date cannot be before the current renewal date.",
+            "error",
+        )
+
+        return redirect(
+            url_for(
+                "renew_subscription_confirmation",
+                subscription_id=subscription.id,
+            )
+        )
+
+    existing_renewal = RenewalHistory.query.filter_by(
+        subscription_id=subscription.id,
+        renewed_on=renewed_on,
+    ).first()
+
+    if existing_renewal:
+        flash(
+            "This renewal has already been recorded.",
+            "error",
+        )
+
+        return redirect(
+            url_for(
+                "renew_subscription_confirmation",
+                subscription_id=subscription.id,
+            )
+        )
+
+    next_renewal_date = calculate_next_renewal_date(
+        renewed_on,
+        billing_frequency,
+    )
+
+    renewal_record = RenewalHistory(
+        subscription_id=subscription.id,
+        renewed_on=renewed_on,
+        amount_paid=amount,
+    )
+
+    subscription.name = subscription_name
+    subscription.amount = amount
+    subscription.billing_frequency = billing_frequency
+    subscription.last_renewal_date = renewed_on
+    subscription.next_renewal_date = next_renewal_date
+
+    db.session.add(renewal_record)
+    db.session.commit()
+
+    flash(
+        f"{subscription.name} marked as renewed successfully.",
+        "success",
+    )
+
+    return redirect(url_for("renewals"))
+
+
+@app.route("/renewal-history")
+def renewal_history():
+    search = request.args.get("search", "").strip()
+
+    query = RenewalHistory.query
+
+    if search:
+        query = (
+            query
+            .join(Subscription)
+            .filter(
+                Subscription.name.ilike(f"%{search}%")
+            )
+        )
+
+    renewal_records = (
+        query
+        .order_by(RenewalHistory.renewed_on.desc())
+        .all()
+    )
+
+    grouped_history = []
+
+    for record in renewal_records:
+        if (
+            not grouped_history
+            or grouped_history[-1]["date"] != record.renewed_on
+        ):
+            grouped_history.append(
+                {
+                    "date": record.renewed_on,
+                    "records": [],
+                }
+            )
+
+        grouped_history[-1]["records"].append(record)
+
+    return render_template(
+        "renewal_history.html",
+        grouped_history=grouped_history,
+        search=search,
+    )
 
 
 @app.route("/reports")
@@ -352,14 +628,13 @@ def reports():
     )
 
 
-with app.app_context():
-    db.create_all()
-
-
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
         port=5000,
         debug=True,
     )
+
+
+
 

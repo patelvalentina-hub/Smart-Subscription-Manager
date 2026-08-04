@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block title %}Renewals{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h1>Renewal Management</h1>
+    <p>
+        View overdue, due today, and upcoming subscription renewals.
+    </p>
+</div>
+
+<div class="renewals-section">
+
+    <div class="renewal-status-filters">
+        <button
+            type="button"
+            class="renewal-filter renewal-filter--active"
+            data-renewal-filter="overdue"
+        >
+            <span class="renewal-filter__label">Overdue</span>
+            <span class="renewal-filter__count">
+                {{ overdue_subscriptions | length }}
+            </span>
+        </button>
+    
+        <button
+            type="button"
+            class="renewal-filter"
+            data-renewal-filter="due-today"
+        >
+            <span class="renewal-filter__label">Due Today</span>
+            <span class="renewal-filter__count">
+                {{ due_today_subscriptions | length }}
+            </span>
+        </button>
+    
+        <button
+            type="button"
+            class="renewal-filter"
+            data-renewal-filter="upcoming"
+        >
+            <span class="renewal-filter__label">Upcoming</span>
+            <span class="renewal-filter__count">
+                {{ upcoming_subscriptions | length }}
+            </span>
+        </button>
+    </div>
+
+    <section
+        id="overdue-section"
+        class="renewal-group"
+    >
+        
+
+        {% if overdue_subscriptions %}
+            {% for subscription in overdue_subscriptions %}
+            <div class="subscription-card renewal-card">
+
+                <!-- Top Row -->
+                <div class="renewal-card-top">
+            
+                    <div class="renewal-card-info">
+            
+                        <h3>{{ subscription.name }}</h3>
+            
+                        <p class="subscription-category">
+                            {{ subscription.category }}
+                        </p>
+            
+                    </div>
+            
+                    <div class="subscription-pricing">
+            
+                        <p class="subscription-amount">
+                            ฿{{ "%.2f"|format(subscription.amount) }}
+                        </p>
+            
+                        <p class="subscription-frequency">
+                            {{ subscription.billing_frequency }}
+                        </p>
+            
+                    </div>
+            
+                </div>
+            
+            
+                <!-- Bottom Row -->
+                <div class="renewal-card-bottom">
+
+                    <div class="renewal-card-status">
+                
+                        <div class="renewal-status-row">
+                
+                            <span class="status-badge status-badge--overdue">
+                                OVERDUE
+                            </span>
+                
+                            <span class="renewal-status-text">
+                                Overdue by
+                                {{ calculate_days_remaining(subscription.next_renewal_date) | abs }}
+                                day{% if calculate_days_remaining(subscription.next_renewal_date) | abs != 1 %}s{% endif %}
+                            </span>
+                
+                        </div>
+                
+                        <p class="renewal-date">
+                            Renews on
+                            {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                        </p>
+                
+                    </div>
+                
+                    <a
+                        href="{{ url_for(
+                            'renew_subscription_confirmation',
+                            subscription_id=subscription.id
+                        ) }}"
+                        class="renew-button"
+                        >
+                            Renew Subscription
+                        </a>
+                
+                </div>
+            
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No overdue renewals.</p>
+        {% endif %}
+    </section>
+
+
+    <section
+        id="due-today-section"
+        class="renewal-group"
+    >
+        
+
+        {% if due_today_subscriptions %}
+            {% for subscription in due_today_subscriptions %}
+                <div class="subscription-card renewal-card">
+
+                    <div class="renewal-card-top">
+            
+                        <div class="renewal-card-info">
+                            <h3>{{ subscription.name }}</h3>
+            
+                            <p class="subscription-category">
+                                {{ subscription.category }}
+                            </p>
+                        </div>
+            
+                        <div class="subscription-pricing">
+                            <p class="subscription-amount">
+                                ฿{{ "%.2f"|format(subscription.amount) }}
+                            </p>
+            
+                            <p class="subscription-frequency">
+                                {{ subscription.billing_frequency }}
+                            </p>
+                        </div>
+            
+                    </div>
+            
+                    <div class="renewal-card-bottom">
+            
+                        <div class="renewal-card-status">
+            
+                            <div class="renewal-status-row">
+                                <span class="status-badge status-badge--due-today">
+                                DUE TODAY
+                                </span>
+            
+                                <span class="renewal-status-text renewal-status-text--due-today">
+                                Due Today
+                                </span>
+                            </div>
+            
+                            <p class="renewal-date">
+                                Renews on
+                                {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                            </p>
+            
+                        </div>
+            
+                        <a
+                            href="{{ url_for(
+                                'renew_subscription_confirmation',
+                                subscription_id=subscription.id
+                            ) }}"
+                            class="renew-button"
+                            >
+                                Renew Subscription
+                            </a>
+            
+                    </div>
+            
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No renewals due today.</p>
+        {% endif %}
+    </section>
+
+
+    <section
+        id="upcoming-section"
+        class="renewal-group"
+    >
+        
+
+        {% if upcoming_subscriptions %}
+            {% for subscription in upcoming_subscriptions %}
+            <div class="subscription-card renewal-card">
+
+                <div class="renewal-card-top">
+            
+                    <div class="renewal-card-info">
+                        <h3>{{ subscription.name }}</h3>
+            
+                        <p class="subscription-category">
+                            {{ subscription.category }}
+                        </p>
+                    </div>
+            
+                    <div class="subscription-pricing">
+                        <p class="subscription-amount">
+                            ฿{{ "%.2f"|format(subscription.amount) }}
+                        </p>
+            
+                        <p class="subscription-frequency">
+                            {{ subscription.billing_frequency }}
+                        </p>
+                    </div>
+            
+                </div>
+            
+                <div class="renewal-card-bottom">
+            
+                    <div class="renewal-card-status">
+            
+                        {% set days = calculate_days_remaining(
+                            subscription.next_renewal_date
+                        ) %}
+            
+                        <div class="renewal-status-row">
+                            <span class="status-badge status-badge--upcoming">
+                                UPCOMING
+                            </span>
+            
+                            <span class="renewal-status-text renewal-status-text--upcoming">
+                                Due in {{ days }}
+                                day{% if days != 1 %}s{% endif %}
+                            </span>
+                        </div>
+            
+                        <p class="renewal-date">
+                            Renews on
+                            {{ subscription.next_renewal_date.strftime("%d %b %Y") }}
+                        </p>
+            
+                    </div>
+            
+                </div>
+            
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No upcoming renewals.</p>
+        {% endif %}
+    </section>
+
+</div>
+
+{% endblock %}

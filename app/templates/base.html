@@ -26,21 +26,39 @@
             </a>
         
             <nav class="navbar__menu">
-        
-                <a
-                    href="{{ url_for('dashboard') }}"
-                    class="navbar__link {% if request.endpoint == 'dashboard' %}navbar__link--active{% endif %}"
-                >
+                <a href="{{ url_for('dashboard') }}" class="navbar__link {% if request.endpoint == 'dashboard' %}navbar__link--active{% endif %}">
                     Dashboard
                 </a>
-        
+            
                 <a
-                    href="{{ url_for('reports') }}"
-                    class="navbar__link {% if request.endpoint == 'reports' %}navbar__link--active{% endif %}"
+                    href="{{ url_for('renewals') }}"
+                    class="navbar__link
+                    {% if request.endpoint in [
+                        'renewals',
+                        'renew_subscription_confirmation'
+                    ] %}
+                        navbar__link--active
+                    {% endif %}"
                 >
+                    <span>Renewals</span>
+
+                    {% if renewal_attention_count > 0 %}
+                        <span
+                            class="navbar__notification-badge"
+                            aria-label="{{ renewal_attention_count }} renewals require attention"
+                        >
+                            {{ renewal_attention_count }}
+                        </span>
+                    {% endif %}
+                </a>
+            
+                <a href="{{ url_for('renewal_history') }}" class="navbar__link {% if request.endpoint == 'renewal_history' %}navbar__link--active{% endif %}">
+                    History
+                </a>
+            
+                <a href="{{ url_for('reports') }}" class="navbar__link {% if request.endpoint == 'reports' %}navbar__link--active{% endif %}">
                     Reports
                 </a>
-        
             </nav>
         
         </div>
@@ -90,6 +108,15 @@
 <script src="{{ url_for('static', filename='js/renewal-date.js') }}"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static', filename='js/renewals.js') }}"></script>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/renewal-confirmation.js'
+    ) }}"
+></script>
 
 {% block scripts %}{% endblock %}
 
