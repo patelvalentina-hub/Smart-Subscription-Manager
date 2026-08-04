@@ -312,15 +312,15 @@ Just sketch:
 
 #### After First Renewal
 
-- [ ] Preserve Original Start Date
-- [ ] Lock Original Start Date
-- [ ] Lock Next Renewal Date
-- [ ] Lock Amount on Edit Subscription
-- [ ] Lock Billing Frequency on Edit Subscription
-- [ ] Allow Name changes
-- [ ] Allow Category changes
-- [ ] Allow Status changes
-- [ ] Allow Delete Subscription
+- [x] Preserve Original Start Date
+- [x] Lock Original Start Date
+- [x] Lock Next Renewal Date
+- [x] Lock Amount on Edit Subscription
+- [x] Lock Billing Frequency on Edit Subscription
+- [x] Allow Name changes
+- [x] Allow Category changes
+- [x] Allow Status changes
+- [x] Allow Delete Subscription
 
 
 
@@ -330,7 +330,7 @@ Just sketch:
 - [x] Test future renewals
 - [ ] Test leap years
 - [x] Test monthly/yearly subscriptions
-- [ ] Test duplicate renewal prevention
+- [x] Test duplicate renewal prevention
 - [ ] Test renewal history creation
 
 
@@ -372,10 +372,10 @@ Just sketch:
 
 ### 4.3 Validation
 
-- [ ] Restrict "Renewed On" to the valid renewal window
+- [x] Restrict "Renewed On" to the valid renewal window
       (Current Renewal Date → Today)
 - [ ] Validate billing frequency changes
-- [ ] Auto-recalculate next renewal
+- [x] Auto-recalculate next renewal
 
 ### 4.3 Validation
 
@@ -402,7 +402,7 @@ Just sketch:
 - [x] Test first renewal
 - [ ] Test second renewal
 - [ ] Test billing frequency changes
-- [ ] Test duplicate renewal prevention
+- [x] Test duplicate renewal prevention
 - [x] Test validation errors
 
 
@@ -430,7 +430,7 @@ Just sketch:
 
 - [x] Renewal is available only for Due Today or Overdue subscriptions.
 - [x] Renewals are created through the Renew action, not by editing the subscription.
-- [ ] Prevent duplicate renewals
+- [x] Prevent duplicate renewals
 - [x] Before first renewal all fields are editable
 - [x] After first renewal billing changes only occur during Renewal Confirmation
 - [x] Original Start Date is immutable after first renewal
@@ -485,7 +485,7 @@ Just sketch:
 
 ### Business Logic
 
-- [ ] Prevent duplicate renewals
+- [x] Prevent duplicate renewals
 - [ ] Protect future renewal dates from accidental updates
 - [ ] Support billing cycle validation during Renewal Confirmation
 
@@ -511,7 +511,7 @@ Goal:
 
 Current Status:
 
-🟡 Phase 4 – Renewal Confirmation Workflow (In Progress)
+🟡 Phase 5 – Renewal History (Ready to Begin)
 
 ---
 

@@ -482,6 +482,24 @@ def renew_subscription(subscription_id):
             )
         )
 
+    existing_renewal = RenewalHistory.query.filter_by(
+        subscription_id=subscription.id,
+        renewed_on=renewed_on,
+    ).first()
+
+    if existing_renewal:
+        flash(
+            "This renewal has already been recorded.",
+            "error",
+        )
+
+        return redirect(
+            url_for(
+                "renew_subscription_confirmation",
+                subscription_id=subscription.id,
+            )
+        )
+
     next_renewal_date = calculate_next_renewal_date(
         renewed_on,
         billing_frequency,
